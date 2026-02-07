@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Gamer's HUB | Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-bg: #0b141a;
+            --nav-bg: #121c24;
+            --footer-bg: #0d161d;
+            --accent-blue: #3b82f6;
+            --text-white: #ffffff;
+            --text-gray: #dddddd;
+            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-white);
+            line-height: 1.6;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            background-color: var(--nav-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            border-bottom: 1px solid #1e293b;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--accent-blue);
+        }
+
+        .nav-center ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-center a {
+            text-decoration: none;
+            color: var(--text-gray);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .nav-center a:hover {
+            color: var(--text-white);
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+        }
+        .ll{
+            background: linear-gradient(135deg, rgb(3, 2, 66), rgb(59, 130, 246));
+            border-radius: 20px;
+            padding-left: 40px;
+            padding-right: 40px;
+            padding-bottom: 10px;
+            padding-top: 10px;
+            }
+        
+        .ab
+        {
+            background-color: white;
+        }
+
+        /* Expandable search input: hidden by default, appears on hover/focus */
+        .search-wrap {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            overflow: visible;
+            position: relative;
+        }
+
+        .search-input {
+            width: 0;
+            opacity: 0;
+            padding: 6px 12px 6px 12px;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            transition: width 220ms ease, opacity 220ms ease, padding 220ms ease;
+            background: #ffffff;
+            color: #0b141a;
+            font-size: 0.9rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-gray);
+            background: transparent;
+            padding: 6px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: color 180ms ease, transform 180ms ease;
+        }
+
+        .search-wrap:hover .search-input,
+        .search-wrap:focus-within .search-input {
+            width: 250px;
+            opacity: 1;
+            padding: 6px 12px 6px 40px; /* extra left padding for icon */
+        }
+
+        .search-wrap:hover .search-icon,
+        .search-wrap:focus-within .search-icon {
+            color: var(--accent-blue);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 40px;
+        }
+
+        /* --- HERO SLIDER --- */
+        .hero-container {
+            position: relative;
+            align-content: center;
+            height: 700px;
+            /* Responsive height */
+            min-height: 200px;
+            width: 100%;
+            background: radial-gradient(circle at center, #1e293b 0%, #0b141a 100%);
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            align-items: center;
+            background-size: 80%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .slide.active {
+            display: flex;
+            animation: fadeIn 0.9s ease-in-out;
+        }
+
+        /* optional: remove the in-slide image element; backgrounds are applied via classes below */
+
+        /* Per-slide background images - replace filenames with your images */
+        .slide.destiny { background-image: url('destiny_2.jpg'); }
+        .slide.blackops { background-image: url('blackops.jpg'); }
+        .slide.halo { background-image: url('halo.jpg'); }
+
+        .slide h1 {
+            font-size: clamp(1rem, vw, 4rem);
+            /* Fluid typography */
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+        }
+
+        .btn-learn {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 12px 40px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+            transition: 0.3s;
+            margin-top: 120px;
+        }
+
+        .btn-learn:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .slider-nav {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+
+        .dot {
+            width: 40px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: var(--accent-blue);
+        }
+
+        /* --- FEATURES --- */
+        .features {
+            padding: 80px 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: #ffffff;
+            color: #1e293b;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card-header {
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .header-blue {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .header-purple {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+        }
+
+        .header-orange {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .card-body h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .card-body p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--footer-bg);
+            padding: 60px 5% 30px;
+            border-top: 1px solid #1e293b;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 40px;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--accent-blue);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            cursor: default;
+        }
+
+        .footer-col a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .footer-col li:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #1e293b;
+            font-size: 0.8rem;
+            color: #475569;
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 900px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-center {
+                display: none;
+                /* Hidden by default on mobile */
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--nav-bg);
+                padding: 20px;
+                border-bottom: 1px solid #1e293b;
+            }
+
+            .nav-center.active {
+                display: block;
+            }
+
+            .nav-center ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .nav-right {
+                display: none;
+            }
+
+            /* Hide search/sign-in on small mobile for space */
+
+            .hero-container {
+                height: 60vh;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(1.05);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <i class="fa-solid fa-gamepad"></i>
+            <span>THE GAMER'S HUB</span>
+        </div>
+
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <div class="nav-center" id="navMenu">
+            <ul>
+                <li><a href="2.Game_tab.html">Games</a></li>
+                <li><a href="4.Store.html">Store</a></li>
+                <li><a href="6.Community.html">Community</a></li>
+                <li><a href="3.News%20tab.html">News</a></li>
+                <li><a href="25.a%20Rewords%20tab.html">Rewards</a></li>
+                <li><a href="26.Help.html">Help</a></li>
+                <li><a href="8.Logintab.html"><span class="ll">SIGN IN</span></a></li>
+
+                <li>
+                    <label class="search-wrap" aria-label="Search site">
+                        <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+                        <input type="search" class="search-input" placeholder="Search..." aria-label="Search">
+                    </label>
+                </li>
+        </ul>
+            
+        </div>
+
+        
+    </nav>
+
+    <section class="hero-container">
+        <div class="slide active destiny">
+            <!-- <h1>DESTINY 2</h1> -->
+            <a href="https://www.destinythegame.com/en/YearOfProphecy" class="btn-learn">LEARN MORE</a>
+        </div>
+        <div class="slide blackops">
+            <!-- <h1>BLACK OPS 7</h1> -->
+            <a href="https://www.callofduty.com/blackops7" class="btn-learn">LEARN MORE</a>
+        </div>
+        <div class="slide halo">
+            <!-- <h1>HALO REACH</h1> -->
+            <a href="https://www.halowaypoint.com/" class="btn-learn">LEARN MORE</a>
+        </div>
+
+        <div class="slider-nav">
+            <div class="dot active" onclick="currentSlide(0)"></div>
+            <div class="dot" onclick="currentSlide(1)"></div>
+            <div class="dot" onclick="currentSlide(2)"></div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="card">
+            <div class="card-header header-blue">
+                <i class="fa-solid fa-bolt fa-4x"></i>
+            </div>
+            <div class="card-body">
+                <h3>What's new?</h3>
+                <p>Discover new destinations and face powerful enemies in epic battles across the solar system.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header header-purple">
+                <i class="fa-solid fa-download fa-4x"></i>
+            </div>
+            <div class="card-body">
+                <h3>Downloads</h3>
+                <p>Get the latest patches and expansions. High-speed servers ready for your next adventure.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header header-orange">
+                <i class="fa-solid fa-trophy fa-4x"></i>
+            </div>
+            <div class="card-body">
+                <h3>Leaderboards</h3>
+                <p>Track your stats, earn unique banners, and see how you rank against the global community.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="29.Company.html">Company</a></li>
+                    <li><a href="31.Web%20developers.html">Web developers</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="27.Feedback.html">Feedback</a></li>
+                    <li><a href="15.Contact%20Us.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="10.Privacy%20policy.html">Privacy Policy</a></li>
+                    <li><a href="28.Terms%20of%20Use.html">Terms of Use</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Follow Us</h4>
+                <ul style="display: flex; gap: 15px;">
+                    <li><i class="fa-brands fa-twitter"></i></li>
+                    <li><i class="fa-brands fa-facebook"></i></li>
+                    <li><i class="fa-brands fa-instagram"></i></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 The Gamers HUB Inc. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+
+        function showSlides(n) {
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+
+            slides[n].classList.add('active');
+            dots[n].classList.add('active');
+        }
+
+        function currentSlide(n) {
+            slideIndex = n;
+            showSlides(slideIndex);
+        }
+
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('active');
+        }
+
+        setInterval(() => {
+            slideIndex = (slideIndex + 1) % slides.length;
+            showSlides(slideIndex);
+        }, 5000);
+
+        // Make clicking the icon focus the input (useful when input is collapsed)
+        document.querySelectorAll('.search-icon').forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                const input = icon.parentElement.querySelector('.search-input');
+                if (input) input.focus();
+            });
+        });
+    </script>
+</body></html>
