@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Gamer's HUB - Destiny 2</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #050814;
+      color: #ffffff;
+    }
+
+    /* Top navigation */
+    .topbar {
+      background-color: #050814;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 60px;
+      font-size: 14px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo span {
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% {
+        color: #ffffff;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+      }
+      50% {
+        color: #26b6ff;
+        text-shadow: 0 0 20px rgba(38, 182, 255, 0.8), 0 0 30px rgba(38, 182, 255, 0.5);
+      }
+    }
+
+    .logo-box {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #ffffff;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #26b6ff;
+      text-shadow: 0 0 10px rgba(38, 182, 255, 0.6);
+    }
+
+    .play-link {
+      animation: playPulse 1.5s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    @keyframes playPulse {
+      0%, 100% {
+        color: #ffffff;
+        transform: scale(1);
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+      }
+      50% {
+        color: #f29b3a;
+        transform: scale(1.1);
+        text-shadow: 0 0 15px rgba(242, 155, 58, 0.8), 0 0 25px rgba(242, 155, 58, 0.5);
+      }
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 18px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nav-right a {
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .nav-right a:hover {
+      color: #ff4e8a;
+      text-shadow: 0 0 10px rgba(255, 78, 138, 0.6);
+    }
+
+    /* Hero section */
+    .hero {
+      height: 320px;
+      background: linear-gradient(180deg, #0c264a 0%, #050814 80%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+      opacity: 0.7;
+      display: block;
+      pointer-events: none;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      opacity: 0.35;
+      background:
+        radial-gradient(circle at 10% 70%, #26b6ff, transparent 60%),
+        radial-gradient(circle at 50% 30%, #ff4e8a, transparent 60%),
+        radial-gradient(circle at 90% 70%, #f29b3a, transparent 60%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-box {
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 18px;
+      border: 2px solid #ffffff;
+    }
+
+    .hero-title {
+      font-size: 40px;
+      letter-spacing: 4px;
+      margin-bottom: 18px;
+    }
+
+    .hero-btn {
+      padding: 10px 30px;
+      background-color: #2568ff;
+      border: none;
+      color: #ffffff;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      z-index: 3;
+    }
+
+    .hero-btn:hover {
+      background-color: #0052cc;
+      box-shadow: 0 0 15px rgba(37, 104, 255, 0.6);
+    }
+
+    .hero-icons {
+      margin-top: 22px;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      font-size: 10px;
+      opacity: 0.7;
+    }
+
+    .hero-icons span {
+      width: 14px;
+      height: 14px;
+      border: 1px solid #ffffff;
+      display: inline-block;
+    }
+
+    /* Dark band separator */
+    .band {
+      height: 0px;
+      background-color: #050814;
+    }
+
+    /* Cards section */
+    .cards-section {
+      background-color: #f4f6fb;
+      padding: 40px 60px 70px;
+      position: relative;
+    }
+
+    .cards-row {
+      display: flex;
+      gap: 24px;
+      max-width: 1024px;
+      margin: 0 auto;
+    }
+
+    .card {
+      flex: 1;
+      border-radius: 6px;
+      overflow: hidden;
+      background-color: #ffffff;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+
+    .card-top {
+      height: 120px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .card-top-box {
+      width: 100%;
+      height: 100%;
+      border: none;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-top-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-top.blue {
+      background: linear-gradient(135deg, #00b4ff, #0072ff);
+    }
+
+    .card-top.pink {
+      background: linear-gradient(135deg, #ff4d96, #9b30ff);
+    }
+
+    .card-top.orange {
+      background: linear-gradient(135deg, #ffffff, #ffffff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .card-top.orange img {
+      width: 100%;
+      height: 150%;
+      object-fit: contain;
+      padding: 10px;
+    }
+
+    .card-body {
+      padding: 18px 18px 22px;
+      color: #333333;
+      font-size: 13px;
+    }
+
+    .card-body h3 {
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .card-body h3 a {
+      text-decoration: none;
+      color: #000000;
+    }
+
+    .card-body p {
+      line-height: 1.4;
+      color: #666666;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #050814;
+      color: #ffffff;
+      padding: 32px 60px 20px;
+      font-size: 12px;
+    }
+
+    .footer-columns {
+      display: flex;
+      justify-content: space-between;
+      max-width: 900px;
+      margin: 0 auto 26px;
+    }
+
+    .footer-column h4 {
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .footer-column ul {
+      list-style: none;
+    }
+
+    .footer-column li {
+      margin-bottom: 6px;
+    }
+
+    .footer-column a {
+      text-decoration: none;
+      color: #cccccc;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      color: #777777;
+      font-size: 11px;
+    }
+      .slideshow-container {
+  width: 100%;
+  position: relative;
+  margin: 0;
+}
+
+.mySlides {
+  display: none;
+}
+
+.mySlides img {
+  width: 100%;
+  vertical-align: middle;
+}
+
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  background-color: rgba(0,0,0,0.5);
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+  background-color: rgba(0,0,0,0.5);
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* Loading Animation Container */
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(12, 38, 74, 0.3);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  text-align: center;
+}
+
+.loader-icon {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.6));
+}
+
+.loader-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Pop animation */
+.loader-icon.pop-animation {
+  animation: popEffect 0.6s ease-in-out infinite;
+}
+
+@keyframes popEffect {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+}
+
+.loading-text {
+  font-size: 1.5rem;
+  color: #a855f7;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.loading-subtext {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+  0%, 20% {
+    content: '';
+  }
+  40% {
+    content: '.';
+  }
+  60% {
+    content: '..';
+  }
+  80%, 100% {
+    content: '...';
+  }
+}
+      </style>
+</head>
+<body>
+    <!-- Loading Animation Container -->
+    <div class="loading-container">
+      <div class="loader-icon" id="loaderIcon">
+        <img src="12121.jpg" alt="Loading">
+      </div>
+      <div class="loading-text">LOADING</div>
+      <div class="loading-subtext">Please wait<span id="dots">.</span></div>
+    </div>
+    
+      <div class="topbar">
+    <div class="logo"><img src="M5e94cecb0911ddde2fa73739c93655361764410284581.png">
+      <span>The Gamer's HUB</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="#">Games</a>
+      <a href="#">Store</a>
+      <a href="#">Community</a>
+      <a href="#" class="play-link">Play</a>
+      <a href="#">Help</a>
+      <a href="#">Rewards</a>
+    </div>
+
+    <div class="nav-right">
+        <span><a href="dd" style=color:white;text-decoration:none>🔍︎ Search</a></span>
+        <span><a href="#" onclick="redirectToLogin()" style=color:white;text-decoration:none;cursor:pointer>👤 Login</a></span>
+    </div>
+  </div>
+    
+    
+    <div class="slideshow-container">
+  <div class="mySlides fade">
+    <img src="destiny_risin.webp" style="width:100%"display:block>
+    <div class="text">Destiny 2</div>
+  </div>
+
+  <div class="mySlides fade">
+    <img src="BL4_Screenshot_4P_Co-op_V2.avif" style="width:100%">
+    <div class="text">Borders Land 1</div>
+  </div>
+
+  <div class="mySlides fade">
+    <img src="2982.webp" style="width:100%">
+    <div class="text">Halo Infinite</div>
+  </div>
+
+  <a class="prev" onclick="plusSlides(-1)">❮</a>
+  <a class="next" onclick="plusSlides(1)">❯</a>
+</div>
+<br>
+
+<div style="text-align:center">
+  <span class="dot" onclick="currentSlide(1)"></span> 
+  <span class="dot" onclick="currentSlide(2)"></span> 
+  <span class="dot" onclick="currentSlide(3)"></span> 
+</div>
+
+<script>
+let slideIndex = 0;
+showSlides();
+
+function showSlides() {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("dot");
+  
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";  
+  }
+  slideIndex++;
+  
+  if (slideIndex > slides.length) {slideIndex = 1}
+  
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  
+  slides[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " active";
+  
+  // Change image every 5 seconds
+  setTimeout(showSlides, 5000);
+}
+
+// Optional: Manual controls
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+</script>
+
+  <!-- Hero -->
+  <header class="hero">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="11.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const video = document.querySelector('.hero-video');
+        if (video) {
+          video.play().catch(err => console.log('Autoplay prevented, waiting for user interaction'));
+        }
+      });
+    </script>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">DESTINY 2</h1>
+      <button class="hero-btn" onclick="document.querySelector('.cards-section').scrollIntoView({behavior: 'smooth'})">Learn more</button>
+    </div>
+  </header>
+
+  <div class="band"></div>
+
+  <!-- Cards row 1-->
+  <section class="cards-section">
+    <div class="cards-row">
+      <div class="card">
+        <div class="card-top blue">
+          <div class="card-top-box"><img src="3610756-biggest-game-news-2019-year-in-review-nologo-2.jpg" ></div>
+        </div>
+        <div class="card-body">
+          <h3><a href="#">What's new?</a></h3>
+          <p>Discover new destinations and face powerful enemies in epic battles…</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top pink">
+          <div class="card-top-box"><img src="marchs-top-mobile-game-downloads.webp" alt=""></div>
+        </div>
+        <div class="card-body">
+          <h3><a href="#">Downloads</a></h3>
+          <p>Choose from original versions or cracked editions to start playing right away.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top orange"><img src="2.png" alt="Orange Card">
+         
+        </div>
+        <div class="card-body">
+          <h3><a href="#">Your Hero Is Waiting Here!</a></h3>
+          <p>Get your favorite toy or banner from here now.</p>
+        </div>
+      </div>
+    </div>
+      <!-- Cards row 2-->
+      <br><br>
+    <div class="cards-row">
+      <div class="card">
+        <div class="card-top blue">
+          <div class="card-top-box"><img src="3610756-biggest-game-news-2019-year-in-review-nologo-2.jpg" ></div>
+        </div>
+        <div class="card-body">
+          <h3><a href="#">What's new?</a></h3>
+          <p>Discover new destinations and face powerful enemies in epic battles…</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top pink">
+          <div class="card-top-box"><img src="marchs-top-mobile-game-downloads.webp" alt=""></div>
+        </div>
+        <div class="card-body">
+          <h3><a href="#">Downloads</a></h3>
+          <p>Choose from original versions or cracked editions to start playing right away.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top orange"><img src="2.png" alt="Orange Card">
+         
+        </div>
+        <div class="card-body">
+          <h3><a href="#">Your Hero Is Waiting Here!</a></h3>
+          <p>Get your favorite toy or banner from here now.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h4>About</h4>
+        <ul>
+          <li><a href="#">Company</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Feedback</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Forums</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">License</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Follow us</h4>
+        <ul>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 The Gamer’s HUB, Inc. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // Function to show loading and redirect
+    function showLoadingAndRedirect(destination) {
+      const loaderIcon = document.getElementById('loaderIcon');
+      const container = document.querySelector('.loading-container');
+      
+      // Show loading container
+      container.style.display = 'flex';
+      
+      // Add pop animation to icon
+      loaderIcon.classList.add('pop-animation');
+      
+      // Animate dots
+      let dotCount = 1;
+      const dotsInterval = setInterval(function() {
+        const dotsSpan = document.getElementById('dots');
+        if (dotCount > 3) dotCount = 1;
+        dotsSpan.textContent = '.'.repeat(dotCount);
+        dotCount++;
+      }, 500);
+
+      // Redirect after a delay
+      setTimeout(function() {
+        clearInterval(dotsInterval);
+        window.location.href = destination;
+      }, 2000); // Show loading for 2 seconds
+    }
+
+    // Specific function to redirect to login page
+    function redirectToLogin() {
+      showLoadingAndRedirect('../8.Logintab.html');
+    }
+
+    // Hide loading container on initial page load
+    window.addEventListener('load', function() {
+      document.querySelector('.loading-container').style.display = 'none';
+    });
+  </script>
+
+</body>
+</html>

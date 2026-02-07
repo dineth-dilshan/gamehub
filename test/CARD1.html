@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Swapping Slideshow</title>
+    <style>
+        /* 1. Container Styling */
+        * {box-sizing: border-box;}
+        
+       
+
+        .slideshow-container {
+            max-width: 800px;
+            position: relative;
+            margin: auto;
+            border-radius: 10px;
+            overflow: hidden; /* Keeps images inside the rounded corners */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* 2. Image Styling */
+        .mySlides {
+            display: none; /* Hide all slides by default */
+            width: 100%;
+        }
+
+        .mySlides img {
+            width: 100%;
+            vertical-align: middle; /* Removes small gap under images */
+        }
+
+        /* 3. The Fade Animation */
+        .fade {
+            animation-name: fade;
+            animation-duration: 1.5s;
+        }
+
+        @keyframes fade {
+            from {opacity: .4} 
+            to {opacity: 1}
+        }
+
+        /* 4. Dots/Indicators (Optional visual flair) */
+        .dot-container {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .dot {
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+        .active {
+            background-color: #717171;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slideshow-container">
+
+        <div class="mySlides fade">
+            <img src="https://placehold.co/800x400/2980b9/white?text=Slide+1" alt="Image 1">
+        </div>
+
+        <div class="mySlides fade">
+            <img src="https://placehold.co/800x400/27ae60/white?text=Slide+2" alt="Image 2">
+        </div>
+
+        <div class="mySlides fade">
+            <img src="https://placehold.co/800x400/c0392b/white?text=Slide+3" alt="Image 3">
+        </div>
+
+    </div>
+
+    <div class="dot-container">
+        <span class="dot"></span> 
+        <span class="dot"></span> 
+        <span class="dot"></span> 
+    </div>
+
+    <script>
+        let slideIndex = 0;
+        showSlides(); // Call the function to start the slideshow
+
+        function showSlides() {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("dot");
+            
+            // 1. Hide all slides
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            
+            // 2. Increment index (move to next slide)
+            slideIndex++;
+            
+            // 3. Reset to 1 if we went past the last slide
+            if (slideIndex > slides.length) {slideIndex = 1}    
+            
+            // 4. Remove "active" class from all dots
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            
+            // 5. Show the current slide and highlight the dot
+            slides[slideIndex-1].style.display = "block";  
+            dots[slideIndex-1].className += " active";
+            
+            // 6. Run this function again after 3 seconds (3000ms)
+            setTimeout(showSlides, 3000); 
+        }
+    </script>
+
+</body>
+</html>

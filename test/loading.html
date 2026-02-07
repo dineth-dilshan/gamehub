@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loading - Gamers Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        
+
+        .loading-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(12, 38, 74, 0.3);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        .loader-icon {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.6));
+        }
+
+        .loader-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Pop animation - only applied when redirecting */
+        .loader-icon.pop-animation {
+            animation: popEffect 0.6s ease-in-out infinite;
+        }
+
+        @keyframes popEffect {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+        }
+
+        .loading-text {
+            font-size: 1.5rem;
+            color: #a855f7;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .loading-subtext {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% {
+                content: '';
+            }
+            40% {
+                content: '.';
+            }
+            60% {
+                content: '..';
+            }
+            80%, 100% {
+                content: '...';
+            }
+        }
+
+        /* Hidden link styling */
+        #redirectLink {
+            display: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #121622 0%, #1e2533 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Page Content */
+        .page-content {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(30, 37, 51, 0.8);
+            border-radius: 12px;
+            border: 1px solid #2d3748;
+        }
+
+        .page-content h1 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #a855f7;
+        }
+
+        .page-content p {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+       
+    </style>
+
+
+</head>
+<body>
+    <div class="loading-container">
+        <div class="loader-icon" id="loaderIcon">
+            <img src="12121.jpg" alt="Loading">   
+        </div>
+        <br><br>
+        <div class="loading-text">LOADING</div>
+        <br>
+        <div class="loading-subtext">Please wait<span id="dots">.</span></div>
+    </div>
+
+    <!-- Hidden link for redirection -->
+    <a href="#" id="redirectLink"></a>
+
+    <!-- Page Content -->
+    <div class="page-content">
+        <h1>Welcome to Gamers Hub</h1>
+        <p>This is your main page content. You can see it through the semi-transparent overlay when loading.</p>
+        <button onclick="redirectToLogin()" style="padding: 12px 30px; background: linear-gradient(to right, #9333ea, #db2777); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; margin-top: 20px;">
+            Go to Login
+        </button>
+    </div>
+
+    <!-- Page Content -->
+    
+
+    <script>
+        // Function to show loading and redirect
+        function showLoadingAndRedirect(destination) {
+            const loaderIcon = document.getElementById('loaderIcon');
+            const container = document.querySelector('.loading-container');
+            
+            // Show loading container
+            container.style.display = 'flex';
+            
+            // Add pop animation to icon
+            loaderIcon.classList.add('pop-animation');
+            
+            // Animate dots
+            let dotCount = 1;
+            const dotsInterval = setInterval(function() {
+                const dotsSpan = document.getElementById('dots');
+                if (dotCount > 3) dotCount = 1;
+                dotsSpan.textContent = '.'.repeat(dotCount);
+                dotCount++;
+            }, 500);
+
+            // Redirect after a delay
+            setTimeout(function() {
+                clearInterval(dotsInterval);
+                window.location.href = destination;
+            }, 2000); // Show loading for 2 seconds
+        }
+
+        // Specific function to redirect to login page
+        function redirectToLogin() {
+            showLoadingAndRedirect('../8.Logintab.html');
+        }
+
+        // Hide loading container on initial page load
+        window.addEventListener('load', function() {
+            document.querySelector('.loading-container').style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
