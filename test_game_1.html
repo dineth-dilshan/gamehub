@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official Game Library | The Gamer's HUB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-bg: #0b141a;
+            --nav-bg: #121c24;
+            --accent-blue: #3b82f6;
+            --card-bg: #1e293b;
+            --text-white: #ffffff;
+            --text-gray: #94a3b8;
+            --border-color: #334155;
+            /* Category Colors */
+            --cat-action: #ef4444;
+            --cat-racing: #f59e0b;
+            --cat-shooting: #8b5cf6;
+            --cat-strategy: #10b981;
+            --cat-sports: #ec4899;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--dark-bg); color: var(--text-white); line-height: 1.6; }
+
+        /* --- Navbar --- */
+        nav {
+            background-color: var(--nav-bg);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; border-bottom: 1px solid var(--border-color);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-left, .logo { font-weight: 800; display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
+        .logo i { color: var(--accent-blue); }
+        .nav-center { display: flex; align-items: center; }
+        .nav-links { display: flex; list-style: none; gap: 20px; }
+        .nav-links a { text-decoration: none; color: var(--text-gray); font-size: 0.8rem; transition: 0.3s; }
+        .nav-links a.active { color: var(--text-white); font-weight: bold; }
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; border-radius: 40px; }
+        .search-wrap { display: inline-flex; align-items: center; border-radius: 999px; overflow: visible; position: relative; }
+        .search-input { width: 0; opacity: 0; padding: 6px 12px 6px 12px; border-radius: 20px; border: none; outline: none; transition: width 220ms ease, opacity 220ms ease, padding 220ms ease; background: #ffffff; color: #0b141a; font-size: 0.9rem; }
+        .search-icon { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); color: var(--text-gray); background: transparent; padding: 6px; border-radius: 50%; cursor: pointer; transition: color 180ms ease, transform 180ms ease; }
+        .search-wrap:hover .search-input, .search-wrap:focus-within .search-input { width: 180px; opacity: 1; padding: 6px 12px 6px 40px; }
+
+        /* --- Header --- */
+        .filter-header { padding: 50px 5% 30px; text-align: center; }
+        .filter-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .filter-header p { color: var(--text-gray); margin-bottom: 30px; }
+        
+        .filter-tags {
+            display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+        }
+        .tag-btn {
+            padding: 10px 22px; background: var(--card-bg); border: 1px solid var(--border-color);
+            color: var(--text-gray); border-radius: 30px; cursor: pointer; font-size: 0.85rem; transition: 0.3s;
+        }
+        .tag-btn:hover, .tag-btn.active { background: var(--accent-blue); color: white; border-color: var(--accent-blue); }
+
+        /* --- Games Grid --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .game-card {
+            background: var(--card-bg); border-radius: 12px; overflow: hidden;
+            border: 1px solid var(--border-color); transition: 0.3s ease;
+        }
+        .game-card:hover { transform: translateY(-8px); border-color: var(--accent-blue); }
+        
+        .game-thumb {
+            height: 180px; background: #2d3748; position: relative;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .game-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .game-thumb i { font-size: 3.5rem; color: rgba(255,255,255,0.05); }
+        
+        .cat-badge {
+            position: absolute; top: 12px; left: 12px;
+            padding: 4px 10px; border-radius: 4px; font-size: 0.65rem;
+            font-weight: 800; text-transform: uppercase;
+            background: transparent;
+            border: 1px solid rgba(238, 233, 233, 0.12);
+            color: var(--badge-color, #fff);
+            backdrop-filter: blur(4px);
+        }
+        .cat-badge { display: none; }
+
+        .game-info { padding: 20px; }
+        .game-title { font-size: 1rem; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .game-meta { font-size: 0.8rem; color: var(--text-gray); margin-bottom: 15px; display: block; }
+
+        .btn-official {
+            width: 100%; padding: 10px; background: var(--accent-blue); color: white;
+            border: none; border-radius: 6px; font-weight: 700; cursor: pointer;
+            display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.2s;
+        }
+        .btn-official:hover { background: #2563eb; }
+
+        footer { padding: 40px; text-align: center; border-top: 1px solid var(--border-color); margin-top: 60px; color: var(--text-gray); font-size: 0.8rem; }
+
+        @media (max-width: 900px) {
+            .menu-toggle { display: block; }
+            .nav-center {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--nav-bg);
+                border-bottom: 1px solid var(--border-color);
+                padding: 20px 0;
+                flex-direction: column;
+            }
+            .nav-center.active { display: flex !important; }
+            .nav-links { flex-direction: column; gap: 20px; width: 100%; text-align: center; }
+            .search-wrap { margin-top: 10px; }
+            .search-input { width: 200px; opacity: 1; padding: 6px 12px 6px 40px; }
+            .filter-header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo"><i class="fa-solid fa-gamepad"></i> THE GAMER'S HUB</div>
+    
+    <div class="menu-toggle" onclick="toggleMenu()">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+
+    <div class="nav-center" id="navMenu">
+        <ul class="nav-links">
+            <li><a href="1.Home.html">HOME</a></li>
+            <li><a href="2.Game_tab.html" class="active">GAMES</a></li>
+            <li><a href="3.Store.html">STORE</a></li>
+            <li><a href="4.Guides.html">GUIDES</a></li>
+            <li><a href="5.Support.html">SUPPORT</a></li>
+            <li>
+                <label class="search-wrap" aria-label="Search site">
+                    <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+                    <input type="search" class="search-input" placeholder="Search..." aria-label="Search">
+                </label>
+            </li>
+            <li><a href="8.Logintab.html"><span class="ll" style="background:linear-gradient(135deg,#031a42,#3b82f6);padding:8px 20px;border-radius:18px;color:#fff;">SIGN IN</span></a></li>
+        </ul>
+    </div>
+</nav>
+
+<header class="filter-header">
+    <h1>Verified PC Library</h1>
+    <p>Official licenses and digital keys for the world's top-rated titles.</p>
+    <div class="filter-tags">
+        <button class="tag-btn active" onclick="filterBy('all')">All Games</button>
+        <button class="tag-btn" onclick="filterBy('action')">Action</button>
+        <button class="tag-btn" onclick="filterBy('racing')">Racing</button>
+        <button class="tag-btn" onclick="filterBy('shooting')">Shooting</button>
+        <button class="tag-btn" onclick="filterBy('strategy')">Strategy</button>
+        <button class="tag-btn" onclick="filterBy('sports')">Sports</button>
+    </div>
+</header>
+
+<div class="container">
+    <div class="game-grid" id="gameGrid">
+        </div>
+</div>
+
+<footer>© 2026 The Gamer's HUB | Sabaragamuwa University - Group 06</footer>
+
+<script>
+    const games = [
+        // ACTION (6)
+        { title: "Elden Ring", cat: "action", icon: "fa-fire-alt", color: "var(--cat-action)", image: "HDpro pictures/elden-ring.jpg"},
+        { title: "God of War Ragnarök", cat: "action", icon: "fa-gavel", color: "var(--cat-action)", image: "HDpro pictures/god-of-war.jpg"},
+        { title: "Sekiro: Shadows Die Twice", cat: "action", icon: "fa-dragon", color: "var(--cat-action)", image: "HDpro pictures/shadow-dies-twice-2.jpg"},
+        { title: "Ghost of Tsushima", cat: "action", icon: "fa-khanda", color: "var(--cat-action)", image: "HDpro pictures/ghost-of-tsushima.jpg"},
+        { title: "Spider-Man 2", cat: "action", icon: "fa-spider", color: "var(--cat-action)", image: "HDpro pictures/marvels-spider-man.jpeg"},
+        { title: "Hades II", cat: "action", icon: "fa-skull-crossbones", color: "var(--cat-action)", image: "HDpro pictures/hades.jpg"},
+
+        // RACING (6)
+        { title: "Forza Horizon 5", cat: "racing", icon: "fa-car", color: "var(--cat-racing)", image: "HDpro pictures/horizon-5.jpg"},
+        { title: "NFS Unbound", cat: "racing", icon: "fa-gauge-high", color: "var(--cat-racing)", image: "HDpro pictures/nfs-unbound.jpg"},
+        { title: "F1 24", cat: "racing", icon: "fa-trophy", color: "var(--cat-racing)", image: "HDpro pictures/f1-24.jpg"},
+        { title: "Assetto Corsa Competizione", cat: "racing", icon: "fa-road", color: "var(--cat-racing)", image: "HDpro pictures/mercedes-amg-gt3.jpg"},
+        { title: "Dirt 5", cat: "racing", icon: "fa-mountain-sun", color: "var(--cat-racing)", image: "HDpro pictures/dirt-5.jpg"},
+        { title: "Burnout Paradise", cat: "racing", icon: "fa-bolt", color: "var(--cat-racing)", image: "HDpro pictures/burnout-paradise.png"},
+
+        // SHOOTING (6)
+        { title: "Call of Duty: Black Ops 6", cat: "shooting", icon: "fa-crosshairs", color: "var(--cat-shooting)", image: "HDpro pictures/call-of-duty-black-ops-6.png"},
+        { title: "Valorant", cat: "shooting", icon: "fa-gun", color: "var(--cat-shooting)", image: "HDpro pictures/valorant.jpeg"},
+        { title: "Counter-Strike 2", cat: "shooting", icon: "fa-shield-halved", color: "var(--cat-shooting)", image: "HDpro pictures/counter-strike-2.png"},
+        { title: "Doom Eternal", cat: "shooting", icon: "fa-fire", color: "var(--cat-shooting)", image: "HDpro pictures/doom-eterna.jpg"},
+        { title: "Halo Infinite", cat: "shooting", icon: "fa-user-astronaut", color: "var(--cat-shooting)", image: "HDpro pictures/halo-infinite.jpg"},
+        { title: "Cyberpunk 2077", cat: "shooting", icon: "fa-microchip", color: "var(--cat-shooting)", image: "HDpro pictures/cyberpunk-2077.jpg"},
+
+        // STRATEGY (6)
+        { title: "Age of Empires IV", cat: "strategy", icon: "fa-chess-rook", color: "var(--cat-strategy)", image: "HDpro pictures/age-of-empires-iv.jpg"},
+        { title: "Civilization VI", cat: "strategy", icon: "fa-earth-americas", color: "var(--cat-strategy)", image: "HDpro pictures/civilization-vi.jpg"},
+        { title: "Total War: Warhammer III", cat: "strategy", icon: "fa-hat-wizard", color: "var(--cat-strategy)", image: "HDpro pictures/total-war-warhammer-iii.jpg"},
+        { title: "Manor Lords", cat: "strategy", icon: "fa-hammer", color: "var(--cat-strategy)", image: "HDpro pictures/manor-lords.jpg"},
+        { title: "StarCraft II", cat: "strategy", icon: "fa-satellite", color: "var(--cat-strategy)", image: "HDpro pictures/starcraft2.jpg"},
+        { title: "Stellaris", cat: "strategy", icon: "fa-shuttle-space", color: "var(--cat-strategy)", image: "HDpro pictures/stellaris-lithoids.jpg"},
+
+        // SPORTS (6)
+        { title: "FC 25", cat: "sports", icon: "fa-futbol", color: "var(--cat-sports)", image: "HDpro pictures/fc-25.jpg"},
+        { title: "NBA 2K25", cat: "sports", icon: "fa-basketball", color: "var(--cat-sports)", image: "HDpro pictures/nba-2k25.jpg"},
+        { title: "WWE 2K24", cat: "sports", icon: "fa-hand-fist", color: "var(--cat-sports)", image: "HDpro pictures/wwe-2k24.jpg"},
+        { title: "Rocket League", cat: "sports", icon: "fa-car-side", color: "var(--cat-sports)", image: "HDpro pictures/rocket-league.jpg"},
+        { title: "Madden NFL 25", cat: "sports", icon: "fa-football", color: "var(--cat-sports)", image: "HDpro pictures/Madden NFL 25.jpg"},
+        { title: "Tony Hawk's Pro Skater", cat: "sports", icon: "fa-person-skating", color: "var(--cat-sports)", image: "HDpro pictures/tony-hawks-pro.jpg"}
+    ];
+
+    function renderLibrary(filter) {
+        const grid = document.getElementById('gameGrid');
+        grid.innerHTML = '';
+        
+        games.forEach(game => {
+            if (filter === 'all' || game.cat === filter) {
+                const card = `
+                    <div class="game-card">
+                        <div class="game-thumb">
+                            <img src="${game.image}" alt="${game.title}" />
+                            <span class="cat-badge" style="--badge-color: ${game.color}">${game.cat}</span>
+                        </div>
+                        <div class="game-info">
+                            <h3 class="game-title">${game.title}</h3>
+                            <span class="game-meta">Official Digital Key</span>
+                            <button class="btn-official" onclick="alert('Redirecting to Official Hub Store for ${game.title}')">
+                                <i class="fa-solid fa-cart-shopping"></i> GET ORIGINAL
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            }
+        });
+    }
+
+    function filterBy(cat) {
+        renderLibrary(cat);
+        document.querySelectorAll('.tag-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if(btn.innerText.toLowerCase().includes(cat)) btn.classList.add('active');
+        });
+    }
+
+    // Load all games initially
+    renderLibrary('all');
+</script>
+
+<script>
+    // Mobile menu toggle
+    function toggleMenu() {
+        const nav = document.getElementById('navMenu');
+        if (!nav) return;
+        nav.classList.toggle('active');
+    }
+
+    // Close menu when clicking outside on small screens
+    document.addEventListener('click', (e) => {
+        const nav = document.getElementById('navMenu');
+        const toggle = document.querySelector('.menu-toggle');
+        if (!nav || !toggle) return;
+        if (nav.classList.contains('active')) {
+            const isClickInside = nav.contains(e.target) || toggle.contains(e.target);
+            if (!isClickInside && window.matchMedia('(max-width: 900px)').matches) {
+                nav.classList.remove('active');
+            }
+        }
+    });
+
+    // Ensure menu visibility on resize
+    window.addEventListener('resize', () => {
+        const nav = document.getElementById('navMenu');
+        if (!nav) return;
+        if (!window.matchMedia('(max-width: 900px)').matches) {
+            nav.classList.remove('active');
+            nav.style.display = 'flex';
+        } else {
+            nav.style.display = nav.classList.contains('active') ? 'block' : 'none';
+        }
+    });
+</script>
+
+</body>
+</html>
