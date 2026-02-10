@@ -16,9 +16,10 @@
             --border-color: #334155;
             /* Category Colors */
             --cat-action: #ef4444;
+            --cat-rpg: #8b5cf6;
             --cat-racing: #f59e0b;
-            --cat-shooting: #8b5cf6;
-            --cat-strategy: #10b981;
+            --cat-shooting: #10b981;
+            --cat-strategy: #3b82f6;
             --cat-sports: #ec4899;
         }
 
@@ -158,6 +159,7 @@
     <div class="filter-tags">
         <button class="tag-btn active" onclick="filterBy('all')">All Games</button>
         <button class="tag-btn" onclick="filterBy('action')">Action</button>
+        <button class="tag-btn" onclick="filterBy('rpg')">RPG</button>
         <button class="tag-btn" onclick="filterBy('racing')">Racing</button>
         <button class="tag-btn" onclick="filterBy('shooting')">Shooting</button>
         <button class="tag-btn" onclick="filterBy('strategy')">Strategy</button>
@@ -170,7 +172,7 @@
         </div>
 </div>
 
-<footer>© 2026 The Gamer's HUB | Sabaragamuwa University - Group 06</footer>
+<footer>© 2026 The Gamer's HUB. Connecting the Global Gaming Universe.</footer>
 
 <script>
     const games = [
@@ -181,6 +183,14 @@
         { title: "Ghost of Tsushima", cat: "action", icon: "fa-khanda", color: "var(--cat-action)", image: "HDpro pictures/ghost-of-tsushima.jpg"},
         { title: "Spider-Man 2", cat: "action", icon: "fa-spider", color: "var(--cat-action)", image: "HDpro pictures/marvels-spider-man.jpeg"},
         { title: "Hades II", cat: "action", icon: "fa-skull-crossbones", color: "var(--cat-action)", image: "HDpro pictures/hades.jpg"},
+
+        // RPG (6)
+        { title: "The Witcher 3: Wild Hunt", cat: "rpg", icon: "fa-wand-sparkles", color: "var(--cat-rpg)", image: "HDpro pictures/witcher-3.jpg"},
+        { title: "Baldur's Gate 3", cat: "rpg", icon: "fa-dice-d20", color: "var(--cat-rpg)", image: "HDpro pictures/baldurs-gate-3.jpg"},
+        { title: "Final Fantasy VII Rebirth", cat: "rpg", icon: "fa-meteor", color: "var(--cat-rpg)", image: "HDpro pictures/ff7-rebirth.jpg"},
+        { title: "Persona 5 Royal", cat: "rpg", icon: "fa-mask", color: "var(--cat-rpg)", image: "HDpro pictures/persona-5.jpg"},
+        { title: "The Elder Scrolls V: Skyrim", cat: "rpg", icon: "fa-scroll", color: "var(--cat-rpg)", image: "HDpro pictures/skyrim.jpg"},
+        { title: "Mass Effect Legendary Edition", cat: "rpg", icon: "fa-rocket", color: "var(--cat-rpg)", image: "HDpro pictures/mass-effect.jpg"},
 
         // RACING (6)
         { title: "Forza Horizon 5", cat: "racing", icon: "fa-car", color: "var(--cat-racing)", image: "HDpro pictures/horizon-5.jpg"},
