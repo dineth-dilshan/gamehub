@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Lab | Gamer's HUB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
+        :root {
+            --dark-bg: #0b141a;
+            --nav-bg: #121c24;
+            --card-bg: #1e293b;
+            --accent-blue: #3b82f6;
+            --text-main: #f8fafc;
+            --border: #334155;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            background-image: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+        }
+
+        /* Themed Glass Card */
+        .glass-card {
+            background: var(--nav-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover { border-color: var(--accent-blue); }
+
+        /* Custom Form Controls */
+        input, textarea, select {
+            background: #0f172a !important;
+            border: 1px solid var(--border) !important;
+            color: white !important;
+            outline: none;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--accent-blue) !important;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Upload Area Dash */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            transition: all 0.3s;
+        }
+        .upload-zone:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        /* Mobile Menu */
+        #mobile-menu { display: none; animation: slideDown 0.3s ease-out forwards; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-glow {
+            background: radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+        }
+
+        /* Selection focus and animation for accessibility and feedback */
+        .scale-option:focus-visible,
+        .material-option:focus-visible {
+            outline: 3px solid rgba(59,130,246,0.12);
+            outline-offset: 6px;
+        }
+
+        .scale-option, .material-option { transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s; }
+
+        .selected-anim {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 18px 40px rgba(11,20,26,0.55);
+        }
+
+        /* Navigation Styles from Home Page */
+        .topbar {
+            background-color: #050814;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 60px;
+            font-size: 14px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .logo span {
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                color: #ffffff;
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            }
+            50% {
+                color: #26b6ff;
+                text-shadow: 0 0 20px rgba(38, 182, 255, 0.8), 0 0 30px rgba(38, 182, 255, 0.5);
+            }
+        }
+
+        .logo-box {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ffffff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #ffffff;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #26b6ff;
+            text-shadow: 0 0 10px rgba(38, 182, 255, 0.6);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-right a {
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .nav-right a:hover {
+            color: #ff4e8a;
+            text-shadow: 0 0 10px rgba(255, 78, 138, 0.6);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="topbar">
+        <a href="home - Copy.html" style="text-decoration: none;">
+            <div class="logo"><img src="M5e94cecb0911ddde2fa73739c93655361764410284581.png">
+                <span>The Gamer's HUB</span>
+            </div>
+        </a>
+
+        <div class="nav-links">
+            <a href="games.html">Games</a>
+            <a href="storehome.html">Store</a>
+            <a href="community.html">Community</a>
+            <a href="Help.html">Help</a>
+            <a href="players.html">Rewards</a>
+        </div>
+
+        <div class="nav-right">
+            <span style="position: relative;"><a href="wishlist.html" style="color:white;text-decoration:none">♥ Wishlist</a><span id="wishlistCount" style="display:none; position: absolute; top: -8px; right: -8px; background: #ff4e8a; color: white; border-radius: 50%; width: 20px; height: 20px; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">0</span></span>
+            <span style="position: relative;"><a href="cart.html" style="color:white;text-decoration:none">🛒 Cart</a><span id="cartCount" style="display:none; position: absolute; top: -8px; right: -8px; background: #26b6ff; color: white; border-radius: 50%; width: 20px; height: 20px; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">0</span></span>
+            <span><a href="8.Logintab.html" style="color:white;text-decoration:none;cursor:pointer">👤 Sign In</a></span>
+        </div>
+    </div>
+
+    <section class="relative py-16 px-4 hero-glow border-b border-slate-900">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter uppercase italic">
+                The <span class="text-blue-500">Forge</span>
+            </h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                Transform your digital champions into legendary physical relics. Upload your character and let our master craftsmen do the rest.
+            </p>
+        </div>
+    </section>
+
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 space-y-8">
+                
+                <div class="glass-card p-8">
+                    <h2 class="text-xl font-bold text-white mb-6 italic uppercase tracking-tight flex items-center gap-3">
+                        <i class="fas fa-upload text-blue-500"></i> Character Uplink
+                    </h2>
+                    <div id="uploadZone" class="upload-zone rounded-xl p-12 text-center">
+                        <i class="fas fa-cloud-arrow-up text-4xl text-slate-600 mb-4"></i>
+                        <p class="text-slate-300 font-bold">Drag & Drop Character Render</p>
+                        <p class="text-slate-500 text-xs mb-6">PNG, JPG or OBJ files supported (Max 25MB)</p>
+                        <div style="display:flex;gap:8px;align-items:center;justify-content:center;margin-top:8px">
+                            <button type="button" id="chooseBtn" class="bg-slate-800 hover:bg-slate-700 text-white px-6 py-2 rounded font-bold text-xs uppercase transition">Select File</button>
+                            <span id="fileName" style="font-size:0.85rem;color:#94a3b8;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-block">No file</span>
+                        </div>
+                        <input id="fileInput" type="file" accept=".png,.jpg,.jpeg,.obj" style="display:none" />
+                    </div>
+                </div>
+
+                <div class="glass-card p-8">
+                    <h2 class="text-xl font-bold text-white mb-6 italic uppercase tracking-tight">Character Intel</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Character Name</label>
+                            <input id="charNameInput" type="text" class="w-full p-3 rounded" placeholder="e.g. Malenia, Blade of Miquella">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Universe / Game</label>
+                            <input id="gameInput" type="text" class="w-full p-3 rounded" placeholder="e.g. Elden Ring">
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <label class="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Custom Directives</label>
+                        <textarea id="directivesInput" rows="4" class="w-full p-3 rounded" placeholder="Specify poses, weapon details, or custom colors..."></textarea>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8">
+                    <h2 class="text-xl font-bold text-white mb-6 italic uppercase tracking-tight">Technical Specs</h2>
+                    
+                    <label class="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-4">Scale Model</label>
+                    <div class="grid grid-cols-3 gap-4 mb-8">
+                        <button type="button" class="scale-option cursor-pointer border border-slate-700 p-4 rounded hover:border-blue-500 text-center transition group" data-price="0">
+                            <span class="block text-white font-bold group-hover:text-blue-400">4"</span>
+                            <span class="text-[10px] text-slate-500 uppercase">Scout</span>
+                        </button>
+                        <button type="button" class="scale-option cursor-pointer border border-blue-500 bg-blue-500/10 p-4 rounded text-center transition selected" data-price="25">
+                            <span class="block text-white font-bold">6"</span>
+                            <span class="text-[10px] text-slate-500 uppercase">Elite</span>
+                        </button>
+                        <button type="button" class="scale-option cursor-pointer border border-slate-700 p-4 rounded hover:border-blue-500 text-center transition group" data-price="100">
+                            <span class="block text-white font-bold">12"</span>
+                            <span class="text-[10px] text-slate-500 uppercase">Titan</span>
+                        </button>
+                    </div>
+
+                    <label class="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-4">Material Core</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div tabindex="0" role="button" class="material-option flex items-center gap-4 p-4 glass-card cursor-pointer border-blue-500 bg-blue-500/5" data-price="15">
+                            <div class="w-10 h-10 bg-slate-800 rounded flex items-center justify-center text-blue-500"><i class="fas fa-cube"></i></div>
+                            <div><p class="text-sm font-bold text-white">Poly-Resin</p><p class="text-[10px] text-slate-500 uppercase">High Detail</p></div>
+                        </div>
+                        <div tabindex="0" role="button" class="material-option flex items-center gap-4 p-4 glass-card cursor-pointer hover:bg-slate-800/50" data-price="0">
+                            <div class="w-10 h-10 bg-slate-800 rounded flex items-center justify-center text-slate-400"><i class="fas fa-atom"></i></div>
+                            <div><p class="text-sm font-bold text-white">ABS Grade</p><p class="text-[10px] text-slate-500 uppercase">High Durability</p></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <label class="block text-[10px] uppercase tracking-widest text-slate-500 font-bold mb-2">Select Type</label>
+                        <select id="productTypeSelect" class="w-full p-3 rounded">
+                            <option value="action" data-price="0">Action Figure</option>
+                            <option value="banner" data-price="-20">Banner</option>
+                        </select>
+                        <div style="margin-top:10px;display:flex;align-items:center;gap:10px">
+                            <label for="quantityInput" class="text-[10px] text-slate-400 uppercase tracking-widest">Quantity</label>
+                            <input id="quantityInput" type="number" min="1" value="1" class="p-2 rounded text-black w-20" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="glass-card p-6 sticky top-24">
+                    <h3 class="text-lg font-bold text-white mb-6 uppercase italic tracking-tight border-b border-slate-800 pb-4">Order Manifest</h3>
+                    
+                    <div id="manifestPreview" class="aspect-square bg-slate-900 rounded-lg mb-6 flex flex-col items-center justify-center border border-slate-800 group overflow-hidden">
+                        <i class="fas fa-vr-cardboard text-3xl text-slate-700 mb-2 group-hover:text-blue-500 transition-colors"></i>
+                        <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest">3D Neural Link Pending</p>
+                    </div>
+
+                    <div class="space-y-3 mb-8">
+                        <div class="flex justify-between text-sm"><span class="text-slate-500">Base Unit</span><span id="basePriceVal" class="text-white font-bold">$79.00</span></div>
+                        <div class="flex justify-between text-sm"><span class="text-slate-500" id="scaleLabel">Elite Scale (6")</span><span id="scalePriceVal" class="text-blue-400 font-bold">+$25.00</span></div>
+                        <div class="flex justify-between text-sm"><span class="text-slate-500" id="materialLabel">Premium Resin</span><span id="materialPriceVal" class="text-blue-400 font-bold">+$15.00</span></div>
+                        <div class="flex justify-between text-sm"><span class="text-slate-500" id="productLabel">Product Type</span><span id="productPriceVal" class="text-blue-400 font-bold">+$0.00</span></div>
+                        <div class="flex justify-between text-sm"><span class="text-slate-500">Quantity</span><span id="quantityVal" class="text-white font-bold">x1</span></div>
+                        <div class="border-t border-slate-800 pt-3 flex justify-between items-center">
+                            <span class="text-white font-black uppercase italic">Total</span>
+                            <span id="totalPriceVal" class="text-2xl font-black text-blue-500">$119.00</span>
+                        </div>
+                            <div class="flex justify-between text-sm"><span class="text-slate-500">Per unit</span><span id="perUnitVal" class="text-white font-bold">$0.00</span></div>
+                    </div>
+
+                    <button id="initiateBtn" type="button" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded uppercase tracking-widest transition shadow-lg shadow-blue-900/20 mb-3">
+                        Initiate Forge
+                    </button>
+                    <div id="uploadStatus" style="margin-top:8px;font-size:0.95rem;color:#cbd5e1"></div>
+                    <button id="addWishlistBtn" class="w-full bg-transparent border border-slate-700 hover:border-slate-500 text-slate-400 font-bold py-3 rounded uppercase text-[10px] tracking-widest transition">
+                        Add to Wishlist 🤍
+                    </button>
+                    
+                    <div class="mt-6 flex items-center gap-3 text-slate-500">
+                        <i class="fas fa-shield-halved text-blue-500"></i>
+                        <p class="text-[10px] uppercase font-bold tracking-tight">Secure Transaction Encrypted</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-[#070d11] text-slate-500 py-16 border-t border-slate-900">
+        <div class="max-w-7xl mx-auto px-4 text-center md:text-left">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <h4 class="text-white font-black text-lg mb-4 uppercase italic">Gamers Hub</h4>
+                    <p class="text-xs max-w-sm mx-auto md:mx-0">The world's premier destination for custom gaming collectibles and high-end merchandise. Crafting your legacy, one layer at a time.</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-xs uppercase mb-4 tracking-widest">Resources</h4>
+                    <ul class="text-[11px] space-y-2 uppercase font-bold">
+                        <li><a href="#" class="hover:text-blue-500">Scale Guide</a></li>
+                        <li><a href="#" class="hover:text-blue-500">Material Science</a></li>
+                        <li><a href="#" class="hover:text-blue-500">Shipping Fleet</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold text-xs uppercase mb-4 tracking-widest">Connect</h4>
+                    <div class="flex justify-center md:justify-start gap-4 text-lg">
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-slate-900 pt-8 text-[10px] text-center uppercase tracking-[4px]">
+                © 2026 Gamers Hub Character Lab. All Systems Optimal.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+ // --- Selection and pricing logic for scale and material ---
+(function(){
+    const basePrice = 79; // Base price for an Action Figure
+    
+    // UI Elements
+    const baseEl = document.getElementById('basePriceVal');
+    const scalePriceEl = document.getElementById('scalePriceVal');
+    const materialPriceEl = document.getElementById('materialPriceVal');
+    const productPriceEl = document.getElementById('productPriceVal');
+    const totalEl = document.getElementById('totalPriceVal');
+    
+    const scaleLabel = document.getElementById('scaleLabel');
+    const materialLabel = document.getElementById('materialLabel');
+    const productLabel = document.getElementById('productLabel');
+    const quantityVal = document.getElementById('quantityVal');
+
+    // Default States
+    let selectedScalePrice = 25;
+    let selectedScaleName = 'Elite Scale (6")';
+    let selectedMaterialPrice = 15;
+    let selectedMaterialName = 'Premium Resin';
+    let selectedProductPrice = 0;
+    let selectedProductName = 'Action Figure';
+    let selectedQuantity = 1;
+
+    function formatMoney(n) { return `$${n.toFixed(2)}`; }
+    function formatPlus(n) { return (n >= 0 ? '+' : '-') + '$' + Math.abs(n).toFixed(2); }
+
+    function recalc() {
+        // Calculate the price per unit
+        const perUnit = basePrice + selectedScalePrice + selectedMaterialPrice + selectedProductPrice;
+        const total = perUnit * selectedQuantity;
+
+        // Update Manifest Numbers
+        if(baseEl) baseEl.textContent = formatMoney(basePrice);
+        if(scalePriceEl) scalePriceEl.textContent = formatPlus(selectedScalePrice);
+        if(materialPriceEl) materialPriceEl.textContent = formatPlus(selectedMaterialPrice);
+        if(productPriceEl) productPriceEl.textContent = formatPlus(selectedProductPrice);
+        if(totalEl) totalEl.textContent = formatMoney(total);
+
+        // Update Manifest Labels
+        if(scaleLabel) scaleLabel.textContent = selectedScaleName;
+        if(materialLabel) materialLabel.textContent = selectedMaterialName;
+        if(productLabel) productLabel.textContent = selectedProductName;
+        if(quantityVal) quantityVal.textContent = 'x' + selectedQuantity;
+    }
+
+    // 1. Scale Buttons
+    const scales = document.querySelectorAll('.scale-option');
+    scales.forEach(btn => {
+        btn.addEventListener('click', () => {
+            scales.forEach(b => b.classList.remove('border-blue-500', 'bg-blue-500/10'));
+            btn.classList.add('border-blue-500', 'bg-blue-500/10');
+            
+            selectedScalePrice = parseFloat(btn.getAttribute('data-price') || '0');
+            selectedScaleName = btn.querySelector('.font-bold').innerText + " Scale";
+            recalc();
+        });
+    });
+
+    // 2. Material Options
+    const mats = document.querySelectorAll('.material-option');
+    mats.forEach(opt => {
+        opt.addEventListener('click', () => {
+            mats.forEach(m => m.classList.remove('border-blue-500', 'bg-blue-500/5'));
+            opt.classList.add('border-blue-500', 'bg-blue-500/5');
+            
+            selectedMaterialPrice = parseFloat(opt.getAttribute('data-price') || '0');
+            selectedMaterialName = opt.querySelector('p.font-bold').innerText;
+            recalc();
+        });
+    });
+
+    // 3. Product Type (Action Figure vs Banner)
+    const productSelect = document.getElementById('productTypeSelect');
+    if(productSelect) {
+        productSelect.addEventListener('change', () => {
+            const opt = productSelect.selectedOptions[0];
+            selectedProductPrice = parseFloat(opt.getAttribute('data-price') || '0');
+            selectedProductName = opt.textContent.trim();
+            recalc();
+        });
+    }
+
+    // 4. Quantity Input
+    const qtyInput = document.getElementById('quantityInput');
+    if(qtyInput) {
+        qtyInput.addEventListener('input', () => {
+            let val = parseInt(qtyInput.value);
+            if (isNaN(val) || val < 1) val = 1;
+            selectedQuantity = val;
+            recalc();
+        });
+    }
+    
+    const uploadZone = document.getElementById('uploadZone');
+    const fileInput = document.getElementById('fileInput');
+    const chooseBtn = document.getElementById('chooseBtn');
+    const fileNameEl = document.getElementById('fileName');
+    const manifestPreview = document.getElementById('manifestPreview');
+    const MAX_BYTES = 25 * 1024 * 1024; // 25 MB
+
+    // 1. Open File Window when clicking "Select File"
+    if(chooseBtn) {
+        chooseBtn.addEventListener('click', () => fileInput.click());
+    }
+
+    // 2. Handle File Selection
+    if(fileInput) {
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            handleFile(file);
+        });
+    }
+
+    // 3. Handle Drag & Drop
+    if(uploadZone) {
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('border-blue-500', 'bg-blue-600/5');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('border-blue-500', 'bg-blue-600/5');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('border-blue-500', 'bg-blue-600/5');
+            const file = e.dataTransfer.files[0];
+            if(file) {
+                fileInput.files = e.dataTransfer.files; // Sync file input
+                handleFile(file);
+            }
+        });
+    }
+
+    function handleFile(file) {
+        if (!file) return;
+
+        // Validation
+        const allowedExts = ['png', 'jpg', 'jpeg', 'obj'];
+        const ext = file.name.split('.').pop().toLowerCase();
+        
+        if (!allowedExts.includes(ext)) {
+            alert('Invalid file type! Please upload PNG, JPG, or OBJ.');
+            return;
+        }
+
+        if (file.size > MAX_BYTES) {
+            alert('File is too large! Max size is 25MB.');
+            return;
+        }
+
+        // Update UI Text
+        fileNameEl.textContent = file.name;
+
+        // 4. Update the "3D Neural Link Pending" box with the image
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                manifestPreview.innerHTML = `
+                    <img src="${e.target.result}" 
+                         class="w-full h-full object-cover rounded-lg animate-pulse" 
+                         style="animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; animation-iteration-count: 1;"
+                         alt="Character Preview">
+                `;
+                // Remove pulse after 1 second for a "loading" effect
+                setTimeout(() => {
+                    const img = manifestPreview.querySelector('img');
+                    if(img) img.classList.remove('animate-pulse');
+                }, 1000);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // If it's an OBJ file, show a 3D file icon instead
+            manifestPreview.innerHTML = `
+                <i class="fas fa-file-code text-4xl text-blue-500 mb-2"></i>
+                <p class="text-[10px] text-blue-400 uppercase font-black tracking-widest">3D Asset Linked</p>
+                <p class="text-[9px] text-slate-500">${file.name}</p>
+            `;
+        }
+    }
+
+    // Initial Run
+    recalc();
+})();
+    </script>
+
+        <script>
+            function parseMoneyText(text) {
+                const numeric = (text || '').replace(/[^\d.]/g, '');
+                return parseFloat(numeric || '0');
+            }
+
+            function slugify(value) {
+                return (value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+            }
+
+            function getForgePayload() {
+                const characterName = document.getElementById('charNameInput')?.value?.trim() || 'Custom Character';
+                const gameName = document.getElementById('gameInput')?.value?.trim() || 'Unknown Universe';
+                const directives = document.getElementById('directivesInput')?.value?.trim() || 'No custom directives';
+                const productType = document.getElementById('productTypeSelect')?.selectedOptions?.[0]?.textContent?.trim() || 'Action Figure';
+                const quantity = Math.max(1, parseInt(document.getElementById('quantityInput')?.value || '1', 10));
+                const total = parseMoneyText(document.getElementById('totalPriceVal')?.textContent || '$0');
+                const perUnit = quantity > 0 ? (total / quantity) : total;
+
+                const productId = `forge_${slugify(characterName)}_${slugify(gameName)}_${slugify(productType)}`;
+                const productName = `Forge: ${characterName} (${gameName}) - ${productType}`;
+
+                return { productId, productName, perUnit, quantity, directives };
+            }
+
+            function setStatus(message, ok = true) {
+                const status = document.getElementById('uploadStatus');
+                if (!status) return;
+                status.textContent = message;
+                status.style.color = ok ? '#22c55e' : '#ef4444';
+            }
+
+            function showForgeNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 14px 22px;
+                    border-radius: 8px;
+                    color: white;
+                    font-weight: bold;
+                    font-size: 13px;
+                    z-index: 9999;
+                    background: ${type === 'success' ? '#22c55e' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+                `;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+                setTimeout(() => notification.remove(), 2500);
+            }
+
+            function refreshBadges() {
+                fetch(`get_cart_count.php?ts=${Date.now()}`, { cache: 'no-store' })
+                    .then(response => response.json())
+                    .then(data => {
+                        const cb = document.getElementById('cartCount');
+                        if (!cb) return;
+                        if (data.count > 0) {
+                            cb.textContent = data.count;
+                            cb.style.display = 'flex';
+                        } else {
+                            cb.style.display = 'none';
+                        }
+                    });
+
+                fetch(`get_wishlist_count.php?ts=${Date.now()}`, { cache: 'no-store' })
+                    .then(response => response.json())
+                    .then(data => {
+                        const wb = document.getElementById('wishlistCount');
+                        if (!wb) return;
+                        if (data.count > 0) {
+                            wb.textContent = data.count;
+                            wb.style.display = 'flex';
+                        } else {
+                            wb.style.display = 'none';
+                        }
+                    });
+            }
+
+            function addForgeToCart() {
+                const payload = getForgePayload();
+                const formData = new FormData();
+                formData.append('product_id', payload.productId);
+                formData.append('product_name', payload.productName);
+                formData.append('product_price', payload.perUnit.toFixed(2));
+                formData.append('quantity', payload.quantity);
+
+                fetch('add_to_cart.php', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    body: formData
+                })
+                .then(async response => {
+                    const raw = await response.text();
+                    try { return JSON.parse(raw); } catch (_) { return { success: false, message: raw || 'Invalid server response' }; }
+                })
+                .then(data => {
+                    if (data.success) {
+                        setStatus('Forge order added to cart successfully.');
+                        showForgeNotification('Added to cart successfully', 'success');
+                        refreshBadges();
+                    } else {
+                        setStatus(data.message || 'Failed to add to cart.', false);
+                        showForgeNotification(data.message || 'Failed to add to cart', 'error');
+                        if ((data.message || '').toLowerCase().includes('login')) {
+                            setTimeout(() => { window.location.href = '8.Logintab.html'; }, 800);
+                        }
+                    }
+                })
+                .catch(() => {
+                    setStatus('Could not connect to server.', false);
+                    showForgeNotification('Could not connect to server', 'error');
+                });
+            }
+
+            function addForgeToWishlist() {
+                const payload = getForgePayload();
+                const formData = new FormData();
+                formData.append('product_id', payload.productId);
+                formData.append('product_name', payload.productName);
+                formData.append('product_price', payload.perUnit.toFixed(2));
+
+                fetch('add_to_wishlist.php', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    body: formData
+                })
+                .then(async response => {
+                    const raw = await response.text();
+                    try { return JSON.parse(raw); } catch (_) { return { success: false, message: raw || 'Invalid server response' }; }
+                })
+                .then(data => {
+                    if (data.success) {
+                        setStatus('Forge order added to wishlist successfully.');
+                        showForgeNotification('Added to wishlist successfully', 'success');
+                        refreshBadges();
+                    } else {
+                        setStatus(data.message || 'Failed to add to wishlist.', false);
+                        showForgeNotification(data.message || 'Failed to add to wishlist', 'error');
+                        if ((data.message || '').toLowerCase().includes('login')) {
+                            setTimeout(() => { window.location.href = '8.Logintab.html'; }, 800);
+                        }
+                    }
+                })
+                .catch(() => {
+                    setStatus('Could not connect to server.', false);
+                    showForgeNotification('Could not connect to server', 'error');
+                });
+            }
+
+            const initiateBtn = document.getElementById('initiateBtn');
+            const addWishlistBtn = document.getElementById('addWishlistBtn');
+            if (initiateBtn) initiateBtn.addEventListener('click', addForgeToCart);
+            if (addWishlistBtn) addWishlistBtn.addEventListener('click', addForgeToWishlist);
+
+            if (window.location.protocol === 'file:') {
+                window.location.href = 'http://localhost/16.Coustom%20order%20page%20-%20Copy.html';
+            }
+
+            refreshBadges();
+            setInterval(refreshBadges, 5000);
+        </script>
+</body>
+</html>

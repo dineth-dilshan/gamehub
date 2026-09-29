@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Hub | Gamer's HUB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
+        :root {
+            --dark-bg: #0b141a;
+            --nav-bg: #121c24;
+            --accent-purple: #8b5cf6;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border: #334155;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            background-image: radial-gradient(circle at 90% 10%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+        }
+
+        .rating-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: grayscale(1);
+            opacity: 0.5;
+        }
+
+        .rating-btn:hover, .rating-btn.active {
+            filter: grayscale(0);
+            opacity: 1;
+            transform: scale(1.2);
+            text-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+        }
+
+        .feedback-input {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border);
+            color: white;
+            transition: border-color 0.3s;
+        }
+
+        .feedback-input:focus {
+            border-color: var(--accent-purple);
+            outline: none;
+        }
+
+        .input-error { border-color: #ff6b6b !important; }
+        .error-text { color: #ff6b6b; font-size: 0.85rem; margin-top: 6px; }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Home page topbar styles (copied) */
+        .topbar {
+            background-color: #050814;
+            color: #ffffff;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .topbar-inner { max-width: 1120px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+
+        .logo { display: flex; align-items: center; gap: 8px; }
+        .logo span { animation: glow 2s ease-in-out infinite; }
+        @keyframes glow { 0%,100%{ color:#ffffff; text-shadow:0 0 5px rgba(255,255,255,0.5);}50%{color:#26b6ff;text-shadow:0 0 20px rgba(38,182,255,0.8),0 0 30px rgba(38,182,255,0.5);} }
+        .logo-box { width:24px; height:24px; border:2px solid #ffffff; }
+        .nav-links { display:flex; gap:24px; }
+        .nav-links a { text-decoration:none; color:#ffffff; text-transform:uppercase; font-size:12px; letter-spacing:1px; transition: color 0.3s ease, text-shadow 0.3s ease; }
+        .nav-links a:hover { color:#26b6ff; text-shadow:0 0 10px rgba(38,182,255,0.6); }
+        .play-link { animation: playPulse 1.5s ease-in-out infinite; display:inline-block; }
+        @keyframes playPulse { 0%,100%{ color:#ffffff; transform:scale(1); text-shadow:0 0 5px rgba(255,255,255,0.3);}50%{ color:#f29b3a; transform:scale(1.1); text-shadow:0 0 15px rgba(242,155,58,0.8),0 0 25px rgba(242,155,58,0.5);} }
+        .nav-right { display:flex; gap:18px; font-size:12px; text-transform:uppercase; letter-spacing:1px; }
+        .nav-right a { transition: color 0.3s ease, text-shadow 0.3s ease; }
+        .nav-right a:hover { color:#ff4e8a; text-shadow:0 0 10px rgba(255,78,138,0.6); }
+        /* Responsive tweaks for topbar */
+        @media (max-width: 768px) {
+            .topbar-inner { padding: 10px 14px; flex-wrap: wrap; }
+            .nav-links { gap: 12px; font-size: 11px; }
+            .nav-right { gap: 10px; font-size: 11px; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+        <div class="topbar">
+            <div class="topbar-inner">
+                <a href="home - Copy.html" style="text-decoration: none;">
+                    <div class="logo"><img src="M5e94cecb0911ddde2fa73739c93655361764410284581.png" alt="logo" style="height:28px;object-fit:contain">
+                        <span>The Gamer's HUB</span>
+                    </div>
+                </a>
+
+                <div class="nav-links">
+                    <a href="games.html">Games</a>
+                    <a href="storehome.html">Store</a>
+                    <a href="community.html">Community</a>
+                    <a href="Help.html">Help</a>
+                    <a href="#">Rewards</a>
+                </div>
+
+                <div class="nav-right">
+                        <span><a href="wishlist.html" style="color:white;text-decoration:none">♥ Wishlist</a></span>
+                        <span><a href="cart.html" style="color:white;text-decoration:none">🛒 Cart</a></span>
+                        <span><a href="8.Logintab.html" style="color:white;text-decoration:none;cursor:pointer">👤 Login</a></span>
+                </div>
+            </div>
+        </div>
+
+    <main class="max-w-3xl mx-auto px-4 py-16">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-black text-white uppercase italic tracking-tighter mb-4">
+                Mission <span class="text-purple-500">Debrief</span>
+            </h1>
+            <p class="text-slate-400 text-sm tracking-wide uppercase font-semibold">Help us calibrate the HUB for a better experience</p>
+        </div>
+
+        <div class="glass-card p-8 md:p-12">
+            <form action="#" id="feedbackForm" class="space-y-10">
+                
+                <div class="text-center">
+                    <label class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 mb-6 block">Overall Satisfaction</label>
+                    <div class="flex justify-center gap-6 md:gap-10">
+                        <button type="button" class="rating-btn flex flex-col items-center gap-2">
+                            <span class="text-3xl">😠</span>
+                            <span class="text-[9px] font-bold uppercase text-slate-500">Lags</span>
+                        </button>
+                        <button type="button" class="rating-btn flex flex-col items-center gap-2">
+                            <span class="text-3xl">😐</span>
+                            <span class="text-[9px] font-bold uppercase text-slate-500">Mid</span>
+                        </button>
+                        <button type="button" class="rating-btn active flex flex-col items-center gap-2">
+                            <span class="text-3xl">😊</span>
+                            <span class="text-[9px] font-bold uppercase text-slate-500">GG</span>
+                        </button>
+                        <button type="button" class="rating-btn flex flex-col items-center gap-2">
+                            <span class="text-3xl">🤩</span>
+                            <span class="text-[9px] font-bold uppercase text-slate-500">OP</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Category</label>
+                        <select class="w-full p-4 rounded-xl feedback-input text-sm">
+                            <option>UI/UX Design</option>
+                            <option>Store & Payments</option>
+                            <option>Account Issues</option>
+                            <option>Bug Report</option>
+                            <option>Feature Request</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">HUB ID</label>
+                        <input id="hubIdInput" type="text" value="dilshan003" readonly class="w-full p-4 rounded-xl feedback-input text-sm opacity-50 cursor-not-allowed">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Transmission Details</label>
+                    <textarea id="transmissionDetails" rows="5" class="w-full p-4 rounded-xl feedback-input text-sm" placeholder="What's on your mind, Commander?"></textarea>
+                    <div id="transmissionError" class="error-text" aria-live="polite"></div>
+                </div>
+
+                <div class="border-2 border-dashed border-slate-800 rounded-xl p-6 text-center hover:border-purple-500/50 transition cursor-pointer">
+                    <i class="fas fa-cloud-arrow-up text-slate-600 text-2xl mb-2"></i>
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Attach Screenshot (Optional)</p>
+                </div>
+
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-black py-5 rounded-2xl uppercase tracking-[0.3em] text-xs transition-all shadow-xl shadow-purple-900/20 transform hover:scale-[1.01]">
+                    Send Transmission <i class="fas fa-paper-plane ml-2"></i>
+                </button>
+
+            </form>
+        </div>
+
+        <footer class="mt-12 text-center">
+            <p class="text-[9px] text-slate-600 uppercase tracking-[0.4em]">Encrypted Feedback Loop v2.0</p>
+        </footer>
+    </main>
+
+    <script>
+        // Simple Rating Selection logic
+        const ratingBtns = document.querySelectorAll('.rating-btn');
+        ratingBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                ratingBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // Form validation and submission handling
+        (function() {
+            const form = document.getElementById('feedbackForm');
+            const transmission = document.getElementById('transmissionDetails');
+            const transmissionError = document.getElementById('transmissionError');
+            const hubIdInput = document.getElementById('hubIdInput');
+
+            function validateEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // clear previous
+                transmissionError.textContent = '';
+                transmission.classList.remove('input-error');
+
+                const text = transmission.value.trim();
+                if (!text) {
+                    transmissionError.textContent = 'Please enter transmission details.';
+                    transmission.classList.add('input-error');
+                    transmission.focus();
+                    return;
+                }
+
+                // Ensure we have a valid email to display as HUB ID
+                let currentHub = (hubIdInput && hubIdInput.value) ? hubIdInput.value.trim() : '';
+                if (!validateEmail(currentHub)) {
+                    const email = prompt('Enter your email to attach as HUB ID (will be displayed):');
+                    if (!email) return; // user cancelled
+                    if (!validateEmail(email.trim())) {
+                        alert('Invalid email format. Transmission not sent.');
+                        return;
+                    }
+                    hubIdInput.value = email.trim();
+                }
+
+                // Simulate successful send
+                alert('Thank you for the feedback');
+
+                // Clear the transmission field after send
+                transmission.value = '';
+            });
+        })();
+    </script>
+</body>
+</html>

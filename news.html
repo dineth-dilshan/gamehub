@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Gamer's Hub – Tech News</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:        #0a0e1a;
+      --surface:   #111827;
+      --card:      #131c2e;
+      --border:    #1e2d45;
+      --accent:    #00c6ff;
+      --accent2:   #ff4b6e;
+      --gold:      #f5c518;
+      --text:      #e2e8f0;
+      --muted:     #64748b;
+      --overlay:   rgba(0,0,0,.85);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Exo 2', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── noise grain overlay ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(8,12,24,.97);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.2rem; height: 62px;
+      gap: 1rem;
+    }
+    .nav-left { display: flex; align-items: center; }
+    .nav-logo {
+      display: flex; align-items: center; gap: .55rem;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.25rem; font-weight: 700;
+      color: #ffffff; letter-spacing: 1.5px;
+      text-decoration: none; white-space: nowrap;
+    }
+    .nav-logo span {
+      animation: glow 2s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0%, 100% {
+        color: #ffffff;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+      }
+      50% {
+        color: #26b6ff;
+        text-shadow: 0 0 20px rgba(38, 182, 255, 0.8), 0 0 30px rgba(38, 182, 255, 0.5);
+      }
+    }
+    .nav-logo svg { width: 28px; height: 28px; flex-shrink: 0; }
+    .nav-links { display: flex; gap: .2rem; list-style: none; margin: 0 auto; }
+    .nav-links a {
+      color: #8fa3bc; font-size: .8rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.5px;
+      text-decoration: none; transition: color .2s;
+      padding: .3rem .75rem; border-radius: 4px;
+    }
+    .nav-links a:hover  { color: #fff; }
+    .nav-links a.active { color: var(--gold); }
+    .nav-right { display: flex; align-items: center; gap: 1.2rem; }
+    .nav-right a {
+      display: flex; align-items: center; gap: .35rem;
+      color: #8fa3bc; font-size: .8rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+      text-decoration: none; transition: color .2s;
+    }
+    .nav-right a:hover { color: #fff; }
+    .nav-right a svg { width: 15px; height: 15px; }
+
+    /* ─── COMING SOON TICKER BAR ─── */
+    .ticker-bar {
+      background: linear-gradient(90deg, #0d1b35 0%, #06101f 50%, #0d1b35 100%);
+      border-bottom: 1px solid var(--border);
+      border-top: 1px solid rgba(0,198,255,.18);
+      height: 38px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+      z-index: 90;
+    }
+
+    /* left label badge */
+    .ticker-label {
+      flex-shrink: 0;
+      display: flex; align-items: center; gap: .45rem;
+      background: var(--accent2);
+      color: #fff;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: .78rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 0 1rem;
+      height: 100%;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
+      padding-right: 1.6rem;
+      white-space: nowrap;
+    }
+    .ticker-label .blink-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #fff;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; } 50% { opacity: 0; }
+    }
+
+    /* scrolling track */
+    .ticker-track-wrap {
+      flex: 1; overflow: hidden; position: relative;
+      mask-image: linear-gradient(90deg, transparent 0%, #000 4%, #000 96%, transparent 100%);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 4%, #000 96%, transparent 100%);
+    }
+    .ticker-track {
+      display: flex; align-items: center;
+      gap: 0;
+      animation: tickerScroll 40s linear infinite;
+      white-space: nowrap;
+    }
+    .ticker-track:hover { animation-play-state: paused; }
+    @keyframes tickerScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .ticker-item {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: 0 2.2rem;
+      font-size: .78rem; font-weight: 600;
+      color: #a8c0d8; letter-spacing: .3px;
+      border-right: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .ticker-item .t-tag {
+      font-size: .65rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; padding: .1rem .45rem;
+      border-radius: 3px; flex-shrink: 0;
+    }
+    .ticker-item .t-tag.blue  { background: rgba(0,198,255,.15); color: var(--accent); }
+    .ticker-item .t-tag.red   { background: rgba(255,75,110,.15); color: var(--accent2); }
+    .ticker-item .t-tag.gold  { background: rgba(245,197,24,.15); color: var(--gold); }
+    .ticker-item .t-tag.green { background: rgba(0,230,118,.15);  color: #00e676; }
+    .ticker-item strong { color: #e2e8f0; }
+
+    /* separator star */
+    .ticker-sep {
+      color: var(--accent); font-size: .6rem;
+      padding: 0 1rem; flex-shrink: 0;
+    }
+
+    /* ─── HERO STRIP ─── */
+    .hero-strip {
+      background: linear-gradient(135deg, #0d1b35 0%, #0a0e1a 60%, #12001a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-strip::after {
+      content: '';
+      position: absolute; right: -80px; top: -80px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,198,255,.08) 0%, transparent 70%);
+    }
+    .hero-strip h1 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700; letter-spacing: 3px;
+      background: linear-gradient(90deg, #fff 30%, var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-strip p {
+      color: var(--muted); margin-top: .4rem; font-size: .95rem;
+    }
+
+    /* ─── MAIN CONTENT ─── */
+    main {
+      max-width: 1300px; margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* section header */
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.8rem;
+    }
+    .section-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.5rem; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .section-title::before {
+      content: ''; display: block;
+      width: 4px; height: 1.4em;
+      background: var(--accent); border-radius: 2px;
+    }
+    .view-all {
+      color: var(--accent); font-size: .85rem; font-weight: 600;
+      text-decoration: none; letter-spacing: 1px;
+      transition: opacity .2s;
+    }
+    .view-all:hover { opacity: .7; }
+
+    /* ─── FEATURED ROW (top 3 big cards) ─── */
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+    @media(max-width:900px){ .featured-grid { grid-template-columns: 1fr; } }
+
+    /* ─── NEWS GRID (bottom 5) ─── */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+
+    /* ─── CARD ─── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .25s, border-color .25s, box-shadow .25s;
+      display: flex; flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 32px rgba(0,198,255,.15);
+    }
+
+    .card-thumb {
+      width: 100%; aspect-ratio: 16/9;
+      object-fit: cover; display: block;
+      background: var(--surface);
+    }
+
+    /* emoji placeholder thumbnails */
+    .card-thumb-placeholder {
+      width: 100%; aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+    }
+
+    .card-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; }
+
+    .card-meta {
+      display: flex; align-items: center; gap: .5rem;
+      margin-bottom: .55rem;
+    }
+    .card-date {
+      font-size: .72rem; color: var(--muted); letter-spacing: .5px;
+    }
+    .card-tag {
+      font-size: .65rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; padding: .15rem .5rem;
+      border-radius: 3px; background: rgba(0,198,255,.12); color: var(--accent);
+    }
+    .card-tag.red  { background: rgba(255,75,110,.12); color: var(--accent2); }
+    .card-tag.gold { background: rgba(245,197,24,.12);  color: var(--gold); }
+
+    .card h3 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.1rem; font-weight: 700; line-height: 1.35;
+      margin-bottom: .4rem; color: #fff;
+    }
+    .card p {
+      font-size: .82rem; color: var(--muted); line-height: 1.6; flex: 1;
+    }
+    .card-readmore {
+      margin-top: .9rem;
+      font-size: .78rem; font-weight: 700;
+      color: var(--accent); letter-spacing: .5px;
+      text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: .3rem;
+    }
+    .card-readmore::after { content: '→'; }
+
+    /* featured first card – bigger title */
+    .card.featured h3 { font-size: 1.35rem; }
+
+    /* ══════════════════════════════════════
+       POPUP / MODAL
+    ══════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: var(--overlay);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      max-width: 780px; width: 100%;
+      max-height: 90vh; overflow-y: auto;
+      transform: translateY(30px) scale(.97);
+      transition: transform .35s cubic-bezier(.22,1,.36,1);
+      scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+    }
+    .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+    .modal-hero {
+      width: 100%; aspect-ratio: 16/7;
+      overflow: hidden;
+      border-radius: 14px 14px 0 0; position: relative;
+      background: var(--card);
+    }
+
+    .modal-content { padding: 1.5rem 2rem 2rem; }
+
+    .modal-tags { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .8rem; }
+    .modal-tag {
+      font-size: .7rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; padding: .2rem .6rem;
+      border-radius: 4px; background: rgba(0,198,255,.12); color: var(--accent);
+    }
+    .modal-tag.red  { background: rgba(255,75,110,.12); color: var(--accent2); }
+    .modal-tag.gold { background: rgba(245,197,24,.12);  color: var(--gold); }
+
+    .modal-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-weight: 700; line-height: 1.25; color: #fff;
+      margin-bottom: .5rem;
+    }
+    .modal-date { color: var(--muted); font-size: .8rem; margin-bottom: 1.2rem; }
+
+    .modal-body p {
+      font-size: .92rem; color: #9aafc7; line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    .modal-body h4 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.05rem; font-weight: 700; color: var(--accent);
+      margin: 1.3rem 0 .5rem; letter-spacing: 1px; text-transform: uppercase;
+    }
+    .modal-body ul {
+      list-style: none; padding: 0;
+    }
+    .modal-body ul li {
+      padding: .35rem 0 .35rem 1.2rem;
+      position: relative; font-size: .88rem; color: #9aafc7; line-height: 1.6;
+    }
+    .modal-body ul li::before {
+      content: '▸'; position: absolute; left: 0; color: var(--accent);
+    }
+
+    .modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: rgba(255,255,255,.08); border: none; border-radius: 50%;
+      width: 36px; height: 36px; cursor: pointer; font-size: 1rem;
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      transition: background .2s; z-index: 10;
+    }
+    .modal-close:hover { background: rgba(255,75,110,.3); }
+    .modal-wrapper { position: relative; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center; color: var(--muted); font-size: .8rem;
+    }
+    footer span { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <a class="nav-logo" href="home - Copy.html">
+      <!-- Logo Image -->
+      <img src="M5e94cecb0911ddde2fa73739c93655361764410284581.png" alt="Logo" style="width: 28px; height: 28px; object-fit: contain;">
+      <span>The Gamer's HUB</span>
+    </a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="games.html">Games</a></li>
+    <li><a href="storehome.html">Store</a></li>
+    <li><a href="community.html">Community</a></li>
+    <li><a href="Help.html">Help</a></li>
+    <li><a href="players.html">Rewards</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="wishlist.html">
+      ♥Wishlist
+    </a>
+    <a href="cart.html">
+      🛒sCart
+    </a>
+    <a href="8.Logintab.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Sign In
+    </a>
+  </div>
+</nav>
+
+<!-- COMING SOON TICKER BAR -->
+<div class="ticker-bar">
+  <div class="ticker-label">
+    <span class="blink-dot"></span>
+    Coming Soon
+  </div>
+  <div class="ticker-track-wrap">
+    <div class="ticker-track" id="tickerTrack">
+      <!-- items injected by JS, duplicated for seamless loop -->
+    </div>
+  </div>
+</div>
+
+<!-- HERO STRIP -->
+<div class="hero-strip">
+  <h1>LATEST TECH NEWS</h1>
+  <p>Stay ahead of the curve — breaking stories in AI, hardware, gaming tech & more.</p>
+</div>
+
+<main>
+  <!-- ── FEATURED 3 ── -->
+  <div class="section-header">
+    <div class="section-title">Featured Stories</div>
+  </div>
+
+  <div class="featured-grid" id="featured"></div>
+
+  <!-- ── MORE NEWS ── -->
+  <div class="section-header" style="margin-top:2.5rem">
+    <div class="section-title">More Tech News</div>
+  </div>
+
+  <div class="news-grid" id="more"></div>
+</main>
+
+<footer>© 2025 <span>The Gamer's Hub</span>. All rights reserved.</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal-wrapper">
+    <div class="modal" id="modal">
+      <button class="modal-close" onclick="closeModalBtn()">✕</button>
+      <div class="modal-hero" id="modalHero"></div>
+      <div class="modal-content">
+        <div class="modal-tags" id="modalTags"></div>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-date"  id="modalDate"></div>
+        <div class="modal-body"  id="modalBody"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Inline SVG thumbnails (no internet needed) ──
+const svgs = {
+  1: `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 394"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#050d1f"/><stop offset="100%" stop-color="#0a1a2e"/></linearGradient><radialGradient id="glow1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#00c6ff" stop-opacity="0.25"/><stop offset="100%" stop-color="#00c6ff" stop-opacity="0"/></radialGradient></defs><rect width="700" height="394" fill="url(#bg1)"/><ellipse cx="350" cy="197" rx="180" ry="180" fill="url(#glow1)"/><circle cx="350" cy="197" r="72" fill="none" stroke="#00c6ff" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.5"/><circle cx="350" cy="197" r="48" fill="#0a1e35" stroke="#00c6ff" stroke-width="2"/><circle cx="350" cy="197" r="28" fill="#00c6ff" opacity="0.15"/><circle cx="350" cy="197" r="14" fill="#00c6ff" opacity="0.9"/><g stroke="#00c6ff" stroke-width="1.5" opacity="0.7"><line x1="350" y1="125" x2="350" y2="149"/><line x1="350" y1="245" x2="350" y2="269"/><line x1="278" y1="197" x2="302" y2="197"/><line x1="398" y1="197" x2="422" y2="197"/><line x1="300" y1="147" x2="316" y2="163"/><line x1="384" y1="231" x2="400" y2="247"/><line x1="400" y1="147" x2="384" y2="163"/><line x1="316" y1="231" x2="300" y2="247"/></g><g fill="#00c6ff" opacity="0.9"><circle cx="350" cy="125" r="5"/><circle cx="350" cy="269" r="5"/><circle cx="278" cy="197" r="5"/><circle cx="422" cy="197" r="5"/><circle cx="300" cy="147" r="4"/><circle cx="400" cy="147" r="4"/><circle cx="300" cy="247" r="4"/><circle cx="400" cy="247" r="4"/></g><g fill="none" stroke="#00c6ff" stroke-width="1" opacity="0.3"><circle cx="350" cy="197" r="100"/><circle cx="350" cy="197" r="130"/><circle cx="350" cy="197" r="160"/></g><text x="350" y="340" text-anchor="middle" fill="#00c6ff" font-family="sans-serif" font-size="13" letter-spacing="4" opacity="0.7">ARTIFICIAL INTELLIGENCE</text></svg>`)}`,
+
+  2: `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 394"><defs><linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a0a0f"/><stop offset="100%" stop-color="#1a0a2e"/></linearGradient></defs><rect width="700" height="394" fill="url(#bg2)"/><rect x="180" y="130" width="340" height="200" rx="12" fill="#1a0530" stroke="#7c3aed" stroke-width="2"/><rect x="200" y="150" width="140" height="90" rx="6" fill="#0d0020" stroke="#7c3aed" stroke-width="1"/><g fill="#7c3aed" opacity="0.8"><rect x="210" y="160" width="8" height="70"/><rect x="225" y="170" width="8" height="60"/><rect x="240" y="155" width="8" height="75"/><rect x="255" y="165" width="8" height="65"/><rect x="270" y="158" width="8" height="72"/><rect x="285" y="172" width="8" height="58"/><rect x="300" y="162" width="8" height="68"/><rect x="315" y="155" width="8" height="75"/></g><rect x="355" y="150" width="150" height="90" rx="6" fill="#0d0020" stroke="#00c6ff" stroke-width="1"/><text x="430" y="185" text-anchor="middle" fill="#00c6ff" font-family="monospace" font-size="11" opacity="0.9">RTX 6090 Ti</text><text x="430" y="202" text-anchor="middle" fill="#7c3aed" font-family="monospace" font-size="10">36GB GDDR7</text><text x="430" y="219" text-anchor="middle" fill="#00e676" font-family="monospace" font-size="10">800W TGP</text><rect x="200" y="255" width="300" height="16" rx="4" fill="#0d0020" stroke="#7c3aed" stroke-width="1"/><rect x="205" y="258" width="220" height="10" rx="3" fill="#7c3aed" opacity="0.8"/><g fill="none" stroke="#00c6ff" stroke-width="1" opacity="0.2"><line x1="0" y1="0" x2="700" y2="394"/><line x1="700" y1="0" x2="0" y2="394"/></g><text x="350" y="355" text-anchor="middle" fill="#7c3aed" font-family="sans-serif" font-size="13" letter-spacing="4" opacity="0.8">GPU HARDWARE</text></svg>`)}`,
+
+  3: `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 394"><defs><linearGradient id="bg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#000510"/><stop offset="60%" stop-color="#0a0e1a"/><stop offset="100%" stop-color="#0d1a10"/></linearGradient><radialGradient id="fire" cx="50%" cy="100%" r="60%"><stop offset="0%" stop-color="#ff6b00" stop-opacity="0.6"/><stop offset="100%" stop-color="#ff6b00" stop-opacity="0"/></radialGradient></defs><rect width="700" height="394" fill="url(#bg3)"/><rect width="700" height="394" fill="url(#fire)"/><polygon points="350,60 335,320 365,320" fill="#c0c8d0" opacity="0.9"/><polygon points="350,60 320,320 335,320" fill="#a0a8b0" opacity="0.8"/><polygon points="350,60 365,320 380,320" fill="#d0d8e0" opacity="0.7"/><rect x="320" y="310" width="60" height="30" rx="4" fill="#888" opacity="0.9"/><rect x="310" y="320" width="80" height="15" rx="3" fill="#666"/><ellipse cx="350" cy="340" rx="55" ry="10" fill="#ff6b00" opacity="0.7"/><ellipse cx="350" cy="345" rx="35" ry="8" fill="#ffaa00" opacity="0.9"/><ellipse cx="350" cy="350" rx="20" ry="6" fill="#fff" opacity="0.8"/><g fill="#fff" opacity="0.8"><circle cx="150" cy="80" r="1.5"/><circle cx="200" cy="50" r="1"/><circle cx="500" cy="60" r="2"/><circle cx="580" cy="100" r="1.5"/><circle cx="100" cy="150" r="1"/><circle cx="620" cy="200" r="1.5"/><circle cx="80" cy="250" r="1"/><circle cx="640" cy="140" r="1"/><circle cx="450" cy="40" r="1.5"/><circle cx="260" cy="30" r="1"/></g><text x="350" y="375" text-anchor="middle" fill="#ff6b00" font-family="sans-serif" font-size="13" letter-spacing="4" opacity="0.9">SPACE TECHNOLOGY</text></svg>`)}`,
+
+  4: `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 394"><defs><linearGradient id="bg4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a0e1a"/><stop offset="100%" stop-color="#001a2e"/></linearGradient></defs><rect width="700" height="394" fill="url(#bg4)"/><rect x="270" y="60" width="160" height="280" rx="18" fill="#0d1520" stroke="#00c6ff" stroke-width="2"/><rect x="280" y="80" width="140" height="230" rx="10" fill="#050d1a"/><rect x="283" y="83" width="134" height="224" rx="8" fill="#0a1525"/><g opacity="0.85"><rect x="293" y="93" width="114" height="20" rx="3" fill="#00c6ff" opacity="0.15"/><rect x="293" y="120" width="114" height="12" rx="2" fill="#1a3a5c"/><rect x="293" y="138" width="80" height="12" rx="2" fill="#1a3a5c"/><rect x="293" y="160" width="114" height="50" rx="4" fill="#0d2035"/><circle cx="350" cy="185" r="18" fill="#00c6ff" opacity="0.2"/><circle cx="350" cy="185" r="10" fill="#00c6ff" opacity="0.6"/><rect x="293" y="220" width="50" height="25" rx="4" fill="#0d2035"/><rect x="357" y="220" width="50" height="25" rx="4" fill="#0d2035"/><rect x="293" y="253" width="114" height="8" rx="2" fill="#1a3a5c"/><rect x="293" y="267" width="90" height="8" rx="2" fill="#1a3a5c"/></g><circle cx="350" cy="320" r="8" fill="#00c6ff" opacity="0.5"/><circle cx="340" cy="70" r="2" fill="#1a3a5c"/><circle cx="360" cy="70" r="2" fill="#1a3a5c"/><text x="350" y="375" text-anchor="middle" fill="#00c6ff" font-family="sans-serif" font-size="13" letter-spacing="4" opacity="0.7">MOBILE TECHNOLOGY</text></svg>`)}`,
+
+  5: `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 394"><defs><linearGradient id="bg5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#001a0a"/><stop offset="100%" stop-color="#0a1a05"/></linearGradient><radialGradient id="glow5" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#00e676" stop-opacity="0.2"/><stop offset="100%" stop-color="#00e676" stop-opacity="0"/></radialGradient></defs><rect width="700" height="394" fill="url(#bg5)"/><ellipse cx="350" cy="197" rx="200" ry="120" fill="url(#glow5)"/><rect x="160" y="150" width="380" height="110" rx="10" fill="#001a08" stroke="#00e676" stroke-width="1.5"/><g fill="#00e676"><rect x="175" y="165" width="50" height="80" rx="4" fill="#001a08" stroke="#00e676" stroke-width="1"/><rect x="178" y="168" width="44" height="74" rx="3" fill="#002a10"/><rect x="178" y="168" width="44" height="55" rx="2" fill="#00e676" opacity="0.7"/><rect x="240" y="165" width="50" height="80" rx="4" fill="#001a08" stroke="#00e676" stroke-width="1"/><rect x="243" y="168" width="44" height="74" rx="3" fill="#002a10"/><rect x="243" y="168" width="44" height="68" rx="2" fill="#00e676" opacity="0.8"/><rect x="305" y="165" width="50" height="80" rx="4" fill="#001a08" stroke="#00e676" stroke-width="1"/><rect x="308" y="168" width="44" height="74" rx="3" fill="#002a10"/><rect x="308" y="168" width="44" height="72" rx="2" fill="#00e676" opacity="0.9"/><rect x="370" y="165" width="50" height="80" rx="4" fill="#001a08" stroke="#00e676" stroke-width="1"/><rect x="373" y="168" width="44" height="74" rx="3" fill="#002a10"/><rect x="373" y="168" width="44" height="45" rx="2" fill="#00e676" opacity="0.5"/><rect x="435" y="165" width="50" height="80" rx="4" fill="#001a08" stroke="#00e676" stroke-width="1"/><rect x="438" y="168" width="44" height="74" rx="3" fill="#002a10"/><rect x="438" y="168" width="44" height="60" rx="2" fill="#00e676" opacity="0.6"/></g><text x="350" y="300" text-anchor="middle" fill="#00e676" font-family="monospace" font-size="11" opacity="0.8">900 Wh/L  ·  10 MIN CHARGE  ·  SOLID STATE</text><text x="350" y="355" text-anchor="middle" fill="#00e676" font-family="sans-serif" font-size="13" letter-spacing="4" opacity="0.7">GREEN ENERGY TECH</text></svg>`)}`,
+
+  6: `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 394"><defs><linearGradient id="bg6" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0a0510"/><stop offset="100%" stop-color="#1a0a2e"/></linearGradient><radialGradient id="lens" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#b040ff" stop-opacity="0.3"/><stop offset="70%" stop-color="#6020a0" stop-opacity="0.1"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="700" height="394" fill="url(#bg6)"/><ellipse cx="350" cy="190" rx="180" ry="90" fill="url(#lens)"/><path d="M185 150 Q200 100 350 90 Q500 100 515 150 L510 240 Q500 290 350 300 Q200 290 190 240 Z" fill="#1a0530" stroke="#b040ff" stroke-width="2"/><ellipse cx="350" cy="195" rx="130" ry="75" fill="#0d0020" stroke="#b040ff" stroke-width="1"/><ellipse cx="280" cy="195" rx="60" ry="65" fill="#050010" stroke="#8020c0" stroke-width="1.5"/><ellipse cx="420" cy="195" rx="60" ry="65" fill="#050010" stroke="#8020c0" stroke-width="1.5"/><ellipse cx="280" cy="195" rx="42" ry="46" fill="#b040ff" opacity="0.08"/><ellipse cx="420" cy="195" rx="42" ry="46" fill="#b040ff" opacity="0.08"/><circle cx="280" cy="195" r="18" fill="#b040ff" opacity="0.2"/><circle cx="420" cy="195" r="18" fill="#b040ff" opacity="0.2"/><path d="M190 180 L140 175 M190 210 L140 215" stroke="#b040ff" stroke-width="1.5" opacity="0.6"/><path d="M510 180 L560 175 M510 210 L560 215" stroke="#b040ff" stroke-width="1.5" opacity="0.6"/><text x="350" y="350" text-anchor="middle" fill="#b040ff" font-family="sans-serif" font-size="13" letter-spacing="4" opacity="0.8">EXTENDED REALITY</text></svg>`)}`,
+
+  7: `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 394"><defs><linearGradient id="bg7" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0f0a0a"/><stop offset="100%" stop-color="#1a0505"/></linearGradient></defs><rect width="700" height="394" fill="url(#bg7)"/><g opacity="0.15" stroke="#ff4b6e" stroke-width="0.5"><line x1="0" y1="0" x2="700" y2="0"/><line x1="0" y1="40" x2="700" y2="40"/><line x1="0" y1="80" x2="700" y2="80"/><line x1="0" y1="120" x2="700" y2="120"/><line x1="0" y1="160" x2="700" y2="160"/><line x1="0" y1="200" x2="700" y2="200"/><line x1="0" y1="240" x2="700" y2="240"/><line x1="0" y1="280" x2="700" y2="280"/><line x1="0" y1="320" x2="700" y2="320"/><line x1="0" y1="360" x2="700" y2="360"/></g><circle cx="350" cy="185" r="90" fill="#1a0505" stroke="#ff4b6e" stroke-width="2"/><circle cx="350" cy="185" r="68" fill="#0f0202" stroke="#ff4b6e" stroke-width="1" stroke-dasharray="5 3"/><g fill="#ff4b6e" opacity="0.8"><rect x="332" y="155" width="36" height="5" rx="2"/><rect x="332" y="168" width="36" height="5" rx="2"/><rect x="332" y="181" width="36" height="5" rx="2"/><rect x="332" y="194" width="36" height="5" rx="2"/><rect x="332" y="207" width="20" height="5" rx="2"/></g><circle cx="350" cy="185" r="52" fill="none" stroke="#ff4b6e" stroke-width="1" opacity="0.3"/><path d="M350 133 L362 157 L390 161 L370 180 L375 208 L350 195 L325 208 L330 180 L310 161 L338 157 Z" fill="#ff4b6e" opacity="0.1" stroke="#ff4b6e" stroke-width="1"/><text x="350" y="310" text-anchor="middle" fill="#ff4b6e" font-family="monospace" font-size="11" opacity="0.9">CVE-2026-0891  ·  CVSS 9.8 CRITICAL</text><text x="350" y="355" text-anchor="middle" fill="#ff4b6e" font-family="sans-serif" font-size="13" letter-spacing="4" opacity="0.8">CYBERSECURITY</text></svg>`)}`,
+
+  8: `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 394"><defs><linearGradient id="bg8" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#001520"/><stop offset="100%" stop-color="#001a10"/></linearGradient><radialGradient id="glow8" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#00ffcc" stop-opacity="0.2"/><stop offset="100%" stop-color="#00ffcc" stop-opacity="0"/></radialGradient></defs><rect width="700" height="394" fill="url(#bg8)"/><ellipse cx="350" cy="197" rx="160" ry="160" fill="url(#glow8)"/><g stroke="#00ffcc" stroke-width="1.2" fill="none" opacity="0.7"><ellipse cx="350" cy="197" rx="80" ry="30"/><ellipse cx="350" cy="197" rx="80" ry="30" transform="rotate(60 350 197)"/><ellipse cx="350" cy="197" rx="80" ry="30" transform="rotate(120 350 197)"/></g><circle cx="350" cy="197" r="16" fill="#00ffcc" opacity="0.3"/><circle cx="350" cy="197" r="8" fill="#00ffcc" opacity="0.9"/><g fill="#00ffcc" opacity="0.7"><circle cx="430" cy="197" r="5"/><circle cx="270" cy="197" r="5"/><circle cx="390" cy="145" r="4"/><circle cx="310" cy="249" r="4"/><circle cx="310" cy="145" r="4"/><circle cx="390" cy="249" r="4"/></g><g stroke="#00ffcc" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.4"><line x1="350" y1="90" x2="350" y2="304"/><line x1="246" y1="145" x2="454" y2="249"/><line x1="246" y1="249" x2="454" y2="145"/></g><circle cx="350" cy="197" r="110" fill="none" stroke="#00ffcc" stroke-width="0.5" opacity="0.2"/><text x="350" y="345" text-anchor="middle" fill="#00ffcc" font-family="monospace" font-size="11" opacity="0.8">KRAS G12D  ·  2.3 nM IC50  ·  48 HRS</text><text x="350" y="368" text-anchor="middle" fill="#00ffcc" font-family="sans-serif" font-size="13" letter-spacing="4" opacity="0.7">BIOTECHNOLOGY</text></svg>`)}`,
+};
+
+const news = [
+  {
+    id: 1,
+    img: svgs[1],
+    tag: 'AI', tagClass: '',
+    date: 'March 15, 2026',
+    title: 'GPT-5 Launches with Real-Time Vision & Reasoning',
+    summary: 'OpenAI\'s latest model redefines multimodal AI with live camera integration and chain-of-thought reasoning that rivals human problem-solving.',
+    body: `
+      <p>OpenAI officially unveiled GPT-5 at its spring developer conference, marking the most significant leap in large language model capability since the GPT-4 era. The new model integrates real-time visual processing—allowing it to analyze live video feeds—alongside a breakthrough chain-of-thought reasoning engine that can autonomously break down multi-step problems.</p>
+      <p>Benchmarks released alongside the launch show GPT-5 scoring in the 99th percentile on bar exam simulations and outperforming leading specialist models on medical diagnosis tasks. The model also introduces "adaptive memory," enabling it to retain context across sessions with user consent.</p>
+      <h4>Key Highlights</h4>
+      <ul>
+        <li>Real-time video and image understanding at 60fps input</li>
+        <li>Chain-of-thought reasoning with verifiable step logs</li>
+        <li>Adaptive cross-session memory (opt-in)</li>
+        <li>Significantly reduced hallucination rate vs. GPT-4o</li>
+        <li>API pricing reduced by 40% compared to previous flagship</li>
+      </ul>
+      <h4>Industry Impact</h4>
+      <p>Enterprise customers are already piloting GPT-5 for code review automation, live customer support, and scientific literature synthesis. Competitors including Google DeepMind and Anthropic are expected to respond with their own flagship releases before Q2 2026.</p>
+    `
+  },
+  {
+    id: 2,
+    img: svgs[2],
+    tag: 'Hardware', tagClass: 'gold',
+    date: 'March 12, 2026',
+    title: 'NVIDIA RTX 6090 Ti Breaks Every Benchmark Record',
+    summary: 'NVIDIA\'s new flagship GPU obliterates performance records with 36GB GDDR7 VRAM and a monstrous 800W TGP—engineered for the AI generation.',
+    body: `
+      <p>NVIDIA's RTX 6090 Ti has arrived, and it doesn't just break records—it rewrites the performance conversation entirely. Built on the next-generation Blackwell+ architecture with TSMC's 3nm process, the card delivers a staggering 120 TFLOPS of shader performance and 2400 AI TOPS, making it the first consumer GPU to rival data-center accelerators in AI inference tasks.</p>
+      <p>The 36GB GDDR7 frame buffer running at 32 Gbps eliminates VRAM bottlenecks that have plagued 4K gaming and generative AI workflows alike. DLSS 5.0, included in the launch driver package, introduces "Neural Frame Reconstruction" that can render one frame in four and upscale with near-native fidelity.</p>
+      <h4>Specifications at a Glance</h4>
+      <ul>
+        <li>Architecture: Blackwell+ (TSMC 3nm)</li>
+        <li>VRAM: 36 GB GDDR7 @ 32 Gbps</li>
+        <li>Shader performance: ~120 TFLOPS FP32</li>
+        <li>AI Tensor performance: 2400 TOPS</li>
+        <li>Total Graphics Power: 800W (requires 1200W PSU)</li>
+        <li>MSRP: $2,499 USD</li>
+      </ul>
+    `
+  },
+  {
+    id: 3,
+    img: svgs[3],
+    tag: 'Space Tech', tagClass: 'red',
+    date: 'March 10, 2026',
+    title: 'SpaceX Starship Completes First Orbital Payload Mission',
+    summary: 'After years of development and multiple test flights, Starship has delivered its first real commercial payload to low Earth orbit—a historic milestone.',
+    body: `
+      <p>SpaceX's Starship achieved a watershed moment on March 8, 2026, successfully deploying a batch of 24 Starlink V3 satellites to low Earth orbit. The mission, designated IFT-9, marked the first time Starship carried a live commercial payload rather than test mass simulators.</p>
+      <p>Both the Super Heavy booster and the Ship upper stage were recovered successfully. Super Heavy returned to the Mechazilla catch arms at Starbase, Texas, for the third consecutive time, while Ship performed a precision ocean splashdown within 400 meters of the target zone.</p>
+      <h4>Mission Milestones</h4>
+      <ul>
+        <li>First commercial payload deployment by Starship</li>
+        <li>Third consecutive successful Super Heavy catch by Mechazilla arms</li>
+        <li>Ship upper stage survived full reentry thermal loading</li>
+        <li>Total payload mass: 47 tonnes to LEO</li>
+        <li>Mission duration: 1 hour 43 minutes from liftoff to satellite separation</li>
+      </ul>
+    `
+  },
+  {
+    id: 4,
+    img: svgs[4],
+    tag: 'Mobile', tagClass: '',
+    date: 'March 8, 2026',
+    title: 'Samsung Galaxy S26 Ultra Debuts with Under-Display Camera',
+    summary: 'Samsung\'s flagship S26 Ultra finally cracks the true full-screen formula with an invisible under-display selfie camera and a 2K 144Hz OLED panel.',
+    body: `
+      <p>Samsung has formally unveiled the Galaxy S26 Ultra, answering years of consumer demand with a truly uninterrupted display made possible by a 5th-generation under-display camera (UDC) that achieves optical transparency indistinguishable to the naked eye.</p>
+      <p>The device ships with a new 200MP variable aperture main sensor co-developed with Olympus optics, a 10x periscope telephoto zoom capable of stabilized handheld shots at 100x, and a dedicated night photography chip for zero-shutter-lag 4K video in sub-lux conditions.</p>
+      <h4>Key Features</h4>
+      <ul>
+        <li>6.9-inch 2K Dynamic AMOLED, 1–144Hz adaptive</li>
+        <li>5th-gen under-display front camera (50MP AI-enhanced)</li>
+        <li>200MP main + 50MP ultrawide + 50MP 10x periscope</li>
+        <li>Snapdragon 8 Elite Gen 2 + dedicated NPU</li>
+        <li>6000 mAh battery with 65W wired / 25W wireless</li>
+        <li>Titanium frame with Corning Gorilla Glass Armor 2</li>
+      </ul>
+    `
+  },
+  {
+    id: 5,
+    img: svgs[5],
+    tag: 'Green Tech', tagClass: 'gold',
+    date: 'March 6, 2026',
+    title: 'Solid-State EV Batteries Enter Mass Production in 2026',
+    summary: 'Toyota and QuantumScape jointly announce volume manufacturing of solid-state cells delivering 900 Wh/L energy density and 10-minute fast charging.',
+    body: `
+      <p>The long-promised solid-state battery revolution has crossed the production threshold. Toyota Motor Corporation and Silicon Valley startup QuantumScape jointly confirmed that their co-developed solid-state lithium-metal cells have entered volume manufacturing at Toyota's Gigafactory in Aichi Prefecture, Japan.</p>
+      <p>The cells achieve 900 watt-hours per liter energy density—roughly double that of today's best lithium-ion packs—enabling EVs with 600-mile (965 km) real-world range at the same pack weight.</p>
+      <h4>Why This Matters</h4>
+      <ul>
+        <li>Energy density: 900 Wh/L (vs ~450 Wh/L for premium Li-ion)</li>
+        <li>10-minute 10–80% fast charge</li>
+        <li>Cycle life: 1,500+ full cycles with &lt;5% capacity degradation</li>
+        <li>No liquid electrolyte = no thermal runaway risk</li>
+        <li>First production vehicles expected: Toyota 2027 model year</li>
+      </ul>
+    `
+  },
+  {
+    id: 6,
+    img: svgs[6],
+    tag: 'XR', tagClass: '',
+    date: 'March 4, 2026',
+    title: 'Apple Vision Pro 2 Arrives at Half the Weight and Price',
+    summary: 'Apple\'s second-generation spatial computer drops to $2,499 and 350g, with micro-OLED panels upgraded to 8K per eye and an M4 Ultra chip.',
+    body: `
+      <p>Apple officially unveiled Vision Pro 2 at a special March event, addressing the two biggest criticisms of the original headset: weight and price. The new device weighs just 350 grams—44% lighter than its predecessor—thanks to a magnesium-titanium hybrid frame and a redesigned optical stack using pancake lenses.</p>
+      <p>Each eye is now served by a custom 8K micro-OLED panel with a peak brightness of 10,000 nits, making outdoor use viable for the first time. The M4 Ultra chip with its 40-core Neural Engine handles all on-device ML inference.</p>
+      <h4>Notable Improvements</h4>
+      <ul>
+        <li>Weight: 350g (down from ~600g)</li>
+        <li>Price: $2,499 (down from $3,499)</li>
+        <li>Display: 8K per eye micro-OLED @ 10,000 nit peak</li>
+        <li>Chip: M4 Ultra with 40-core Neural Engine</li>
+        <li>Battery life: 3.5 hours (up from 2 hours)</li>
+        <li>New hand and eye tracking with sub-5ms latency</li>
+      </ul>
+    `
+  },
+  {
+    id: 7,
+    img: svgs[7],
+    tag: 'Security', tagClass: 'red',
+    date: 'March 2, 2026',
+    title: 'Critical Vulnerability Found in Global Banking Infrastructure',
+    summary: 'A zero-day flaw in the widely-used OpenSSL 3.x library exposes millions of servers; emergency patches are being deployed globally.',
+    body: `
+      <p>Security researchers at Horizon3.ai disclosed a critical zero-day vulnerability in OpenSSL 3.x designated CVE-2026-0891, affecting an estimated 4.3 million internet-facing servers including financial institutions, healthcare providers, and government networks worldwide.</p>
+      <p>The OpenSSL Project released emergency patches (versions 3.2.4 and 3.3.1) within 72 hours of responsible disclosure. Major cloud providers including AWS, Google Cloud, and Azure deployed automated patching to managed services within hours of patch availability.</p>
+      <h4>Scope & Impact</h4>
+      <ul>
+        <li>Affected versions: OpenSSL 3.0.x through 3.3.0</li>
+        <li>Attack vector: Network (no authentication required)</li>
+        <li>CVSS Score: 9.8 Critical</li>
+        <li>Estimated exposed servers: ~4.3 million globally</li>
+        <li>Fix: Upgrade to OpenSSL 3.2.4 / 3.3.1 immediately</li>
+      </ul>
+    `
+  },
+  {
+    id: 8,
+    img: svgs[8],
+    tag: 'BioTech', tagClass: 'gold',
+    date: 'Feb 28, 2026',
+    title: 'DeepMind\'s AlphaProtein Designs Novel Cancer-Targeting Drug in 48 Hours',
+    summary: 'Google DeepMind\'s latest AI system autonomously designed a small-molecule drug candidate that binds KRAS with unprecedented precision, now entering clinical trials.',
+    body: `
+      <p>Google DeepMind announced a landmark achievement in AI-accelerated drug discovery: its AlphaProtein system autonomously designed a novel small-molecule compound that binds to the KRAS G12D oncogene, a notoriously "undruggable" target responsible for roughly 30% of all human cancers.</p>
+      <p>The compound, internally designated DP-2026-01, was generated, simulated, and shortlisted within 48 hours of receiving the target specification. In vitro testing demonstrated IC50 activity of 2.3 nM against KRAS G12D.</p>
+      <h4>Significance</h4>
+      <ul>
+        <li>KRAS has resisted drug targeting for over 40 years</li>
+        <li>AI design-to-candidate time: 48 hours (vs. typical 2–5 years)</li>
+        <li>Binding affinity: 2.3 nM IC50 in cellular assays</li>
+        <li>Selectivity: &gt;100x over wild-type KRAS</li>
+        <li>IND application filed; Phase I trial enrollment begins Q3 2026</li>
+      </ul>
+    `
+  },
+];
+
+function buildCard(article, isFeatured = false) {
+  const div = document.createElement('div');
+  div.className = 'card' + (isFeatured ? ' featured' : '');
+  div.onclick = () => openModal(article.id);
+  div.innerHTML = `
+    <div class="card-img-wrap">
+      <img class="card-thumb" src="${article.img}" alt="${article.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'card-thumb-placeholder\' style=\'background:linear-gradient(135deg,#0d1b35,#0a0e1a);aspect-ratio:16/9\'></div>'"/>
+    </div>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="card-tag ${article.tagClass}">${article.tag}</span>
+        <span class="card-date">📅 ${article.date}</span>
+      </div>
+      <h3>${article.title}</h3>
+      <p>${article.summary}</p>
+      <span class="card-readmore">Read More</span>
+    </div>
+  `;
+  return div;
+}
+
+// Render
+const featured = document.getElementById('featured');
+const more     = document.getElementById('more');
+
+news.slice(0,3).forEach((a, i) => featured.appendChild(buildCard(a, i === 0)));
+news.slice(3).forEach(a     => more.appendChild(buildCard(a)));
+
+// Modal
+function openModal(id) {
+  const a = news.find(n => n.id === id);
+  document.getElementById('modalHero').innerHTML = `<img src="${a.img}" alt="${a.title}" style="width:100%;height:100%;object-fit:cover;border-radius:14px 14px 0 0;display:block;"/>`;
+  document.getElementById('modalTitle').textContent = a.title;
+  document.getElementById('modalDate').textContent  = '📅 ' + a.date;
+  document.getElementById('modalTags').innerHTML    = `<span class="modal-tag ${a.tagClass}">${a.tag}</span>`;
+  document.getElementById('modalBody').innerHTML    = a.body;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModalBtn() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalBtn();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
+
+// ── COMING SOON TICKER ──
+const tickerItems = [
+  { tag:'AI',       tagClass:'blue',  text:'<strong>Claude 4 Opus</strong> — Anthropic\'s most powerful model yet, expected Q2 2026' },
+  { tag:'Hardware', tagClass:'gold',  text:'<strong>Intel Arc B790</strong> — Next-gen discrete GPU targeting RTX 5070 performance at half the price' },
+  { tag:'Gaming',   tagClass:'red',   text:'<strong>GTA VI</strong> — Rockstar confirms fall 2026 PC launch alongside next-gen console patch' },
+  { tag:'Mobile',   tagClass:'blue',  text:'<strong>Google Pixel 10 Pro</strong> — Under-display camera tech coming to Pixel lineup this summer' },
+  { tag:'OS',       tagClass:'green', text:'<strong>Windows 12</strong> — Microsoft teases AI-native OS overhaul; public beta reportedly mid-2026' },
+  { tag:'XR',       tagClass:'blue',  text:'<strong>Meta Quest 4</strong> — Eye-tracked foveated rendering and 120Hz pancake display confirmed' },
+  { tag:'EV Tech',  tagClass:'green', text:'<strong>Tesla Roadster 2</strong> — Production finally begins; 0–60 in 1.9s claimed' },
+  { tag:'AI',       tagClass:'blue',  text:'<strong>Google Gemini Ultra 2</strong> — 2M token context window and real-time audio conversation coming soon' },
+  { tag:'Security', tagClass:'red',   text:'<strong>Passkey Mandate</strong> — Major banks set June 2026 deadline for passwordless-only logins' },
+  { tag:'Gaming',   tagClass:'red',   text:'<strong>PlayStation 6</strong> — Sony dev kits reportedly shipping to studios; holiday 2027 target' },
+];
+
+function buildTickerItem(item) {
+  return `<span class="ticker-item"><span class="t-tag ${item.tagClass}">${item.tag}</span>${item.text}</span>`;
+}
+
+const track = document.getElementById('tickerTrack');
+// double the items for seamless infinite scroll
+const html = tickerItems.map(buildTickerItem).join('') + tickerItems.map(buildTickerItem).join('');
+track.innerHTML = html;
+</script>
+</body>
+</html>

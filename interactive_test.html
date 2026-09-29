@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart & Wishlist Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #0a0e27; color: white; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h2 { color: #26b6ff; border-bottom: 2px solid #26b6ff; padding-bottom: 10px; }
+        .test-section { background: #1e293b; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #26b6ff; }
+        button { background: #26b6ff; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px; margin: 5px; }
+        button:hover { background: #1d4ed8; }
+        .success { background: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .error { background: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .info { background: #d1ecf1; color: #0c5460; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        table th, table td { border: 1px solid #2d3748; padding: 10px; text-align: left; }
+        table th { background: #0f1724; }
+        pre { background: #0f1724; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛒 Cart & Wishlist Full Test</h1>
+        
+        <div class="test-section">
+            <h2>1. Test Add to Cart (JavaScript)</h2>
+            <p>This simulates what happens when you click "Add to Cart" on storehome.html</p>
+            <button onclick="testAddToCart()">Test Add Item to Cart</button>
+            <div id="cartTestResult"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>2. Test Add to Wishlist (JavaScript)</h2>
+            <p>This simulates what happens when you click "Add to Wishlist"</p>
+            <button onclick="testAddToWishlist()">Test Add Item to Wishlist</button>
+            <div id="wishlistTestResult"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>3. Get Cart Items</h2>
+            <p>Fetch and display all items in your cart</p>
+            <button onclick="testGetCart()">Load Cart Items</button>
+            <div id="cartItems"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>4. Get Wishlist Items</h2>
+            <p>Fetch and display all items in your wishlist</p>
+            <button onclick="testGetWishlist()">Load Wishlist Items</button>
+            <div id="wishlistItems"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>5. Clear All</h2>
+            <button onclick="clearAll()">Clear Cart & Wishlist</button>
+            <div id="clearResult"></div>
+        </div>
+    </div>
+
+    <script>
+        function testAddToCart() {
+            const result = document.getElementById('cartTestResult');
+            const productId = "test_" + Date.now();
+            const productName = "Test Product " + new Date().toLocaleTimeString();
+            const productPrice = "5000";
+            
+            console.log("Adding to cart:", { productId, productName, productPrice });
+            
+            const formData = new FormData();
+            formData.append('product_id', productId);
+            formData.append('product_name', productName);
+            formData.append('product_price', productPrice);
+            formData.append('quantity', 1);
+            
+            fetch('add_to_cart.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(text => {
+                console.log("Raw response:", text);
+                try {
+                    const data = JSON.parse(text);
+                    if (data.success) {
+                        result.innerHTML = `
+                            <div class="success">
+                                <strong>✓ Success!</strong> ${data.message}<br>
+                                <small>Product ID: ${productId}</small>
+                            </div>
+                        `;
+                    } else {
+                        result.innerHTML = `<div class="error"><strong>✗ Failed:</strong> ${data.message}</div>`;
+                    }
+                } catch (e) {
+                    result.innerHTML = `<div class="error"><strong>✗ JSON Error:</strong> ${text}</div>`;
+                }
+            })
+            .catch(error => {
+                result.innerHTML = `<div class="error"><strong>✗ Fetch Error:</strong> ${error}</div>`;
+            });
+        }
+
+        function testAddToWishlist() {
+            const result = document.getElementById('wishlistTestResult');
+            const productId = "wish_" + Date.now();
+            const productName = "Wishlist Product " + new Date().toLocaleTimeString();
+            const productPrice = "7500";
+            
+            const formData = new FormData();
+            formData.append('product_id', productId);
+            formData.append('product_name', productName);
+            formData.append('product_price', productPrice);
+            
+            fetch('add_to_wishlist.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(text => {
+                try {
+                    const data = JSON.parse(text);
+                    if (data.success) {
+                        result.innerHTML = `
+                            <div class="success">
+                                <strong>✓ Success!</strong> ${data.message}<br>
+                                <small>Product ID: ${productId}</small>
+                            </div>
+                        `;
+                    } else {
+                        result.innerHTML = `<div class="error"><strong>✗ Failed:</strong> ${data.message}</div>`;
+                    }
+                } catch (e) {
+                    result.innerHTML = `<div class="error"><strong>✗ JSON Error:</strong> ${text}</div>`;
+                }
+            })
+            .catch(error => {
+                result.innerHTML = `<div class="error"><strong>✗ Fetch Error:</strong> ${error}</div>`;
+            });
+        }
+
+        function testGetCart() {
+            const result = document.getElementById('cartItems');
+            result.innerHTML = '<div class="info">Loading...</div>';
+            
+            fetch('get_cart.php')
+            .then(response => response.text())
+            .then(text => {
+                console.log("Cart response:", text);
+                try {
+                    const data = JSON.parse(text);
+                    if (data.items && data.items.length > 0) {
+                        let html = `<div class="success">Found ${data.items.length} item(s) in cart</div>`;
+                        html += '<table><tr><th>ID</th><th>Product ID</th><th>Name</th><th>Price</th><th>Qty</th><th>Total</th></tr>';
+                        data.items.forEach(item => {
+                            html += `<tr>
+                                <td>${item.id}</td>
+                                <td>${item.product_id}</td>
+                                <td>${item.product_name}</td>
+                                <td>Rs. ${item.product_price}</td>
+                                <td>${item.quantity}</td>
+                                <td>Rs. ${item.item_total}</td>
+                            </tr>`;
+                        });
+                        html += '</table>';
+                        html += `<div class="info">Total: Rs. ${data.total}</div>`;
+                        result.innerHTML = html;
+                    } else {
+                        result.innerHTML = '<div class="error">No items in cart</div>';
+                    }
+                } catch (e) {
+                    result.innerHTML = `<div class="error"><strong>Error:</strong> ${text}</div>`;
+                }
+            })
+            .catch(error => {
+                result.innerHTML = `<div class="error"><strong>Fetch Error:</strong> ${error}</div>`;
+            });
+        }
+
+        function testGetWishlist() {
+            const result = document.getElementById('wishlistItems');
+            result.innerHTML = '<div class="info">Loading...</div>';
+            
+            fetch('get_wishlist.php')
+            .then(response => response.text())
+            .then(text => {
+                console.log("Wishlist response:", text);
+                try {
+                    const data = JSON.parse(text);
+                    if (data.items && data.items.length > 0) {
+                        let html = `<div class="success">Found ${data.items.length} item(s) in wishlist</div>`;
+                        html += '<table><tr><th>ID</th><th>Product ID</th><th>Name</th><th>Price</th></tr>';
+                        data.items.forEach(item => {
+                            html += `<tr>
+                                <td>${item.id}</td>
+                                <td>${item.product_id}</td>
+                                <td>${item.product_name}</td>
+                                <td>Rs. ${item.product_price}</td>
+                            </tr>`;
+                        });
+                        html += '</table>';
+                        result.innerHTML = html;
+                    } else {
+                        result.innerHTML = '<div class="error">No items in wishlist</div>';
+                    }
+                } catch (e) {
+                    result.innerHTML = `<div class="error"><strong>Error:</strong> ${text}</div>`;
+                }
+            })
+            .catch(error => {
+                result.innerHTML = `<div class="error"><strong>Fetch Error:</strong> ${error}</div>`;
+            });
+        }
+
+        function clearAll() {
+            const result = document.getElementById('clearResult');
+            fetch('clear_cart.php', { method: 'POST' })
+            .then(() => fetch('clear_wishlist.php', { method: 'POST' }))
+            .then(() => {
+                result.innerHTML = '<div class="success">✓ Cart and Wishlist cleared!</div>';
+            })
+            .catch(error => {
+                result.innerHTML = `<div class="error">Error: ${error}</div>`;
+            });
+        }
+    </script>
+</body>
+</html>

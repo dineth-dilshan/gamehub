@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Register Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+        form { background: white; padding: 20px; border-radius: 8px; width: 400px; margin: auto; }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
+        button { background: #a855f7; color: white; cursor: pointer; border: none; }
+        .result { margin-top: 20px; padding: 15px; border-radius: 8px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h2>Simple Registration Test</h2>
+    <form id="testForm">
+        <input type="text" name="first_name" placeholder="First Name" required>
+        <input type="text" name="last_name" placeholder="Last Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="username" placeholder="Username (3+ chars)" required>
+        <input type="password" name="password" placeholder="Password (6+ chars)" required>
+        <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+        <button type="submit">Register</button>
+    </form>
+    
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('testForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            // Log what we're sending
+            console.log("Sending data:");
+            for (let [key, value] of formData) {
+                console.log(key + ": " + value);
+            }
+            
+            fetch('register_handler.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                console.log("Response status:", response.status);
+                return response.text();
+            })
+            .then(text => {
+                console.log("Raw response:", text);
+                try {
+                    const data = JSON.parse(text);
+                    const resultDiv = document.getElementById('result');
+                    resultDiv.className = data.success ? 'result success' : 'result error';
+                    resultDiv.innerHTML = '<strong>' + (data.success ? 'SUCCESS!' : 'ERROR') + '</strong><br>' + data.message;
+                } catch(e) {
+                    document.getElementById('result').innerHTML = '<div class="result error"><strong>ERROR:</strong> Invalid response from server: ' + text + '</div>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = '<div class="result error"><strong>ERROR:</strong> ' + error + '</div>';
+            });
+        });
+    </script>
+</body>
+</html>

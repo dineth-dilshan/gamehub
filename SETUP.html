@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>System Setup & Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #0a0e27; color: white; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: #26b6ff; }
+        .step { background: #1e293b; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #26b6ff; }
+        button { background: #26b6ff; color: white; padding: 12px 24px; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; }
+        button:hover { background: #1d4ed8; }
+        .success { background: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .warning { background: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        code { background: #0f1724; padding: 2px 6px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Gamer's HUB - Complete System Setup</h1>
+        
+        <div class="step">
+            <h2>✅ STEP 1: Fix Database</h2>
+            <p>Click the button to automatically fix your database structure:</p>
+            <button onclick="window.location.href='fix_database.php'">Fix Database Now</button>
+        </div>
+
+        <div class="step">
+            <h2>✅ STEP 2: Clear Old Data</h2>
+            <p>This clears any old test data that won't work with the new structure:</p>
+            <button onclick="window.location.href='complete_diagnosis.php'">Go to Diagnostic Page</button>
+            <p><em>Scroll to section 7 and manually run the SQL commands in phpMyAdmin</em></p>
+        </div>
+
+        <div class="step">
+            <h2>✅ STEP 3: Test the System</h2>
+            <p>Now test adding items to cart and wishlist:</p>
+            <ol>
+                <li><a href="storehome.html" target="_blank" style="color: #26b6ff; text-decoration: underline;">Go to Store Home</a></li>
+                <li>Click <strong>"Add to Cart"</strong> on any product</li>
+                <li>You should see a <strong>blue badge</strong> with the count on the 🛒 Cart icon</li>
+                <li>Go to <a href="cart.html" target="_blank" style="color: #26b6ff; text-decoration: underline;">Cart Page</a> - items should appear!</li>
+                <li>Go back to store and click <strong>"Add to Wishlist"</strong></li>
+                <li>You should see a <strong>pink badge</strong> with the count on the ♥ Wishlist icon</li>
+                <li>Go to <a href="wishlist.html" target="_blank" style="color: #26b6ff; text-decoration: underline;">Wishlist Page</a> - items should appear!</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h2>📝 What Was Changed</h2>
+            <ul>
+                <li>✅ Database columns updated to accept string product IDs</li>
+                <li>✅ Item count badges added to navigation icons</li>
+                <li>✅ Count refreshes every 5 seconds</li>
+                <li>✅ Cart and Wishlist pages auto-load items</li>
+                <li>✅ Added wishlist functionality to store</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <h2>🚀 Quick Start</h2>
+            <ol>
+                <li>Click Step 1 button above (Fix Database)</li>
+                <li>Test adding items from <a href="storehome.html" target="_blank" style="color: #26b6ff;"><strong>Store Home</strong></a></li>
+                <li>Check the item counts on cart/wishlist icons</li>
+                <li>Visit Cart and Wishlist pages to see items</li>
+            </ol>
+        </div>
+
+        <div class="step" style="border-left-color: #ff4e8a;">
+            <h2>❓ Troubleshooting</h2>
+            <p><strong>Items not appearing?</strong></p>
+            <ul>
+                <li>Make sure you ran the database fix</li>
+                <li>Clear browser cache (Ctrl+Shift+Delete)</li>
+                <li>Login again</li>
+                <li>Try adding a new item</li>
+            </ul>
+            <p><strong>Counts not showing?</strong></p>
+            <ul>
+                <li>Open browser Developer Tools (F12)</li>
+                <li>Check the Console tab for errors</li>
+                <li>Make sure PHP files exist:
+                    <ul>
+                        <li>get_cart_count.php ✅</li>
+                        <li>get_wishlist_count.php ✅</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
