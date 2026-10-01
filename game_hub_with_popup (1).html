@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Trailers | The Gamer's HUB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root{
+            --dark-bg:#0b141a; --nav-bg:#121c24; --accent-blue:#3b82f6; --text-white:#fff; --text-gray:#94a3b8; --card:#0f1724;
+        }
+        *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
+        body{background:var(--dark-bg);color:var(--text-white);line-height:1.5}
+        nav{background:var(--nav-bg);display:flex;justify-content:space-between;align-items:center;padding:15px 5%;border-bottom:1px solid rgba(255,255,255,0.04);position:sticky;top:0;z-index:100}
+        .logo{font-weight:800;display:flex;gap:10px;align-items:center;text-decoration:none;color:var(--text-white)}
+        .logo img{width:24px;height:24px;object-fit:contain;display:block}
+        .logo span{animation:hubBlink 1.8s ease-in-out infinite}
+        @keyframes hubBlink{
+            0%,100%{color:#ffffff;text-shadow:0 0 5px rgba(255,255,255,0.5)}
+            50%{color:#26b6ff;text-shadow:0 0 18px rgba(38,182,255,0.85),0 0 28px rgba(38,182,255,0.45)}
+        }
+        .nav-links{list-style:none;display:flex;gap:18px}
+        .nav-links a{color:var(--text-gray);text-decoration:none}
+
+        .hero{padding:48px 5%;text-align:center}
+        .hero h1{font-size:2.4rem;margin-bottom:8px}
+        .hero p{color:var(--text-gray);max-width:800px;margin:0 auto}
+
+        .container{max-width:1200px;margin:30px auto;padding:0 20px}
+        .player-wrap{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+
+        .player{background:var(--card);border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.04)}
+        #mainPlayer{width:100%;height:560px;display:block;background:#000}
+        .meta{padding:16px}
+        .meta h2{font-size:1.25rem;margin-bottom:6px}
+        .meta .dvd{color:var(--text-gray);font-size:0.9rem;margin-bottom:10px}
+        .meta p{color:var(--text-gray);font-size:0.95rem}
+
+        /* Info button */
+        .meta-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+        .btn-info{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;border:1px solid rgba(59,130,246,0.35);background:rgba(59,130,246,0.08);color:var(--accent-blue);font-size:0.85rem;cursor:pointer;transition:background .15s}
+        .btn-info:hover{background:rgba(59,130,246,0.18)}
+
+        #notice{margin-top:12px;padding:8px 12px;border-radius:8px;background:rgba(59,130,246,0.08);color:var(--text-gray);font-size:0.95rem;border:1px solid rgba(59,130,246,0.14);display:none}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+        .notice-show{display:block;animation:fadeIn .18s ease-out}
+
+        .games-list{background:transparent;border-radius:12px}
+        .game-item{display:flex;gap:12px;align-items:center;padding:10px;border-radius:8px;cursor:pointer;border:1px solid transparent}
+        .game-item:hover{background:rgba(255,255,255,0.02);border-color:rgba(255,255,255,0.03)}
+        .game-item.active{background:linear-gradient(90deg,rgba(59,130,246,0.12),transparent);border-color:rgba(59,130,246,0.18)}
+        .thumb{width:72px;height:40px;background:#111 no-repeat center/cover;border-radius:6px;flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--text-gray);font-size:0.85rem;font-weight:600;text-shadow:0 0 3px rgba(0,0,0,0.8)}
+        .thumb[data-has-image]{color:transparent;font-size:0}
+        .thumb[data-has-image]::before{content:none}
+        .game-info{flex:1}
+        .game-info b{display:block}
+        .count{color:var(--text-gray);font-size:0.85rem}
+
+        footer{padding:40px 5%;margin-top:40px;border-top:1px solid rgba(255,255,255,0.03);color:var(--text-gray);text-align:center}
+
+        /* ── POPUP MODAL ── */
+        .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:center;justify-content:center;padding:16px}
+        .overlay.open{display:flex}
+        .modal{background:#0f1724;border:1px solid rgba(255,255,255,0.07);border-radius:16px;width:100%;max-width:700px;max-height:90vh;overflow-y:auto;position:relative;animation:fadeIn .2s ease-out}
+        .modal-accent{height:4px;border-radius:16px 16px 0 0}
+        .modal-body{padding:26px 30px 30px}
+        .modal-close{position:absolute;top:14px;right:16px;background:none;border:none;cursor:pointer;font-size:18px;color:#666;padding:4px 8px;border-radius:6px;transition:background .15s,color .15s}
+        .modal-close:hover{background:rgba(255,255,255,0.06);color:#fff}
+        .modal-game-title{font-size:1.6rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#fff;margin-bottom:4px}
+        .modal-dvds{font-size:0.85rem;color:var(--text-gray);margin-bottom:20px}
+        .modal-section-label{font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:#4a5568;margin-bottom:8px}
+        .modal-desc{font-size:0.9rem;line-height:1.8;color:#94a3b8;margin-bottom:24px;white-space:pre-line}
+
+        /* System Requirements table */
+        .sysreq-wrap{border:1px solid rgba(255,255,255,0.06);border-radius:10px;overflow:hidden}
+        .sysreq-grid{display:grid;grid-template-columns:1fr 1fr}
+        .sysreq-col{padding:16px 18px}
+        .sysreq-col:first-child{border-right:1px solid rgba(255,255,255,0.06)}
+        .sysreq-col-header{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.04)}
+        .req-row{margin-bottom:10px}
+        .req-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:.8px;color:#4a5568;margin-bottom:2px}
+        .req-val{font-size:0.82rem;color:#94a3b8;line-height:1.4}
+
+        /* Trailer filename pill */
+        .trailer-pill{display:inline-flex;align-items:center;gap:7px;margin-top:18px;padding:6px 14px;border-radius:8px;border:1px solid rgba(59,130,246,0.2);background:rgba(59,130,246,0.06);font-size:0.8rem;color:#64748b}
+        .trailer-pill i{color:var(--accent-blue);font-size:0.9rem}
+        .trailer-pill code{font-size:0.75rem;opacity:.75;max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:middle}
+
+        @media(max-width:900px){.player-wrap{grid-template-columns:1fr}#mainPlayer{height:320px}}
+        @media(max-width:560px){.sysreq-grid{grid-template-columns:1fr}.sysreq-col:first-child{border-right:none;border-bottom:1px solid rgba(255,255,255,0.06)}.modal-body{padding:18px 16px 24px}}
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="home - Copy.html" class="logo">
+        <img src="M5e94cecb0911ddde2fa73739c93655361764410284581.png" alt="The Gamer's HUB Logo">
+        <span>THE GAMER'S HUB</span>
+    </a>
+    <ul class="nav-links">
+        <li><a href="home - Copy.html">HOME</a></li>
+        <li><a href="games.html">GAMES</a></li>
+        <li><a href="storehome.html">STORE</a></li>
+        <li><a href="community.html">COMMUNITY</a></li>
+        <li><a href="Help.html">HELP</a></li>
+    </ul>
+</nav>
+
+<header class="hero">
+    <h1>Watch Trailers</h1>
+    <p>Play trailers and read a brief story overview for each game. Click a title to load its trailer and description below.</p>
+</header>
+
+<main class="container">
+    <div class="player-wrap">
+        <div>
+            <div class="player">
+                <video id="mainPlayer" controls playsinline poster="" src=""></video>
+            </div>
+            <div class="meta">
+                <div class="meta-header">
+                    <h2 id="gameTitle">Select a game to play</h2>
+                    <button class="btn-info" id="btnInfo" onclick="openModal(currentIndex)">
+                        <i class="fa-solid fa-circle-info"></i> Details & Specs
+                    </button>
+                </div>
+                <div class="dvd" id="gameDvd">DVDs: —</div>
+                <p id="gameDesc">Choose a title from the list to the right to watch its trailer and read a short story synopsis.</p>
+                <div id="notice" aria-live="polite"></div>
+            </div>
+        </div>
+
+        <aside class="games-list" id="gamesList"></aside>
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 The Gamer's HUB | Sabaragamuwa University of Sri Lanka</p>
+    <p style="font-size:0.8rem;color:var(--text-gray);margin-top:8px">Faculty of Applied Sciences - Group 06 Project</p>
+</footer>
+
+<!-- ── POPUP MODAL ── -->
+<div class="overlay" id="overlay">
+    <div class="modal" id="modal">
+        <div class="modal-accent" id="modalAccent"></div>
+        <div class="modal-body">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div class="modal-game-title" id="modalTitle"></div>
+            <div class="modal-dvds" id="modalDvds"></div>
+
+            <div class="modal-section-label">Story Overview</div>
+            <div class="modal-desc" id="modalDesc"></div>
+
+            <div class="modal-section-label">System Requirements</div>
+            <div class="sysreq-wrap">
+                <div class="sysreq-grid">
+                    <div class="sysreq-col">
+                        <div class="sysreq-col-header">Minimum</div>
+                        <div id="minReqs"></div>
+                    </div>
+                    <div class="sysreq-col">
+                        <div class="sysreq-col-header">Recommended</div>
+                        <div id="recReqs"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="trailerRow"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+const games = [
+    {
+        title: 'FORZA HORIZON 4',
+        dvds: '12',
+        trailer: 'FORZA HORIZON 4  -  12  dvds.mp4',
+        thumbnail: '1.jpg',
+        color: '#1D9E75',
+        desc: 'Forza Horizon 4 is a visually breathtaking open-world racing masterpiece set across a stunning, condensed version of Great Britain. The game features a dynamic seasons system that fundamentally changes the environment and driving conditions every week, offering a fresh experience with hundreds of licensed cars to collect and customize. From the winding roads of the Cotswolds to the historic streets of Edinburgh, every mile is a postcard. Players can explore the world alone or with others, participating in races, stunts, and seasonal challenges that keep the gameplay loop constantly evolving and exciting for all skill levels.\n\n---\n\nSecret Story: Beyond the high-speed festival lies the "Horizon Spirit," a hidden lore suggesting that this racing paradise is a curated reality where the joy of speed transcends the laws of physics. The secret narrative explores the idea of a timeless summer—a world that never grows old where drivers are celebrated as eternal legends. It is a sandbox designed to capture the fleeting beauty of the English countryside while cementing your legacy as a superstar in a celebration that never truly ends.',
+        specs: { CPU: 'Intel i3-4170 / AMD FX-6300', RAM: '8 GB', GPU: 'NVidia GTX 650 Ti / AMD R7 250x', DirectX: '12', OS: 'Windows 10 (64-bit)', Storage: '80 GB' },
+        rec:  { CPU: 'Intel i7-3820 / AMD R9 1600x', RAM: '16 GB', GPU: 'Nvidia GTX 970 / AMD R9 290x', DirectX: '12', OS: 'Windows 10 (64-bit)', Storage: '80 GB SSD' }
+    },
+    {
+        title: 'Gears 5',
+        dvds: '11',
+        trailer: 'Gears 5    -  11 dvd.mp4',
+        thumbnail: '2.jpg',
+        color: '#D85A30',
+        desc: "Gears 5 evolves the legendary third-person shooter franchise with its largest and most diverse world yet. Players follow Kait Diaz as she ventures across frozen tundras and scorched deserts to uncover the truth about her origins and the real threat to Sera. The game combines visceral cover-based combat with new RPG elements, allowing players to upgrade Jack, their robotic companion, to suit their tactical playstyle. With refined shooting mechanics, expansive environments, and a deep emotional core, the campaign offers a journey that is both grand in scale and intimate in its character development.\n\n---\n\nSecret Story: This chapter is a haunting exploration of 'Bloodlines and Identity.' The horrifying secret buried deep within the game reveals that the heroes' own ancestors were responsible for the creation of their greatest nightmares, the Swarm. As Kait discovers her intrinsic connection to the enemy, the story shifts from a war for survival to a psychological struggle. It poses a dark question: are we defined by the sins of our family's past, or do we have the power to break the cycle through our own choices?",
+        specs: { CPU: 'AMD Ryzen 3 / Intel i5 Skylake', RAM: '8 GB', GPU: 'AMD Radeon RX 570 / NVidia GTX 970', DirectX: '12', OS: 'Windows 10 (64-bit)', Storage: '80 GB' },
+        rec:  { CPU: 'Intel i7-8700K / AMD Ryzen 5 3600', RAM: '16 GB', GPU: 'Nvidia GTX 1080 / AMD RX 5700 XT', DirectX: '12', OS: 'Windows 10 (64-bit)', Storage: '80 GB SSD' }
+    },
+    {
+        title: 'Ghost Recon Wildlands',
+        dvds: '14',
+        trailer: 'Ghost Recon Wildlands -   14 dvd.mp4',
+        thumbnail: '3.jpg',
+        color: '#378ADD',
+        desc: "Set in the vast, beautiful, and dangerous landscape of Bolivia, Ghost Recon Wildlands is a tactical shooter that grants players total freedom. As a member of the 'Ghosts,' an elite US Special Forces team, your mission is to dismantle the Santa Blanca drug cartel through any means necessary. The game emphasizes stealth, long-range planning, and seamless four-player co-op across a massive open world filled with diverse biomes and dynamic weather. Whether you choose to strike from the shadows under the cover of night or launch a full-scale frontal assault, the choice is entirely yours.\n\n---\n\nSecret Story: The hidden narrative explores the 'Blurred Line of Morality' in modern warfare. While your objective is to liberate the country, the secret story highlights the ethical cost of foreign intervention. The Ghosts operate in a gray area where their methods are often as destructive as the cartel they fight. It is a cautionary tale about power vacuums and the phantom nature of heroes who leave a nation in chaos while claiming victory.",
+        specs: { CPU: 'Intel Core i5-2400S / AMD FX 4350', RAM: '6 GB', GPU: 'NVIDIA GTX 660 / AMD R9 270X', DirectX: '11', OS: 'Windows 7/8/10 (64-bit)', Storage: '50 GB' },
+        rec:  { CPU: 'Intel Core i7-3770 / AMD FX-8350', RAM: '16 GB', GPU: 'Nvidia GTX 970 / AMD R9 290x', DirectX: '11', OS: 'Windows 10 (64-bit)', Storage: '50 GB SSD' }
+    },
+    {
+        title: 'Ghostwire: Tokyo',
+        dvds: '4',
+        trailer: 'Ghostwire- Tokyo - 4 dvds.mp4',
+        thumbnail: '4.jpg',
+        color: '#7F77DD',
+        desc: "In Ghostwire: Tokyo, the city's population vanishes in an instant, replaced by deadly supernatural Visitors. Players take control of Akito, who is possessed by a spirit hunter named KK. Using 'Ethereal Weaving,' you manipulate elemental powers—wind, water, and fire—to combat spirits and uncover the truth behind the mysterious occultist leading the invasion. The game is a love letter to Tokyo, blending hyper-modern cityscapes with traditional Japanese folklore.\n\n---\n\nSecret Story: Beneath the neon-soaked streets lies a profound 'Poem to Grief.' The Vanishing isn't just a ghost story; it is a metaphor for the isolation and lonely deaths prevalent in modern urban life. The secret narrative shows that Tokyo is a city haunted by its own unspoken sadness. By cleansing the spirits, Akito isn't just fighting — he is providing the closure and peace that these souls were denied in life.",
+        specs: { CPU: 'Intel Core i7-4770K / AMD Ryzen 5 2600', RAM: '12 GB', GPU: 'NVIDIA GTX 1060 / AMD RX 5500 XT', DirectX: '12', OS: 'Windows 10 (64-bit)', Storage: '20 GB SSD' },
+        rec:  { CPU: 'Intel Core i7-9700K / AMD Ryzen 5 3600X', RAM: '16 GB', GPU: 'Nvidia RTX 2080 / AMD RX 6800 XT', DirectX: '12', OS: 'Windows 10/11 (64-bit)', Storage: '20 GB NVMe SSD' }
+    },
+    {
+        title: 'God of War',
+        dvds: '10',
+        trailer: 'God of War -  10 dvd.mp4',
+        thumbnail: '5.jpg',
+        color: '#BA7517',
+        desc: "Leaving his vengeful past in Greece behind, Kratos now lives as a man in the realm of Norse Gods and monsters. In this cinematic action-adventure, he must fight to survive while teaching his son, Atreus, to do the same. The game features a groundbreaking 'no-cut' camera style, offering an intimate look at a brutal world of gods, giants, and dragons. The combat is visceral and heavy, centered on the magical Leviathan Axe.\n\n---\n\nSecret Story: This is the story of 'The Burden of Fatherhood.' Kratos is terrified that his son will inherit his god-like rage and blood-soaked history. The hidden layer reveals that fate is a circular trap — the secret reveal that Atreus is actually Loki suggests that Norse apocalypse, Ragnarök, is tied directly to their bond. It is a masterpiece about the struggle to change one's destiny.",
+        specs: { CPU: 'Intel i5-2500k / AMD Ryzen 3 1200', RAM: '8 GB', GPU: 'NVIDIA GTX 960 / AMD R9 290X', DirectX: '11', OS: 'Windows 10 (64-bit)', Storage: '70 GB SSD' },
+        rec:  { CPU: 'Intel i9-9900K / AMD Ryzen 9 3900XT', RAM: '16 GB', GPU: 'Nvidia RTX 3080 / AMD RX 6800 XT', DirectX: '12', OS: 'Windows 10/11 (64-bit)', Storage: '70 GB NVMe SSD' }
+    },
+    {
+        title: 'GTA V',
+        dvds: '14',
+        trailer: 'GTA - V   -  14 dvd      com & com.mp4',
+        thumbnail: '6.jpg',
+        color: '#E24B4A',
+        desc: "Grand Theft Auto V tells the interwoven stories of three very different criminals: Michael, a retired bank robber; Franklin, a street hustler; and Trevor, a volatile psychopath. Set in the sprawling metropolis of Los Santos, players navigate a world of high-stakes heists and government corruption. From high-speed freeway chases to meticulously planned multi-stage bank robberies, the scale of the experience is unmatched. Los Santos is a living, breathing world packed with side activities and biting social commentary on modern American culture.\n\n---\n\nSecret Story: The secret theme is the 'Death of the American Dream.' The hidden narrative reveals the hollowness of its protagonists' lives. No matter how much money they steal, they remain trapped by their own flaws and a system more corrupt than the criminals themselves. It is a story about men chasing a ghost of a life that was never real.",
+        specs: { CPU: 'Intel Core i5 3470 / AMD X8 FX-8350', RAM: '8 GB', GPU: 'NVIDIA GTX 660 / AMD HD7870', DirectX: '10/11', OS: 'Windows 8.1 (64-bit)', Storage: '72 GB' },
+        rec:  { CPU: 'Intel Core i7-4770K / AMD R9 1700x', RAM: '16 GB', GPU: 'Nvidia GTX 1080 / AMD RX 5700 XT', DirectX: '11', OS: 'Windows 10 (64-bit)', Storage: '72 GB SSD' }
+    },
+    {
+        title: 'HITMAN 1 (2016)',
+        dvds: '11',
+        trailer: 'HITMAN 1 - 2016  -  11 dvd.MP4',
+        thumbnail: '7.jpg',
+        color: '#888780',
+        desc: "Enter the world of the 'Apex Predator' as Agent 47, the world's most efficient assassin. Hitman provides expansive sandbox levels where players must use stealth, disguises, and environmental kills to eliminate high-profile targets. Every mission is a puzzle, offering dozens of ways to complete an objective. From the fashion runways of Paris to the high-tech hospitals of Hokkaido, the game rewards creativity, patience, and professional execution.\n\n---\n\nSecret Story: The secret narrative involves 'The Puppet Master's Shadow.' Beyond the individual contracts, a deeper conspiracy reveals that 47 is being manipulated by a mysterious Shadow Client to dismantle Providence, a secret society that controls the world. He is not just a tool; he is a man realizing that his every move has been part of a global chess game — a cold journey from being a weapon of the elite to becoming the force that tears their world apart.",
+        specs: { CPU: 'Intel Core i5-2500K / AMD Phenom II X4 940', RAM: '8 GB', GPU: 'NVIDIA GTX 660 / AMD Radeon HD 7870', DirectX: '12', OS: 'Windows 7 (64-bit)', Storage: '50 GB' },
+        rec:  { CPU: 'Intel Core i7-3770 / AMD FX-8350', RAM: '16 GB', GPU: 'Nvidia GTX 970 / AMD R9 390', DirectX: '12', OS: 'Windows 10 (64-bit)', Storage: '50 GB SSD' }
+    },
+    {
+        title: 'Hogwarts Legacy',
+        dvds: '—',
+        trailer: 'Hogwarts Legacy -  Harry potter .mp4',
+        thumbnail: '8.jpg',
+        color: '#534AB7',
+        desc: "Experience the Wizarding World in the 1800s as a fifth-year student at Hogwarts. This open-world RPG allows you to master spells, brew potions, and fly on broomsticks while uncovering a massive threat to the magical world. Combat is fast-paced and magical, requiring players to chain spells and dodge curses, while the RPG systems allow for deep customization of your character's talents and gear.\n\n---\n\nSecret Story: The core secret involves 'The Responsibility of Forbidden Power.' You possess a rare ability to see and manipulate Ancient Magic, a power so volatile that a group called the Keepers tried to erase it from history. The hidden narrative is a cautionary tale about the temptation of absolute power — asking if you will use this forgotten magic for the greater good or follow the path of those who were corrupted by it before.",
+        specs: { CPU: 'Intel Core i5-6600 / AMD Ryzen 5 1400', RAM: '16 GB', GPU: 'NVIDIA GTX 960 / AMD Radeon RX 470', DirectX: '12', OS: 'Windows 10 (64-bit)', Storage: '85 GB SSD' },
+        rec:  { CPU: 'Intel Core i7-8700K / AMD Ryzen 5 3600', RAM: '16 GB', GPU: 'Nvidia RTX 2080 Ti / AMD RX 6800 XT', DirectX: '12', OS: 'Windows 11 (64-bit)', Storage: '85 GB NVMe SSD' }
+    },
+    {
+        title: 'Need For Speed Payback',
+        dvds: '4 & 7',
+        trailer: 'Need For Speed Payback   - 4 & 7 dvd.mp4',
+        thumbnail: '9.jpg',
+        color: '#EF9F27',
+        desc: "Set in the underworld of Fortune Valley, Need For Speed Payback is an action-driving blockbuster. You and your crew are reunited by a quest for vengeance against The House, a nefarious cartel that rules the city's casinos, criminals, and cops. The game features intense heist missions, high-stakes car battles, and deep customization across five distinct car classes: Race, Drift, Off-Road, Drag, and Runner.\n\n---\n\nSecret Story: The secret narrative centers on the 'Outlaw's Code.' In a city where everything is rigged and the House always wins, the story is about the few things money can't buy: loyalty and pure skill. The hidden layer explores the bond between Tyler, Mac, and Jess as they realize that their desire for revenge is the only thing keeping them from being consumed by the very corruption they hate.",
+        specs: { CPU: 'Intel i3 6300 / AMD FX 8150', RAM: '6 GB', GPU: 'NVIDIA GTX 750 Ti / AMD Radeon HD 7850', DirectX: '11', OS: 'Windows 7 SP1 (64-bit)', Storage: '30 GB' },
+        rec:  { CPU: 'Intel Core i7-4790 / AMD FX-9590', RAM: '16 GB', GPU: 'Nvidia GTX 1060 / AMD RX 480', DirectX: '11', OS: 'Windows 10 (64-bit)', Storage: '30 GB SSD' }
+    },
+    {
+        title: 'Quantum Break',
+        dvds: '11',
+        trailer: 'Quantum Break -  11 dvd.mp4',
+        thumbnail: '10.jpg',
+        color: '#5DCAA5',
+        desc: "Quantum Break is a revolutionary experience that blurs the line between a high-stakes video game and a live-action TV show. After a failed time-travel experiment, Jack Joyce gains time-manipulation powers and must stop a corporation from destroying the fabric of reality. Your in-game choices affect the outcome of the live-action episodes, creating a personalized narrative that explores the consequences of time travel.\n\n---\n\nSecret Story: The secret story is a 'Tragedy of Inevitability.' While Jack gains the power to pause and rewind time, the hidden truth reveals that you cannot change the past because your attempts to change it are what caused the future in the first place. Jack is fighting against a clock that has already stopped — a haunting masterpiece about the human desire to fix mistakes set in stone.",
+        specs: { CPU: 'Intel Core i5-4460 / AMD FX-6300', RAM: '8 GB', GPU: 'NVIDIA GTX 760 / AMD Radeon R7 260x', DirectX: '12', OS: 'Windows 10 (64-bit)', Storage: '55 GB SSD' },
+        rec:  { CPU: 'Intel Core i7-4790 / AMD R7 1700', RAM: '16 GB', GPU: 'Nvidia GTX 980 Ti / AMD RX 480', DirectX: '12', OS: 'Windows 10 (64-bit)', Storage: '55 GB NVMe SSD' }
+    },
+    {
+        title: 'Sleeping Dogs',
+        dvds: '3',
+        trailer: 'Sleeping Dogs  -  3DVD.mp4',
+        thumbnail: '11.jpg',
+        color: '#D4537E',
+        desc: "Sleeping Dogs is a gritty, open-world cop drama set in the vibrant streets of Hong Kong. You play as Wei Shen, an undercover police officer tasked with infiltrating the Sun On Yee triad. The game focuses on bone-crunching martial arts combat, high-speed chases, and a narrative that pulls you into the deep darkness of the criminal underworld, forcing you to use the environment itself as a weapon during combat.\n\n---\n\nSecret Story: The secret story is a 'Crisis of Loyalty and Identity.' As Wei Shen rises through the ranks, the lines between right and wrong begin to vanish. He begins to realize that the criminals in the triad often show more honor and brotherhood than the corrupt police superiors who sent him there. The secret truth is that the badge doesn't make you a hero, and the ink doesn't make you a monster.",
+        specs: { CPU: 'Core 2 Duo 2.4GHz / Athlon X2 2.7GHz', RAM: '4 GB', GPU: 'NVIDIA GeForce 8800 GT / ATI Radeon 3870', DirectX: '10', OS: 'Windows Vista/7 (64-bit)', Storage: '10 GB' },
+        rec:  { CPU: 'Intel Core i7-2600 / AMD Phenom II X6 1100T', RAM: '8 GB', GPU: 'Nvidia GTX 560 Ti / AMD Radeon HD 6950', DirectX: '11', OS: 'Windows 7 (64-bit)', Storage: '10 GB SSD' }
+    },
+    {
+        title: 'Sniper: Ghost Warrior Contracts',
+        dvds: '3',
+        trailer: 'Sniper- Ghost Warrior Contracts 1 -   3 dvd.mp4',
+        thumbnail: '12.jpg',
+        color: '#639922',
+        desc: "This title offers pure sniping gameplay across the harsh, frozen landscapes of Siberia. As a hired assassin, you must complete specific contracts with a clear main objective and options for secondary objectives for bonus payouts. The game emphasizes tactical environmental awareness, long-range planning, and high-precision execution with its realistic bullet-physics engine that accounts for wind and gravity.\n\n---\n\nSecret Story: The secret narrative is the 'Silent Geopolitics of Siberia.' You aren't just a mercenary; you are a tool being used to destabilize a newly independent Siberian Republic. The story highlights the cold reality of a soldier whose greatest success is never being seen — a gritty look at modern war where there are no medals, only the silent satisfaction of a shot fired from a thousand meters away.",
+        specs: { CPU: 'Intel i3 3240 / AMD FX-6350', RAM: '8 GB', GPU: 'NVIDIA GTX 660 / AMD Radeon HD 7850', DirectX: '11', OS: 'Windows 7 (64-bit)', Storage: '18 GB' },
+        rec:  { CPU: 'Intel Core i7-8700K / AMD Ryzen 7 1800X', RAM: '16 GB', GPU: 'Nvidia RTX 2060 / AMD RX 5700', DirectX: '12', OS: 'Windows 10 (64-bit)', Storage: '18 GB SSD' }
+    },
+    {
+        title: 'The Witcher 3: Wild Hunt',
+        dvds: '6',
+        trailer: 'Witcher_3_Wild_Hunt  -  6  dvd.mp4',
+        thumbnail: '13.jpg',
+        color: '#FA7D0B',
+        desc: "As Geralt of Rivia, a monster hunter for hire, you travel through a war-torn continent searching for the Child of Prophecy, Ciri. The Witcher 3 is an open-world RPG masterpiece filled with complex characters, political intrigue, and monsters derived from Slavic folklore. Every choice you make has significant consequences that can change the fate of entire villages or kingdoms across the massive map.\n\n---\n\nSecret Story: The secret story is that 'Small Acts of Humanity Save the World.' While the game focuses on the epic invasion of the Wild Hunt, the true ending is determined by how you act as a father. The secret to saving the universe lies in simple moments — playing snowballs with Ciri, letting her vent her anger, and trusting her to make her own mistakes. The hidden truth: the fate of the world rests on kindness we show to those we love.",
+        specs: { CPU: 'Intel Core i5-2500K / AMD A10-5800K', RAM: '6 GB', GPU: 'Nvidia GTX 660 / AMD Radeon HD 7870', DirectX: '11', OS: 'Windows 7/8/10 (64-bit)', Storage: '35 GB' },
+        rec:  { CPU: 'Intel Core i7-3770 / AMD FX-8350', RAM: '8 GB', GPU: 'Nvidia GTX 770 / AMD Radeon R9 290', DirectX: '11', OS: 'Windows 7/8/10 (64-bit)', Storage: '35 GB SSD' }
+    },
+    {
+        title: 'Borderlands 3',
+        dvds: '5',
+        trailer: 'Borderlands 3 - Official Cinematic Launch Trailer.mp4',
+        thumbnail: '14.jpg',
+        color: '#FF6B35',
+        desc: "Blast through the galaxy in this chaotic, hilarious, and action-packed shooter looter RPG. Borderlands 3 is a vibrant first-person adventure across exotic planets filled with hundreds of weapons, unique characters, and relentless enemies. Team up with friends in cooperative multiplayer or go solo as you fight the Calypso Twins and their cultish followers. Every planet offers wild environments, from alien wastelands to neon-soaked cities, packed with side quests, Easter eggs, and legendary loot.\n\n---\n\nSecret Story: The secret story is 'The Power of Chaos and Choice.' In a universe governed by the Vault, the hidden truth reveals that real power lies not in following a predetermined path but in the freedom to carve your own destiny. The game explores how ordinary people, armed with conviction and firepower, can challenge the established order and rewrite the rules of the universe.",
+        specs: { CPU: 'Intel Core i5-8400 / AMD Ryzen 5 2600X', RAM: '8 GB', GPU: 'NVIDIA GeForce GTX 960 / AMD Radeon RX 480', DirectX: '12', OS: 'Windows 7/10 (64-bit)', Storage: '55 GB SSD' },
+        rec:  { CPU: 'Intel Core i7-9700K / AMD Ryzen 7 2700X', RAM: '16 GB', GPU: 'Nvidia RTX 2070 / AMD RX 5700 XT', DirectX: '12', OS: 'Windows 10 (64-bit)', Storage: '55 GB NVMe SSD' }
+    },
+    {
+        title: 'Destiny 2',
+        dvds: '6',
+        trailer: 'Destiny 2  - Official Launch Trailer.mp4',
+        thumbnail: '15.jpg',
+        color: '#3B82F6',
+        desc: "Step into an immersive first-person action RPG where you become a Guardian and protect humanity's last safe city. Destiny 2 combines cooperative strikes, intense player-versus-player combat, and massive raids across exotic locations. From the frozen wastes of Europa to the golden deserts of Mars, explore exotic worlds filled with mystery and danger. Work with friends to defeat powerful enemies, collect legendary weapons, and uncover the secrets of the universe in a living, breathing world that evolves with each season.\n\n---\n\nSecret Story: The secret story is 'Light Against Darkness.' As a Guardian resurrected by the Traveler, you are caught between cosmic forces of creation and destruction. The hidden truth reveals that the real battle is not just external but internal — choosing between vengeance and redemption, power and purpose, as you discover that some enemies are not what they seem.",
+        specs: { CPU: 'Intel Core i5-7600K / AMD Ryzen 5 1600', RAM: '8 GB', GPU: 'NVIDIA GTX 1060 / AMD RX 470', DirectX: '12', OS: 'Windows 10/11 (64-bit)', Storage: '105 GB SSD' },
+        rec:  { CPU: 'Intel Core i7-9700K / AMD Ryzen 7 3700X', RAM: '16 GB', GPU: 'Nvidia RTX 2080 Ti / AMD RX 6800 XT', DirectX: '12', OS: 'Windows 10/11 (64-bit)', Storage: '105 GB NVMe SSD' }
+    },
+    {
+        title: 'Halo Infinite',
+        dvds: '8',
+        trailer: 'Halo Infinite  Campaign Launch Trailer.mp4',
+        thumbnail: '16.jpg',
+        color: '#117DBA',
+        desc: "Master Chief returns in an epic adventure across the vast Zeta Halo ring. Halo Infinite blends classic first-person shooter gameplay with cutting-edge open-world exploration. Use your grappling hook and advanced armor abilities to navigate stunning alien landscapes, uncover hidden secrets, and face waves of Banished enemies. The campaign is a thrilling journey across a mysterious halo installation, while the multiplayer offers fast-paced, skill-based combat that defines the franchise. Experience humanity's last stand against extinction in a visually breathtaking and engaging narrative.\n\n---\n\nSecret Story: The secret story is 'Echo and Echo.' The hidden truth reveals that the Zeta Halo is not just a weapon but a prison for something far more ancient and dangerous than the Banished. As Master Chief uncovers the ring's mysteries, he discovers that saving humanity might require understanding the very enemies he fights — and that redemption comes in unexpected forms.",
+        specs: { CPU: 'Intel Core i5-8400 / AMD Ryzen 5 2600', RAM: '8 GB', GPU: 'NVIDIA GTX 1060 / AMD RX 470', DirectX: '12', OS: 'Windows 10/11 (64-bit)', Storage: '120 GB SSD' },
+        rec:  { CPU: 'Intel Core i7-10700K / AMD Ryzen 7 3700X', RAM: '16 GB', GPU: 'Nvidia RTX 2080 Ti / AMD RX 6800 XT', DirectX: '12', OS: 'Windows 10/11 (64-bit)', Storage: '120 GB NVMe SSD' }
+    }
+];
+
+    // ── State ──
+    let currentIndex = 0;
+
+    const list     = document.getElementById('gamesList');
+    const player   = document.getElementById('mainPlayer');
+    const titleEl  = document.getElementById('gameTitle');
+    const dvdEl    = document.getElementById('gameDvd');
+    const descEl   = document.getElementById('gameDesc');
+    const noticeEl = document.getElementById('notice');
+    let noticeTimer = null;
+
+    // ── Modal helpers ──
+    function openModal(idx) {
+        const g = games[idx];
+        document.getElementById('modalAccent').style.background = g.color || '#3b82f6';
+        document.getElementById('modalTitle').textContent = g.title;
+        document.getElementById('modalDvds').textContent = 'Installation: ' + g.dvds + ' DVDs';
+        document.getElementById('modalDesc').textContent = g.desc;
+        document.getElementById('minReqs').innerHTML  = reqHTML(g.specs);
+        document.getElementById('recReqs').innerHTML  = reqHTML(g.rec);
+        const tr = document.getElementById('trailerRow');
+        tr.innerHTML = g.trailer
+            ? `<div class="trailer-pill"><i class="fa-solid fa-film"></i> <code>${g.trailer}</code></div>`
+            : '';
+        document.getElementById('overlay').classList.add('open');
+    }
+
+    function closeModal() {
+        document.getElementById('overlay').classList.remove('open');
+    }
+
+    function reqHTML(obj) {
+        if (!obj) return '<div style="color:#4a5568;font-size:0.8rem">No data</div>';
+        return Object.entries(obj).map(([k, v]) =>
+            `<div class="req-row">
+                <div class="req-label">${k}</div>
+                <div class="req-val">${v}</div>
+            </div>`
+        ).join('');
+    }
+
+    // Close modal on backdrop click
+    document.getElementById('overlay').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+    // Close on Escape
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── Notice banner ──
+    function showNotice(msg, ms = 4000) {
+        if (!noticeEl) return;
+        noticeEl.textContent = msg;
+        noticeEl.classList.add('notice-show');
+        if (noticeTimer) clearTimeout(noticeTimer);
+        noticeTimer = setTimeout(() => {
+            noticeEl.classList.remove('notice-show');
+            noticeTimer = null;
+        }, ms);
+    }
+
+    // ── Render sidebar items ──
+    function makeItem(g, idx) {
+        const el = document.createElement('div');
+        el.className = 'game-item';
+        el.dataset.index = idx;
+        
+        let thumbStyle = `border-left:3px solid ${g.color || '#3b82f6'}`;
+        let thumbAttr = '';
+        if (g.thumbnail) {
+            thumbStyle += `; background-image: url('./${g.thumbnail}')`;
+            thumbAttr = 'data-has-image="true"';
+        }
+        
+        el.innerHTML = `
+            <div class="thumb" style="${thumbStyle}" ${thumbAttr}>` + (g.thumbnail ? '' : 'TR') + `</div>
+            <div class="game-info">
+                <b>${g.title}</b>
+                <span class="count">DVDs: ${g.dvds}</span>
+            </div>`;
+        el.addEventListener('click', () => loadGame(idx));
+        return el;
+    }
+
+    // ── Video probing ──
+    function testVideo(path, timeout = 1200) {
+        return new Promise(resolve => {
+            const v = document.createElement('video');
+            let done = false;
+            const cleanup = () => {
+                v.removeEventListener('loadedmetadata', onLoad);
+                v.removeEventListener('error', onErr);
+                try { v.src = ''; } catch(e) {}
+            };
+            const onLoad = () => { if (!done) { done = true; cleanup(); resolve(true); } };
+            const onErr  = () => { if (!done) { done = true; cleanup(); resolve(false); } };
+            v.preload = 'metadata';
+            v.addEventListener('loadedmetadata', onLoad);
+            v.addEventListener('error', onErr);
+            v.src = path;
+            setTimeout(() => { if (!done) { done = true; cleanup(); resolve(false); } }, timeout);
+        });
+    }
+
+    async function findLocalTrailer(title, explicitName = null) {
+        const base = '../';
+        const exts = ['mp4','MP4','webm','mkv'];
+        if (explicitName) {
+            if (/\.[a-zA-Z0-9]+$/.test(explicitName)) {
+                const candidate = base + encodeURIComponent(explicitName);
+                try { const ok = await testVideo(candidate); if (ok) return candidate; } catch(e) {}
+            } else {
+                for (const ext of exts) {
+                    const candidate = base + encodeURIComponent(explicitName) + '.' + ext;
+                    try { const ok = await testVideo(candidate); if (ok) return candidate; } catch(e) {}
+                }
+            }
+        }
+        const variants = new Set();
+        variants.add(title);
+        variants.add(title.replace(/[:]/g,''));
+        variants.add(title.replace(/[:]/g,'-'));
+        variants.add(title.replace(/\s+/g,'_'));
+        variants.add(title.toLowerCase());
+        variants.add(title.toLowerCase().replace(/\s+/g,'_'));
+        variants.add(title.replace(/[^a-zA-Z0-9 _-]/g,''));
+        for (const v of variants) {
+            const name = v.trim();
+            if (!name) continue;
+            for (const ext of exts) {
+                const candidate = base + encodeURIComponent(name) + '.' + ext;
+                try { const ok = await testVideo(candidate); if (ok) return candidate; } catch(e) {}
+            }
+        }
+        return null;
+    }
+
+    // ── Load game into player ──
+    async function loadGame(idx) {
+        currentIndex = idx;
+        const g = games[idx];
+        titleEl.textContent = g.title;
+        dvdEl.textContent   = 'DVDs: ' + g.dvds;
+        descEl.textContent  = g.desc;
+        Array.from(list.children).forEach(ch => ch.classList.toggle('active', ch.dataset.index == idx));
+
+        let local = null;
+        if (g.trailer && !/^https?:\/\//i.test(g.trailer)) {
+            local = await findLocalTrailer(g.title, g.trailer);
+        }
+        if (!local) local = await findLocalTrailer(g.title);
+
+        if (local) {
+            player.src = local;
+            showNotice('Local trailer found — playing local file');
+        } else {
+            player.src = g.trailer || '';
+            showNotice('Local trailer not found — playing online trailer');
+        }
+        player.play().catch(() => { showNotice('Playback blocked by browser or file not playable'); });
+    }
+
+    // ── Boot ──
+    games.forEach((g, i) => list.appendChild(makeItem(g, i)));
+    
+    // Check for game parameter from URL
+    const params = new URLSearchParams(window.location.search);
+    const gameParam = params.get('game');
+    let startIndex = 0;
+    
+    if (gameParam === 'destiny2') {
+      startIndex = games.findIndex(g => g.title.toLowerCase() === 'destiny 2');
+      if (startIndex === -1) startIndex = 0;
+    }
+    
+    if (games.length) loadGame(startIndex);
+</script>
+
+</body>
+</html>

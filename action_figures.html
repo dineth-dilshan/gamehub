@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gaming Action Figures - The Gamer's HUB</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #0a0e27;
+      color: #ffffff;
+    }
+
+    /* Top navigation */
+    .topbar {
+      background-color: #050814;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 60px;
+      font-size: 14px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo span {
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% {
+        color: #ffffff;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+      }
+      50% {
+        color: #26b6ff;
+        text-shadow: 0 0 20px rgba(38, 182, 255, 0.8), 0 0 30px rgba(38, 182, 255, 0.5);
+      }
+    }
+
+    .logo-box {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #ffffff;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #26b6ff;
+      text-shadow: 0 0 10px rgba(38, 182, 255, 0.6);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nav-right a {
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+      color: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-right a:hover {
+      color: #ff4e8a;
+      text-shadow: 0 0 10px rgba(255, 78, 138, 0.6);
+    }
+
+    /* Page Header */
+    .page-header {
+      background: linear-gradient(135deg, #050814 0%, #1a1f3a 100%);
+      padding: 60px 60px;
+      border-bottom: 2px solid #26b6ff;
+      text-align: center;
+    }
+
+    .page-header h1 {
+      font-size: 2.8rem;
+      color: #26b6ff;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px rgba(38, 182, 255, 0.5);
+    }
+
+    .page-header p {
+      color: #94a3b8;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* Filter Section */
+    .filter-section {
+      background-color: #0f1724;
+      padding: 30px 60px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .filter-group label {
+      color: #26b6ff;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    .filter-group select,
+    .filter-group input {
+      background-color: #1e293b;
+      color: #ffffff;
+      padding: 8px 12px;
+      border: 1px solid #26b6ff;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .filter-group select:hover,
+    .filter-group input:hover {
+      border-color: #ff4e8a;
+      box-shadow: 0 0 10px rgba(38, 182, 255, 0.3);
+    }
+
+    /* Custom Action Figure Ribbon */
+    .custom-ribbon {
+      background: linear-gradient(135deg, rgba(255, 78, 138, 0.1), rgba(38, 182, 255, 0.1));
+      border-top: 2px solid #ff4e8a;
+      border-bottom: 2px solid #26b6ff;
+      padding: 25px 60px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .custom-ribbon p {
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0;
+      text-shadow: 0 0 10px rgba(38, 182, 255, 0.3);
+    }
+
+    .custom-ribbon a {
+      background: linear-gradient(135deg, #ff4e8a, #26b6ff);
+      color: white;
+      padding: 12px 35px;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 1.5px;
+      transition: all 0.3s ease;
+      display: inline-block;
+      box-shadow: 0 0 20px rgba(255, 78, 138, 0.4);
+      white-space: nowrap;
+    }
+
+    .custom-ribbon a:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(255, 78, 138, 0.7), 0 0 20px rgba(38, 182, 255, 0.5);
+    }
+
+    /* Action Figures Grid Section */
+    .figures-section {
+      background-color: #0a0e27;
+      padding: 60px;
+    }
+
+    .figures-section h2 {
+      font-size: 1.8rem;
+      color: #ffffff;
+      margin-bottom: 40px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+
+    .figures-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .figure-card {
+      background-color: #1e293b;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .figure-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      border-color: #26b6ff;
+    }
+
+    .figure-preview {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #0f1724, #1e293b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .figure-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .figure-preview::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(38, 182, 255, 0.1), transparent);
+      pointer-events: none;
+    }
+
+    .figure-info {
+      padding: 20px;
+    }
+
+    .figure-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .figure-size {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+    .figure-description {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+      line-height: 1.5;
+      min-height: 45px;
+    }
+
+    .figure-price {
+      font-size: 1.4rem;
+      color: #26b6ff;
+      font-weight: bold;
+      margin-bottom: 15px;
+      text-shadow: 0 0 10px rgba(38, 182, 255, 0.4);
+    }
+
+    .figure-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .add-to-cart-btn {
+      flex: 1;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    .add-to-cart-btn:hover {
+      background-color: #1d4ed8;
+      box-shadow: 0 0 15px rgba(37, 99, 235, 0.6);
+    }
+
+    .wishlist-btn {
+      background-color: #1e293b;
+      color: #26b6ff;
+      border: 1px solid #26b6ff;
+      padding: 12px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.8rem;
+      transition: all 0.3s ease;
+    }
+
+    .wishlist-btn:hover {
+      background-color: #26b6ff;
+      color: #0a0e27;
+      box-shadow: 0 0 15px rgba(38, 182, 255, 0.5);
+    }
+
+    .pagination {
+      text-align: center;
+      padding: 40px 0;
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+
+    .pagination a,
+    .pagination span {
+      display: inline-block;
+      padding: 8px 12px;
+      margin: 0 4px;
+      background-color: #1e293b;
+      color: #26b6ff;
+      text-decoration: none;
+      border-radius: 4px;
+      border: 1px solid #26b6ff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .pagination a:hover,
+    .pagination .current {
+      background-color: #26b6ff;
+      color: #0a0e27;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #050814;
+      color: #ffffff;
+      padding: 32px 60px 20px;
+      font-size: 12px;
+    }
+
+    .footer-columns {
+      display: flex;
+      justify-content: space-between;
+      max-width: 100%;
+      margin-bottom: 26px;
+      gap: 40px;
+    }
+
+    .footer-column h4 {
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: #26b6ff;
+    }
+
+    .footer-column ul {
+      list-style: none;
+    }
+
+    .footer-column li {
+      margin-bottom: 6px;
+    }
+
+    .footer-column a {
+      text-decoration: none;
+      color: #cccccc;
+      transition: color 0.3s ease;
+    }
+
+    .footer-column a:hover {
+      color: #26b6ff;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      color: #777777;
+      font-size: 11px;
+      border-top: 1px solid #1e293b;
+      padding-top: 15px;
+    }
+
+    @media (max-width: 1200px) {
+      .figures-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .figures-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-header {
+        padding: 30px 20px;
+      }
+
+      .filter-section,
+      .figures-section {
+        padding: 20px;
+      }
+
+      .topbar {
+        padding: 12px 20px;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .page-header h1 {
+        font-size: 2rem;
+      }
+
+      .custom-form {
+        grid-template-columns: 1fr;
+      }
+
+      .custom-ribbon {
+        padding: 30px 20px;
+        margin: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <div class="topbar">
+    <a href="home - Copy.html" style="text-decoration: none;">
+      <div class="logo">
+        <img src="M5e94cecb0911ddde2fa73739c93655361764410284581.png">
+        <span>The Gamer's HUB</span>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <a href="games.html">Games</a>
+      <a href="storehome.html">Store</a>
+      <a href="community.html">Community</a>
+      <a href="Help.html">Help</a>
+      <a href="#">Rewards</a>
+    </div>
+
+    <div class="nav-right">
+      <span style="position: relative;"><a href="wishlist.html" style="color:white;text-decoration:none" id="nav-wishlist">♥ Wishlist</a><span id="wishlistCount" style="display:none; position: absolute; top: -8px; right: -8px; background: #ff4e8a; color: white; border-radius: 50%; width: 20px; height: 20px; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">0</span></span>
+      <span style="position: relative;"><a href="cart.html" style="color:white;text-decoration:none" id="nav-cart">🛒 Cart</a><span id="cartCount" style="display:none; position: absolute; top: -8px; right: -8px; background: #26b6ff; color: white; border-radius: 50%; width: 20px; height: 20px; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">0</span></span>
+      <span><a href="8.Logintab.html" style="color:white;text-decoration:none">👤 Sign In</a></span>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>Gaming Action Figures</h1>
+    <p>Premium collectible action figures for gaming enthusiasts - build your collection</p>
+  </div>
+
+  <!-- Custom Action Figure Ribbon -->
+  <div class="custom-ribbon">
+    <p>🎨 Want a Custom Figure?</p>
+    <a href="16.Coustom order page - Copy.html">Design Your Own →</a>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="filter-group">
+      <label for="size-filter">Scale:</label>
+      <select id="size-filter">
+        <option value="">All Scales</option>
+        <option value="small">Small (4 inches)</option>
+        <option value="medium">Medium (6-8 inches)</option>
+        <option value="large">Large (10+ inches)</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="price-filter">Price Range:</label>
+      <select id="price-filter">
+        <option value="">All Prices</option>
+        <option value="low">Under Rs. 20,500</option>
+        <option value="mid">Rs. 20,500 - Rs. 45,000</option>
+        <option value="high">Rs. 45,000+</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="search-filter">Search:</label>
+      <input type="text" id="search-filter" placeholder="Search figures...">
+    </div>
+  </div>
+
+  <!-- Action Figures Grid Section -->
+  <section class="figures-section">
+    <h2>Gaming Action Figures Collection</h2>
+
+    <div class="figures-grid" id="page1">
+      <!-- Figure 1 -->
+      <div class="figure-card" data-product-id="1" data-product-emoji="🎮">
+        <div class="figure-preview">
+          <img src="figure pictures/Fig a1.webp" alt="Legend Series Figure">
+        </div>
+        <div class="figure-info">
+          <h3 class="figure-title">Legend Series</h3>
+          <div class="figure-size">6 inches | Collectible Grade</div>
+          <p class="figure-description">Premium articulated action figure with detailed paint work and accessories.</p>
+          <div class="figure-price" data-price="18500">Rs.18,500</div>
+          <div class="figure-actions">
+            <button class="add-to-cart-btn" onclick="addFigureToCart(1, 'Legend Series Figure', 18.50, '🎮')">Add to Cart</button>
+            <button class="wishlist-btn" onclick="addFigureToWishlist(1, 'Legend Series Figure', 18.50, '🎮', 'Action Figures')">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Figure 2 -->
+      <div class="figure-card" data-product-id="2" data-product-emoji="⭐">
+        <div class="figure-preview">
+          <img src="figure pictures/Fig a2.webp" alt="Elite Edition Figure">
+        </div>
+        <div class="figure-info">
+          <h3 class="figure-title">Elite Edition</h3>
+          <div class="figure-size">8 inches | Premium Articulated</div>
+          <p class="figure-description">Limited edition collectible with museum-quality paint and full articulation.</p>
+          <div class="figure-price" data-price="35000">Rs.35,000</div>
+          <div class="figure-actions">
+            <button class="add-to-cart-btn" onclick="addFigureToCart(2, 'Elite Edition Figure', 35.00, '⭐')">Add to Cart</button>
+            <button class="wishlist-btn" onclick="addFigureToWishlist(2, 'Elite Edition Figure', 35.00, '⭐', 'Action Figures')">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Figure 3 -->
+      <div class="figure-card" data-product-id="3" data-product-emoji="🌟">
+        <div class="figure-preview">
+          <img src="figure pictures/Fig a3.webp" alt="Standard Series Figure">
+        </div>
+        <div class="figure-info">
+          <h3 class="figure-title">Standard Series</h3>
+          <div class="figure-size">4 inches | Display Ready</div>
+          <p class="figure-description">Compact collectible perfect for shelves and display cases with authentic details.</p>
+          <div class="figure-price" data-price="12500">Rs.12,500</div>
+          <div class="figure-actions">
+            <button class="add-to-cart-btn" onclick="addFigureToCart(3, 'Standard Series Figure', 12.50, '🌟')">Add to Cart</button>
+            <button class="wishlist-btn" onclick="addFigureToWishlist(3, 'Standard Series Figure', 12.50, '🌟', 'Action Figures')">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Figure 4 -->
+      <div class="figure-card" data-product-id="4" data-product-emoji="💎">
+        <div class="figure-preview">
+          <img src="figure pictures/Fig a4.webp" alt="Premium Deluxe Figure">
+        </div>
+        <div class="figure-info">
+          <h3 class="figure-title">Premium Deluxe</h3>
+          <div class="figure-size">10 inches | Ultra Detailed</div>
+          <p class="figure-description">Premium collectible with light-up features and intricate sculpting details.</p>
+          <div class="figure-price" data-price="52000">Rs.52,000</div>
+          <div class="figure-actions">
+            <button class="add-to-cart-btn" onclick="addFigureToCart(4, 'Premium Deluxe Figure', 52.00, '💎')">Add to Cart</button>
+            <button class="wishlist-btn" onclick="addFigureToWishlist(4, 'Premium Deluxe Figure', 52.00, '💎', 'Action Figures')">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Figure 5 -->
+      <div class="figure-card" data-product-id="5" data-product-emoji="🏆">
+        <div class="figure-preview">
+          <img src="figure pictures/Fig a5.webp" alt="Champion Series Figure">
+        </div>
+        <div class="figure-info">
+          <h3 class="figure-title">Champion Series</h3>
+          <div class="figure-size">7 inches | Highly Articulated</div>
+          <p class="figure-description">Award-winning collectible with superior materials and detailed craftsmanship.</p>
+          <div class="figure-price" data-price="28000">Rs.28,000</div>
+          <div class="figure-actions">
+            <button class="add-to-cart-btn" onclick="addFigureToCart(5, 'Champion Series Figure', 28.00, '🏆')">Add to Cart</button>
+            <button class="wishlist-btn" onclick="addFigureToWishlist(5, 'Champion Series Figure', 28.00, '🏆', 'Action Figures')">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Figure 6 -->
+      <div class="figure-card" data-product-id="6" data-product-emoji="👾">
+        <div class="figure-preview">
+          <img src="figure pictures/Fig a6.jpg" alt="Retro Arcade Figure">
+        </div>
+        <div class="figure-info">
+          <h3 class="figure-title">Retro Arcade</h3>
+          <div class="figure-size">5 inches | Vintage Inspired</div>
+          <p class="figure-description">Classic arcade-themed collectible with retro design and authentic paint scheme.</p>
+          <div class="figure-price" data-price="15000">Rs.15,000</div>
+          <div class="figure-actions">
+            <button class="add-to-cart-btn" onclick="addFigureToCart(6, 'Retro Arcade Figure', 15.00, '👾')">Add to Cart</button>
+            <button class="wishlist-btn" onclick="addFigureToWishlist(6, 'Retro Arcade Figure', 15.00, '👾', 'Action Figures')">♥</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="figures-grid" id="page2" style="display: none;">
+      <!-- Figure 7 -->
+      <div class="figure-card" data-product-id="7" data-product-emoji="🤖">
+        <div class="figure-preview">
+          <img src="figure pictures/Fig a14.webp" alt="Cyber Series Figure">
+        </div>
+        <div class="figure-info">
+          <h3 class="figure-title">Cyber Series</h3>
+          <div class="figure-size">9 inches | Advanced Articulation</div>
+          <p class="figure-description">Futuristic collectible with cyberpunk aesthetic and premium paint application.</p>
+          <div class="figure-price" data-price="42000">Rs.42,000</div>
+          <div class="figure-actions">
+            <button class="add-to-cart-btn" onclick="addFigureToCart(7, 'Cyber Series Figure', 42.00, '🤖')">Add to Cart</button>
+            <button class="wishlist-btn" onclick="addFigureToWishlist(7, 'Cyber Series Figure', 42.00, '🤖', 'Action Figures')">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Figure 8 -->
+      <div class="figure-card" data-product-id="8" data-product-emoji="🎯">
+        <div class="figure-preview">
+          <img src="figure pictures/Fig a13.webp" alt="Ultimate Legend Figure">
+        </div>
+        <div class="figure-info">
+          <h3 class="figure-title">Ultimate Legend</h3>
+          <div class="figure-size">12 inches | Master Piece</div>
+          <p class="figure-description">Masterpiece collectible with complete articulation and museum display quality.</p>
+          <div class="figure-price" data-price="65000">Rs.65,000</div>
+          <div class="figure-actions">
+            <button class="add-to-cart-btn" onclick="addFigureToCart(8, 'Ultimate Legend Figure', 65.00, '🎯')">Add to Cart</button>
+            <button class="wishlist-btn" onclick="addFigureToWishlist(8, 'Ultimate Legend Figure', 65.00, '🎯', 'Action Figures')">♥</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination">
+      <span class="current" id="page-1">1</span>
+      <a href="#" id="page-2">2</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h4>The Gamer's HUB Store</h4>
+        <p style="margin-bottom: 15px; color: #94a3b8; font-size: 13px;">Premium gaming collectibles and merchandise for collectors worldwide.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#">New Arrivals</a></li>
+          <li><a href="#">Best Sellers</a></li>
+          <li><a href="#">Limited Edition</a></li>
+          <li><a href="#">On Sale</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Action Figures</h4>
+        <ul>
+          <li><a href="#">All Figures</a></li>
+          <li><a href="#">Gaming Heroes</a></li>
+          <li><a href="#">Custom Orders</a></li>
+          <li><a href="#">Collector Sets</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Track Order</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 The Gamer's HUB Store. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // ── Add to Cart (server-backed) ──────────────────────────────────────────
+    function addFigureToCart(productId, productName, productPrice, productEmoji) {
+      const card = document.querySelector(`.figure-card[data-product-id="${productId}"]`);
+      const priceFromCard = card ? (card.querySelector('.figure-price')?.dataset.price || '').replace(/,/g, '') : '';
+      const finalPrice = priceFromCard || productPrice;
+
+      const formData = new FormData();
+      formData.append('product_id', `figure_${productId}`);
+      formData.append('product_name', `${productEmoji} ${productName}`);
+      formData.append('product_price', finalPrice);
+      formData.append('quantity', 1);
+
+      fetch('add_to_cart.php', {
+        method: 'POST',
+        credentials: 'same-origin',
+        body: formData
+      })
+      .then(async response => {
+        const raw = await response.text();
+        try {
+          return JSON.parse(raw);
+        } catch (_) {
+          return { success: false, message: raw || 'Invalid server response' };
+        }
+      })
+      .then(data => {
+        if (data.success) {
+          showFigureNotification(`${productName} added to cart!`, 'success');
+          refreshBadges();
+        } else {
+          showFigureNotification(data.message || 'Failed to add to cart', 'error');
+          if ((data.message || '').toLowerCase().includes('login')) {
+            setTimeout(() => { window.location.href = '8.Logintab.html'; }, 800);
+          }
+        }
+      })
+      .catch(() => showFigureNotification('Could not connect to server', 'error'));
+    }
+
+    // ── Add to Wishlist (server-backed) ──────────────────────────────────────
+    function addFigureToWishlist(productId, productName, productPrice, productEmoji, category) {
+      const card = document.querySelector(`.figure-card[data-product-id="${productId}"]`);
+      const priceFromCard = card ? (card.querySelector('.figure-price')?.dataset.price || '').replace(/,/g, '') : '';
+      const finalPrice = priceFromCard || productPrice;
+
+      const formData = new FormData();
+      formData.append('product_id', `figure_${productId}`);
+      formData.append('product_name', `${productEmoji} ${productName}`);
+      formData.append('product_price', finalPrice);
+
+      fetch('add_to_wishlist.php', {
+        method: 'POST',
+        credentials: 'same-origin',
+        body: formData
+      })
+      .then(async response => {
+        const raw = await response.text();
+        try {
+          return JSON.parse(raw);
+        } catch (_) {
+          return { success: false, message: raw || 'Invalid server response' };
+        }
+      })
+      .then(data => {
+        if (data.success) {
+          showFigureNotification(`${productName} added to wishlist!`, 'success');
+          refreshBadges();
+        } else {
+          showFigureNotification(data.message || 'Failed to add to wishlist', 'error');
+          if ((data.message || '').toLowerCase().includes('login')) {
+            setTimeout(() => { window.location.href = '8.Logintab.html'; }, 800);
+          }
+        }
+      })
+      .catch(() => showFigureNotification('Could not connect to server', 'error'));
+    }
+
+    // ── Badge counts (server-backed) ─────────────────────────────────────────
+    function refreshBadges() {
+      fetch(`get_cart_count.php?ts=${Date.now()}`, { cache: 'no-store' })
+        .then(response => response.json())
+        .then(data => {
+          const cb = document.getElementById('cartCount');
+          if (!cb) return;
+          if (data.count > 0) {
+            cb.textContent = data.count;
+            cb.style.display = 'flex';
+          } else {
+            cb.style.display = 'none';
+          }
+        })
+        .catch(() => {
+          const cb = document.getElementById('cartCount');
+          if (cb) cb.style.display = 'none';
+        });
+
+      fetch(`get_wishlist_count.php?ts=${Date.now()}`, { cache: 'no-store' })
+        .then(response => response.json())
+        .then(data => {
+          const wb = document.getElementById('wishlistCount');
+          if (!wb) return;
+          if (data.count > 0) {
+            wb.textContent = data.count;
+            wb.style.display = 'flex';
+          } else {
+            wb.style.display = 'none';
+          }
+        })
+        .catch(() => {
+          const wb = document.getElementById('wishlistCount');
+          if (wb) wb.style.display = 'none';
+        });
+    }
+
+    // ── Notification toast ────────────────────────────────────────────────────
+    function showFigureNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
+        z-index: 9999;
+        animation: slideIn 0.3s ease-out;
+        background: ${type === 'success' ? '#22c55e' : type === 'error' ? '#ef4444' : '#3b82f6'};
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      `;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => notification.remove(), 300);
+      }, 3000);
+    }
+
+    // ── Pagination ────────────────────────────────────────────────────────────
+    const page1Btn     = document.getElementById('page-1');
+    const page2Btn     = document.getElementById('page-2');
+    const page1Content = document.getElementById('page1');
+    const page2Content = document.getElementById('page2');
+
+    page2Btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      page1Content.style.display = 'none';
+      page2Content.style.display = 'grid';
+      page1Btn.classList.remove('current');
+      page2Btn.classList.add('current');
+      window.scrollTo(0, 0);
+    });
+
+    page1Btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      page1Content.style.display = 'grid';
+      page2Content.style.display = 'none';
+      page1Btn.classList.add('current');
+      page2Btn.classList.remove('current');
+      window.scrollTo(0, 0);
+    });
+
+    // ── Filters ───────────────────────────────────────────────────────────────
+    const sizeFilter   = document.getElementById('size-filter');
+    const priceFilter  = document.getElementById('price-filter');
+    const searchFilter = document.getElementById('search-filter');
+
+    function filterFigures() {
+      const size   = sizeFilter.value;
+      const price  = priceFilter.value;
+      const search = searchFilter.value.toLowerCase();
+      document.querySelectorAll('.figure-card').forEach(card => {
+        let show = true;
+        const title      = card.querySelector('.figure-title').textContent.toLowerCase();
+        const figureSize = card.querySelector('.figure-size').textContent;
+        const priceVal   = parseFloat(card.querySelector('.figure-price').dataset.price || 0);
+        if (search && !title.includes(search)) show = false;
+        if (size && !figureSize.includes(size)) show = false;
+        if (price === 'low'  && priceVal >= 25000) show = false;
+        if (price === 'mid'  && (priceVal < 25000 || priceVal > 50000)) show = false;
+        if (price === 'high' && priceVal <= 50000) show = false;
+        card.style.display = show ? 'block' : 'none';
+      });
+    }
+
+    sizeFilter.addEventListener('change', filterFigures);
+    priceFilter.addEventListener('change', filterFigures);
+    searchFilter.addEventListener('input', filterFigures);
+
+    // ── Animations ────────────────────────────────────────────────────────────
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn  { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+      @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(400px); opacity: 0; } }
+    `;
+    document.head.appendChild(style);
+
+    // ── Init ──────────────────────────────────────────────────────────────────
+    if (window.location.protocol === 'file:') {
+      window.location.href = 'http://localhost/action_figures.html';
+    }
+
+    refreshBadges();
+    setInterval(refreshBadges, 5000);
+  </script>
+</body>
+</html>

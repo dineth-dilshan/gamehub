@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Gaming Accessories - The Gamer's HUB</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #0a0e27;
+      color: #ffffff;
+    }
+
+    /* Top navigation */
+    .topbar {
+      background-color: #050814;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 60px;
+      font-size: 14px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo span {
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+
+      0%,
+      100% {
+        color: #ffffff;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+      }
+
+      50% {
+        color: #26b6ff;
+        text-shadow: 0 0 20px rgba(38, 182, 255, 0.8), 0 0 30px rgba(38, 182, 255, 0.5);
+      }
+    }
+
+    .logo-box {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #ffffff;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #26b6ff;
+      text-shadow: 0 0 10px rgba(38, 182, 255, 0.6);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nav-right a {
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+      color: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-right a:hover {
+      color: #ff4e8a;
+      text-shadow: 0 0 10px rgba(255, 78, 138, 0.6);
+    }
+
+    /* Page Header */
+    .page-header {
+      background: linear-gradient(135deg, #050814 0%, #564e90 100%);
+      padding: 60px 60px;
+      border-bottom: 2px solid #26b6ff;
+      text-align: center;
+    }
+
+    .page-header h1 {
+      font-size: 2.8rem;
+      color: #26b6ff;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px rgba(38, 182, 255, 0.5);
+    }
+
+    .page-header p {
+      color: #94a3b8;
+      s font-size: 1.1rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* Filter Section */
+    .filter-section {
+      background-color: #0f1724;
+      padding: 30px 60px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .filter-group label {
+      color: #26b6ff;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    .filter-group select,
+    .filter-group input {
+      background-color: #1e293b;
+      color: #ffffff;
+      padding: 8px 12px;
+      border: 1px solid #26b6ff;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .filter-group select:hover,
+    .filter-group input:hover {
+      border-color: #ff4e8a;
+      box-shadow: 0 0 10px rgba(38, 182, 255, 0.3);
+    }
+
+    /* Accessories Grid Section */
+    .accessories-section {
+      background-color: #0a0e27;
+      padding: 60px;
+    }
+
+    .accessories-section h2 {
+      font-size: 1.8rem;
+      color: #ffffff;
+      margin-bottom: 40px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+
+    .accessories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .accessory-card {
+      background-color: #1e293b;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .accessory-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      border-color: #26b6ff;
+    }
+
+    .accessory-preview {
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(135deg, #0f1724, #1e293b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .accessory-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background-color: #ffffff;
+      display: block;
+    }
+
+    .accessory-preview::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(38, 182, 255, 0.1), transparent);
+      pointer-events: none;
+    }
+
+    .accessory-info {
+      padding: 20px;
+    }
+
+    .accessory-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .accessory-category {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+    .accessory-description {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+      line-height: 1.5;
+      min-height: 45px;
+    }
+
+    .accessory-price {
+      font-size: 1.4rem;
+      color: #26b6ff;
+      font-weight: bold;
+      margin-bottom: 15px;
+      text-shadow: 0 0 10px rgba(38, 182, 255, 0.4);
+    }
+
+    .accessory-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .add-to-cart-btn {
+      flex: 1;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    .add-to-cart-btn:hover {
+      background-color: #1d4ed8;
+      box-shadow: 0 0 15px rgba(37, 99, 235, 0.6);
+    }
+
+    .wishlist-btn {
+      background-color: #1e293b;
+      color: #26b6ff;
+      border: 1px solid #26b6ff;
+      padding: 12px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.8rem;
+      transition: all 0.3s ease;
+    }
+
+    .wishlist-btn:hover {
+      background-color: #26b6ff;
+      color: #0a0e27;
+      box-shadow: 0 0 15px rgba(38, 182, 255, 0.5);
+    }
+
+    .pagination {
+      text-align: center;
+      padding: 40px 0;
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+
+    .pagination a,
+    .pagination span {
+      display: inline-block;
+      padding: 8px 12px;
+      margin: 0 4px;
+      background-color: #1e293b;
+      color: #26b6ff;
+      text-decoration: none;
+      border-radius: 4px;
+      border: 1px solid #26b6ff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .pagination a:hover,
+    .pagination .current {
+      background-color: #26b6ff;
+      color: #0a0e27;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #050814;
+      color: #ffffff;
+      padding: 32px 60px 20px;
+      font-size: 12px;
+    }
+
+    .footer-columns {
+      display: flex;
+      justify-content: space-between;
+      max-width: 100%;
+      margin-bottom: 26px;
+      gap: 40px;
+    }
+
+    .footer-column h4 {
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: #26b6ff;
+    }
+
+    .footer-column ul {
+      list-style: none;
+    }
+
+    .footer-column li {
+      margin-bottom: 6px;
+    }
+
+    .footer-column a {
+      text-decoration: none;
+      color: #cccccc;
+      transition: color 0.3s ease;
+    }
+
+    .footer-column a:hover {
+      color: #26b6ff;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      color: #777777;
+      font-size: 11px;
+      border-top: 1px solid #1e293b;
+      padding-top: 15px;
+    }
+
+    @media (max-width: 1200px) {
+      .accessories-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .accessories-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-header {
+        padding: 30px 20px;
+      }
+
+      .filter-section,
+      .accessories-section {
+        padding: 20px;
+      }
+
+      .topbar {
+        padding: 12px 20px;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .page-header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation Bar -->
+  <div class="topbar">
+    <a href="home - Copy.html" style="text-decoration: none;">
+      <div class="logo">
+        <img src="M5e94cecb0911ddde2fa73739c93655361764410284581.png">
+        <span>The Gamer's HUB</span>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <a href="games.html">Games</a>
+      <a href="storehome.html">Store</a>
+      <a href="community.html">Community</a>
+      <a href="Help.html">Help</a>
+      <a href="#">Rewards</a>
+    </div>
+
+    <div class="nav-right">
+      <span style="position: relative;"><a href="wishlist.html" style="color:white;text-decoration:none">♥ Wishlist</a><span id="wishlistCount" style="display:none; position: absolute; top: -8px; right: -8px; background: #ff4e8a; color: white; border-radius: 50%; width: 20px; height: 20px; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">0</span></span>
+      <span style="position: relative;"><a href="cart.html" style="color:white;text-decoration:none">🛒 Cart</a><span id="cartCount" style="display:none; position: absolute; top: -8px; right: -8px; background: #26b6ff; color: white; border-radius: 50%; width: 20px; height: 20px; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">0</span></span>
+      <span><a href="8.Logintab.html" style="color:white;text-decoration:none">👤 Sign In</a></span>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>Gaming Accessories</h1>
+    <p>Premium quality accessories for enhanced gaming performance</p>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <div class="filter-group">
+      <label for="category-filter">Category:</label>
+      <select id="category-filter">
+        <option value="">All Categories</option>
+        <option value="headset">Headset</option>
+        <option value="keyboard">Keyboard</option>
+        <option value="mouse">Mouse</option>
+        <option value="pad">Mousepad</option>
+        <option value="stand">Stand</option>
+        <option value="cable">Cable</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="price-filter">Price Range:</label>
+      <select id="price-filter">
+        <option value="">All Prices</option>
+        <option value="low">Under Rs. 10,000</option>
+        <option value="mid">Rs. 10,000 - Rs. 30,000</option>
+        <option value="high">Rs. 30,000+</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="search-filter">Search:</label>
+      <input type="text" id="search-filter" placeholder="Search accessories...">
+    </div>
+
+    <div class="filter-group">
+      <label for="sort-filter">Sort By:</label>
+      <select id="sort-filter">
+        <option value="default">Default</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="name-asc">Name: A - Z</option>
+        <option value="name-desc">Name: Z - A</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Accessories Grid Section -->
+  <section class="accessories-section">
+    <h2>Gaming Accessories Collection</h2>
+
+    <div class="accessories-grid" id="page1">
+      <!-- Accessory 1 - RGB Headset -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/Pro RGB Headset A2.jpg" alt="Pro RGB Headset">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">Pro RGB Headset</div>
+          <div class="accessory-category">Headset - Premium</div>
+          <div class="accessory-description">7.1 Surround Sound, Noise Cancelling Mic, RGB Lighting</div>
+          <div class="accessory-price">Rs. 17,000</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 2 - Mechanical Keyboard -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/Mechanical Gaming Keyboard A2.png" alt="Mechanical Gaming Keyboard">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">Mechanical Gaming Keyboard</div>
+          <div class="accessory-category">Keyboard - RGB 16.8 million Color</div>
+          <div class="accessory-description">Cherry MX Switches, Custom Backlight, Programmable Keys</div>
+          <div class="accessory-price">Rs. 16,800</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 3 - Gaming Mouse -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/Ultra Precision Gaming Mouse A1.jpg" alt="Ultra Precision Gaming Mouse">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">Wireless Gaming Mouse</div>
+          <div class="accessory-category">Gaming Mouse</div>
+          <div class="accessory-description">ATTACK SHARK X8ULTRA Wireless Gaming Mouse, 42000 DPI PAW3950MAX Sensor,
+            8000Hz Optical Nordic 52840 Tri-Mode 2.4G/BT/Wired, 55g Lightweight Big Hand Ergonomic Mouse with Coiled
+            Cable-Black&Tape</div>
+          <div class="accessory-price">Rs. 22,000</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 4 - Extended Mousepad -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/Extended RGB Mousepad A1.jpg" alt="Extended RGB Mousepad">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">Extended RGB Mousepad</div>
+          <div class="accessory-category">Mousepad - XL</div>
+          <div class="accessory-description">Extra Large RGB Gaming Mouse Pad,80cm x 30cm</div>
+          <div class="accessory-price">Rs. 10,000</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 5 - Monitor Stand -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/Adjustable Monitor Stand B1.webp" alt="Adjustable Monitor Stand">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">Adjustable Monitor Stand</div>
+          <div class="accessory-category">Stand - Ergonomic</div>
+          <div class="accessory-description">All-aluminum design: strong, lightweight, and durable
+            Adjustable height and tilt for ergonomic viewing
+            Holds up to 13 lbs — perfect for monitors, laptops, or small all-in-ones
+            Open design creates storage space underneath for a clutter-free desk
+            Wide adjustment range: from flat to 18" tall</div>
+          <div class="accessory-price">Rs. 48,000</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 6 - Cooling Pad -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/Laptop Cooling Pad B1.jpg" alt="Laptop Cooling Pad">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">Laptop Cooling Pad</div>
+          <div class="accessory-category">Laptop Cooling Pad</div>
+          <div class="accessory-description">LED Laptop Cooling Pad Gaming Laptop Coolers Laptop Fan Cooling Stand with
+            Quiet Cooling Fan 2 USB Port for Laptop</div>
+          <div class="accessory-price">Rs. 12,000</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 7 - USB-C Cable Bundle -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/Premium USB-C Cable Bundle A1.jpg" alt="Premium USB-C Cable Bundle">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">Premium USB-C Cable Bundle</div>
+          <div class="accessory-category">Cable - Set of 3</div>
+          <div class="accessory-description">6FT USB-C 20Gbps/240W Cable & 6FT Extension Cord Bundle: 240W Fast
+            Charging, 20Gbps Data, 4K@144Hz Video & Extend Your Reach for MacBook, iPhone, Galaxy, Monitor, SSD, Docking
+            Station and More</div>
+          <div class="accessory-price">$24.99</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 8 - Controller Charging Dock -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/Wireless Controller A1.webp" alt="Sony PS5 DualSense Wireless Controller">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">Sony PS5 DualSense Wireless Controller</div>
+          <div class="accessory-category">Wireless Controller</div>
+          <div class="accessory-description">Grey Camouflage, Haptic Feedback, Adaptive Triggers, Built-in Microphone &
+            Iconic Comfortable Design</div>
+          <div class="accessory-price">Rs. 32,800</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 9 - Screen Protector -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/Tempered Glass Screen Protector A1.jpg"
+            alt="Tempered Glass Screen Protector">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">Tempered Glass Screen Protector</div>
+          <div class="accessory-category">Protection - Glass</div>
+          <div class="accessory-description">SMARTDEVIL 2 Pack Screen Protector for iPhone 17, 9H Hardness Military
+            Grade Shatterproof HD Clear Tempered Glass, Easy to Install, Auto Bubble-Free and Dust-Free Box, Case
+            Friendly</div>
+          <div class="accessory-price">Rs. 5,000</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="accessories-grid" id="page2" style="display: none;">
+      <!-- Accessory 10 - Wireless Charger -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/Fast Wireless Charging Pad A1.jpg" alt="Fast Wireless Charging Pad">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">Fast Wireless Charging Pad</div>
+          <div class="accessory-category">Charger - Wireless</div>
+          <div class="accessory-description">Wireless Charger 20W Max Fast Wireless Charging Pad Compatible with iPhone,
+            Samsung
+            Galaxy/Note,Galaxy Buds</div>
+          <div class="accessory-price">Rs. 6,000</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 11 - Cable Management Set -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/Cable Management Organizer Set A1.jpg"
+            alt="Cable Management Organizer Set">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">Cable Management Organizer Set</div>
+          <div class="accessory-category">Organization - Set</div>
+          <div class="accessory-description">189PCS Cable Management Kit, 6 Cable Sleeve40 Cable Clips with 11Cord
+            Holders, 2 Roll Self Tie, 10 Self Adhesive Cord Organizer, 100 Fastening Cable Ties,10 Cable Zip Tie Mounts
+          </div>
+          <div class="accessory-price">Rs. 10,000</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 12 - Webcam -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/1080P Gaming Webcam A1.jpg" alt="1080P Gaming Webcam">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">1080P Gaming Webcam</div>
+          <div class="accessory-category">Webcam - HD</div>
+          <div class="accessory-description">Webcam with Microphone 1080P HD Web Camera, 672 USB Desktop Web Cam Facecam
+            Video Cam for Streaming Gaming Conferencing Mac Windows PC Laptop Computer</div>
+          <div class="accessory-price">Rs. 20,000</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 13 - Desk Lamp -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/RGB Gaming Desk Lamp A2.jpg" alt="RGB Gaming Desk Lamp">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">RGB Gaming Desk Lamp</div>
+          <div class="accessory-category">Lighting - LED</div>
+          <div class="accessory-description">RGB+IC Ambient LED Light Bars for Gaming Room, PC, and Home Decor, USB
+            Powered Mood Lighting with Music Sync, Alexa, App & Voice Control, Adjustable Brightness, DIY Effects</div>
+          <div class="accessory-price">Rs. 15,200</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 14 - Phone Mount -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/Adjustable Phone Mount Holder A1.jpg" alt="Adjustable Phone Mount Holder">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">Adjustable Phone Mount Holder</div>
+          <div class="accessory-category">Mount - Universal</div>
+          <div class="accessory-description">Car Phone Holder Mount,Rotatable Car Cell Phone Holder for Windshield Dash
+            Vent</div>
+          <div class="accessory-price">Rs. 5,000</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 15 - Audio Interface -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/Professional Audio Interface A1.jpg" alt="Professional Audio Interface">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">Professional Audio Interface</div>
+          <div class="accessory-category">Audio - Interface</div>
+          <div class="accessory-description">MAONO USB Audio Interface for PC: Interface with XLR Input 24-bit/192kHz
+            Routing Software LOOPBACK ASIO Driver for Recording Music, Home-Studio, Guitar, Podcast, Streaming, DAW(PS22
+            Lite Black)</div>
+          <div class="accessory-price">Rs. 21,500</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 16 - Controller Grip -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/Ergonomic Controller Grip A1.jpg" alt="Ergonomic Controller Grip">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">Ergonomic Controller Grip</div>
+          <div class="accessory-category">Grip - Universal</div>
+          <div class="accessory-description">Ergonomic Controller Handle Grip for Ayn Odin 3 Game Console Grip Holder
+            Anti-Slip Comfortable Handheld Stand Significantly Reducing Wrist and Finger Fatigue for Better Gaming
+            Experience</div>
+          <div class="accessory-price">Rs. 15,000</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 17 - USB Hub -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/7-Port USB 3.0 Hub A2.jpg" alt="7-Port USB 3.0 Hub">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">7-Port USB 3.0 Hub</div>
+          <div class="accessory-category">Hub - USB</div>
+          <div class="accessory-description">Powered USB Hub 3.0, GKEAPZA 7-Port USB 3.0 Hub [Durable Aluminum] 7 Data
+            Transfer Ports+ 4 Smart Charging Ports with Individual On/Off Switches, USB Hub 3.0 Powered with Power
+            Adapter for Laptop PC</div>
+          <div class="accessory-price">Rs. 12,000</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessory 18 - Power Bank -->
+      <div class="accessory-card">
+        <div class="accessory-preview">
+          <img src="Gaming Accessories images/80000mAh Gaming Power Bank A1.jpg" alt="80000mAh Gaming Power Bank">
+        </div>
+        <div class="accessory-info">
+          <div class="accessory-title">80000mAh Gaming Power Bank</div>
+          <div class="accessory-category">Power - Bank</div>
+          <div class="accessory-description">80000mAh Large Power Bank Portable Charger, 22.5 W Fast Charging External
+            Battery with 5 Outputs, Powerbank with Flashlight for Outdoors Camping Travel</div>
+          <div class="accessory-price">Rs. 24,000</div>
+          <div class="accessory-actions">
+            <button class="add-to-cart-btn">Add to Cart</button>
+            <button class="wishlist-btn">♥</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination">
+      <span class="current" id="page-1">1</span>
+      <a href="#" id="page-2">2</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h4>The Gamer's HUB Store</h4>
+        <p style="margin-bottom: 15px; color: #94a3b8; font-size: 13px;">Premium gaming accessories and merchandise for
+          gamers worldwide.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#">New Arrivals</a></li>
+          <li><a href="#">Bestsellers</a></li>
+          <li><a href="#">Limited Edition</a></li>
+          <li><a href="#">Sale Items</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Accessories</h4>
+        <ul>
+          <li><a href="#">Headsets</a></li>
+          <li><a href="#">Keyboards</a></li>
+          <li><a href="#">Mice</a></li>
+          <li><a href="#">Mousepads</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Track Order</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 The Gamer's HUB Store. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // Pagination functionality
+    const page1Btn = document.getElementById('page-1');
+    const page2Btn = document.getElementById('page-2');
+    const page1Content = document.getElementById('page1');
+    const page2Content = document.getElementById('page2');
+
+    page2Btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      page1Content.style.display = 'none';
+      page2Content.style.display = 'grid';
+      page1Btn.classList.remove('current');
+      page2Btn.classList.add('current');
+      window.scrollTo(0, 0);
+    });
+
+    page1Btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      page1Content.style.display = 'grid';
+      page2Content.style.display = 'none';
+      page1Btn.classList.add('current');
+      page2Btn.classList.remove('current');
+      window.scrollTo(0, 0);
+    });
+
+    // Filters and sorting
+    const categoryFilter = document.getElementById('category-filter');
+    const priceFilter = document.getElementById('price-filter');
+    const searchFilter = document.getElementById('search-filter');
+    const sortFilter = document.getElementById('sort-filter');
+
+    function parsePrice(text) {
+      const normalized = (text || '').replace(/[^\d.]/g, '');
+      return parseFloat(normalized || '0');
+    }
+
+    function filterAndSortAccessories() {
+      const category = categoryFilter.value;
+      const price = priceFilter.value;
+      const search = searchFilter.value.toLowerCase();
+      const sortBy = sortFilter.value;
+
+      const allCards = document.querySelectorAll('.accessory-card');
+      const visibleCards = [];
+
+      allCards.forEach(card => {
+        let show = true;
+        const title = card.querySelector('.accessory-title').textContent.toLowerCase();
+        const categoryText = card.querySelector('.accessory-category').textContent.toLowerCase();
+        const priceValue = parsePrice(card.querySelector('.accessory-price').textContent);
+
+        if (search && !title.includes(search)) show = false;
+        if (category && !categoryText.includes(category)) show = false;
+        if (price === 'low' && priceValue >= 10000) show = false;
+        if (price === 'mid' && (priceValue < 10000 || priceValue > 30000)) show = false;
+        if (price === 'high' && priceValue <= 30000) show = false;
+
+        card.style.display = show ? 'block' : 'none';
+        if (show) visibleCards.push(card);
+      });
+
+      if (sortBy !== 'default') {
+        visibleCards.sort((a, b) => {
+          const titleA = a.querySelector('.accessory-title').textContent;
+          const titleB = b.querySelector('.accessory-title').textContent;
+          const priceA = parsePrice(a.querySelector('.accessory-price').textContent);
+          const priceB = parsePrice(b.querySelector('.accessory-price').textContent);
+
+          if (sortBy === 'price-low') return priceA - priceB;
+          if (sortBy === 'price-high') return priceB - priceA;
+          if (sortBy === 'name-asc') return titleA.localeCompare(titleB);
+          if (sortBy === 'name-desc') return titleB.localeCompare(titleA);
+          return 0;
+        });
+
+        const grids = document.querySelectorAll('.accessories-grid');
+        visibleCards.forEach(card => {
+          grids.forEach(grid => {
+            if (grid.contains(card)) {
+              grid.appendChild(card);
+            }
+          });
+        });
+      }
+    }
+
+    categoryFilter.addEventListener('change', filterAndSortAccessories);
+    priceFilter.addEventListener('change', filterAndSortAccessories);
+    searchFilter.addEventListener('input', filterAndSortAccessories);
+    sortFilter.addEventListener('change', filterAndSortAccessories);
+
+    function showAccessoryNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
+        z-index: 9999;
+        background: ${type === 'success' ? '#22c55e' : type === 'error' ? '#ef4444' : '#3b82f6'};
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      `;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      setTimeout(() => notification.remove(), 2500);
+    }
+
+    function getAccessoryData(button) {
+      const card = button.closest('.accessory-card');
+      const title = card.querySelector('.accessory-title').textContent.trim();
+      const category = card.querySelector('.accessory-category').textContent.trim();
+      const priceText = card.querySelector('.accessory-price').textContent;
+      const price = parsePrice(priceText);
+      const productId = 'accessory_' + title.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+      return { title, category, price, productId };
+    }
+
+    function refreshBadges() {
+      fetch(`get_cart_count.php?ts=${Date.now()}`, { cache: 'no-store' })
+        .then(response => response.json())
+        .then(data => {
+          const badge = document.getElementById('cartCount');
+          if (!badge) return;
+          if (data.count > 0) {
+            badge.textContent = data.count;
+            badge.style.display = 'flex';
+          } else {
+            badge.style.display = 'none';
+          }
+        })
+        .catch(() => {
+          const badge = document.getElementById('cartCount');
+          if (badge) badge.style.display = 'none';
+        });
+
+      fetch(`get_wishlist_count.php?ts=${Date.now()}`, { cache: 'no-store' })
+        .then(response => response.json())
+        .then(data => {
+          const badge = document.getElementById('wishlistCount');
+          if (!badge) return;
+          if (data.count > 0) {
+            badge.textContent = data.count;
+            badge.style.display = 'flex';
+          } else {
+            badge.style.display = 'none';
+          }
+        })
+        .catch(() => {
+          const badge = document.getElementById('wishlistCount');
+          if (badge) badge.style.display = 'none';
+        });
+    }
+
+    function addAccessoryToCart(button) {
+      const item = getAccessoryData(button);
+      const formData = new FormData();
+      formData.append('product_id', item.productId);
+      formData.append('product_name', item.title);
+      formData.append('product_price', item.price);
+      formData.append('quantity', 1);
+
+      fetch('add_to_cart.php', {
+        method: 'POST',
+        credentials: 'same-origin',
+        body: formData
+      })
+      .then(async response => {
+        const raw = await response.text();
+        try { return JSON.parse(raw); } catch (_) { return { success: false, message: raw || 'Invalid server response' }; }
+      })
+      .then(data => {
+        if (data.success) {
+          showAccessoryNotification(`${item.title} added to cart!`, 'success');
+          refreshBadges();
+        } else {
+          showAccessoryNotification(data.message || 'Failed to add to cart', 'error');
+          if ((data.message || '').toLowerCase().includes('login')) {
+            setTimeout(() => { window.location.href = '8.Logintab.html'; }, 800);
+          }
+        }
+      })
+      .catch(() => showAccessoryNotification('Could not connect to server', 'error'));
+    }
+
+    function addAccessoryToWishlist(button) {
+      const item = getAccessoryData(button);
+      const formData = new FormData();
+      formData.append('product_id', item.productId);
+      formData.append('product_name', item.title);
+      formData.append('product_price', item.price);
+
+      fetch('add_to_wishlist.php', {
+        method: 'POST',
+        credentials: 'same-origin',
+        body: formData
+      })
+      .then(async response => {
+        const raw = await response.text();
+        try { return JSON.parse(raw); } catch (_) { return { success: false, message: raw || 'Invalid server response' }; }
+      })
+      .then(data => {
+        if (data.success) {
+          showAccessoryNotification(`${item.title} added to wishlist!`, 'success');
+          button.style.background = '#26b6ff';
+          button.style.color = '#0a0e27';
+          refreshBadges();
+        } else {
+          showAccessoryNotification(data.message || 'Failed to add to wishlist', 'error');
+          if ((data.message || '').toLowerCase().includes('login')) {
+            setTimeout(() => { window.location.href = '8.Logintab.html'; }, 800);
+          }
+        }
+      })
+      .catch(() => showAccessoryNotification('Could not connect to server', 'error'));
+    }
+
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('add-to-cart-btn')) {
+        addAccessoryToCart(e.target);
+      }
+      if (e.target.classList.contains('wishlist-btn')) {
+        addAccessoryToWishlist(e.target);
+      }
+    });
+
+    if (window.location.protocol === 'file:') {
+      window.location.href = 'http://localhost/accessories.html';
+    }
+
+    refreshBadges();
+    setInterval(refreshBadges, 5000);
+  </script>
+</body>
+
+</html>

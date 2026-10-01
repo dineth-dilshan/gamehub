@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart System Testing</title>
+    <style>
+        body { 
+            font-family: Arial; 
+            padding: 20px; 
+            background: #0a0e27; 
+            color: white; 
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .section { 
+            background: #1e293b; 
+            padding: 20px; 
+            margin: 15px 0; 
+            border-radius: 8px;
+            border-left: 4px solid #26b6ff;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        .warning { color: #ffaa00; }
+        button { 
+            background: #26b6ff; 
+            color: white; 
+            padding: 12px 24px; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            font-size: 14px;
+            margin: 5px 5px 5px 0;
+        }
+        button:hover { background: #1d4ed8; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #2d3748;
+            padding: 10px;
+            text-align: left;
+        }
+        th { background: #2d3748; }
+    </style>
+</head>
+<body>
+    <h1>🛒 Cart System Complete Test</h1>
+    
+    <div class="section">
+        <h2>Step 1: Database Fix</h2>
+        <button onclick="fixDatabase()">Fix Database (Change INT to VARCHAR)</button>
+        <div id="fixStatus"></div>
+    </div>
+
+    <div class="section">
+        <h2>Step 2: Test Add Item</h2>
+        <button onclick="testAddItem()">Test Add Item to Cart</button>
+        <div id="testStatus"></div>
+    </div>
+
+    <div class="section">
+        <h2>Step 3: View Cart</h2>
+        <button onclick="viewCart()">Refresh Cart Items</button>
+        <div id="cartStatus"></div>
+    </div>
+
+    <div class="section">
+        <h2>Step 4: Go to Store</h2>
+        <p>If everything above passed, click here to test the real buttons:</p>
+        <button onclick="window.location.href='storehome.html'" style="background: #26b6ff; font-size: 16px; padding: 15px 30px;">
+            Go to Store Home
+        </button>
+        <p style="margin-top: 15px; font-size: 14px;">
+            Then click "ADD TO CART" on any product and check if:<br>
+            ✓ Blue counter badge appears on the cart icon<br>
+            ✓ Item appears when you click the cart icon<br>
+        </p>
+    </div>
+
+    <script>
+        function fixDatabase() {
+            const status = document.getElementById('fixStatus');
+            status.innerHTML = '⏳ Fixing database...';
+            
+            fetch('fix_db.php')
+                .then(r => r.text())
+                .then(text => {
+                    if (text.includes('✓')) {
+                        status.innerHTML = '<p class="success">✓ Database fixed successfully!</p><pre>' + text + '</pre>';
+                    } else {
+                        status.innerHTML = '<p class="warning">⚠ Check output: </p><pre>' + text + '</pre>';
+                    }
+                })
+                .catch(e => status.innerHTML = '<p class="error">✗ Error: ' + e.message + '</p>');
+        }
+
+        function testAddItem() {
+            const status = document.getElementById('testStatus');
+            status.innerHTML = '⏳ Testing add to cart...';
+            
+            const formData = new FormData();
+            formData.append('product_id', 'test_' + Date.now());
+            formData.append('product_name', 'Test Product - ' + new Date().toLocaleTimeString());
+            formData.append('product_price', '99.99');
+            formData.append('quantity', 1);
+
+            fetch('add_to_cart.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(r => {
+                console.log('Response status:', r.status);
+                return r.json();
+            })
+            .then(data => {
+                console.log('Response:', data);
+                if (data.success) {
+                    status.innerHTML = '<p class="success">✓ Item added successfully!</p>';
+                    viewCart();
+                } else {
+                    status.innerHTML = '<p class="error">✗ Error: ' + data.message + '</p>';
+                }
+            })
+            .catch(e => status.innerHTML = '<p class="error">✗ Error: ' + e.message + '</p>');
+        }
+
+        function viewCart() {
+            const status = document.getElementById('cartStatus');
+            status.innerHTML = '⏳ Loading cart...';
+            
+            fetch('get_cart.php')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success && data.items.length > 0) {
+                        let html = '<p class="success">✓ ' + data.items.length + ' item(s) in cart</p>';
+                        html += '<table>';
+                        html += '<tr><th>Product ID</th><th>Name</th><th>Price</th><th>Qty</th><th>Total</th></tr>';
+                        data.items.forEach(item => {
+                            html += '<tr>';
+                            html += '<td>' + item.product_id + '</td>';
+                            html += '<td>' + item.product_name + '</td>';
+                            html += '<td>Rs. ' + item.product_price + '</td>';
+                            html += '<td>' + item.quantity + '</td>';
+                            html += '<td>Rs. ' + item.item_total + '</td>';
+                            html += '</tr>';
+                        });
+                        html += '</table>';
+                        status.innerHTML = html;
+                    } else if (data.items && data.items.length === 0) {
+                        status.innerHTML = '<p class="warning">⚠ Cart is empty (add an item first)</p>';
+                    } else {
+                        status.innerHTML = '<p class="error">✗ Error loading cart</p>';
+                    }
+                })
+                .catch(e => status.innerHTML = '<p class="error">✗ Error: ' + e.message + '</p>');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Games - The Gamer's HUB</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #0a0e27;
+      color: #ffffff;
+    }
+
+    /* Top navigation */
+    .topbar {
+      background-color: #050814;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 60px;
+      font-size: 14px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo span {
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% {
+        color: #ffffff;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+      }
+      50% {
+        color: #26b6ff;
+        text-shadow: 0 0 20px rgba(38, 182, 255, 0.8), 0 0 30px rgba(38, 182, 255, 0.5);
+      }
+    }
+
+    .logo-box {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #ffffff;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #26b6ff;
+      text-shadow: 0 0 10px rgba(38, 182, 255, 0.6);
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 18px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      align-items: center;
+    }
+
+    .nav-right a {
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .nav-right a:hover {
+      color: #ff4e8a;
+      text-shadow: 0 0 10px rgba(255, 78, 138, 0.6);
+    }
+
+    /* Avatar Dropdown */
+    .avatar-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .avatar-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #26b6ff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #1e293b;
+      overflow: hidden;
+    }
+
+    .avatar-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background-color: #1e293b;
+      border: 1px solid #2d3748;
+      border-radius: 8px;
+      min-width: 200px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      z-index: 100;
+    }
+
+    .dropdown-menu a,
+    .dropdown-menu button {
+      color: #ffffff;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+
+    .dropdown-menu a:hover,
+    .dropdown-menu button:hover {
+      background-color: #2d3748;
+    }
+
+    .dropdown-menu .user-info {
+      padding: 12px 16px;
+      border-bottom: 1px solid #2d3748;
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: url('783472.jpg') center/cover no-repeat;
+      min-height: 500px;
+      padding: 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 60px 60px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 30px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 40px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background-color: #2563eb;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+      box-shadow: 0 0 20px rgba(37, 99, 235, 0.6);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: #a78bfa;
+    }
+
+    /* Section Title */
+    .section-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+
+    .view-all {
+      color: #3b82f6;
+      text-decoration: none;
+      font-size: 0.9rem;
+      float: right;
+    }
+
+    /* Featured Games Section */
+    .featured-section {
+      padding: 60px;
+      background-color: #0a0e27;
+    }
+
+    .featured-section::after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .game-card {
+      background-color: #1e293b;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .game-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .game-image {
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(135deg, #334155, #475569);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      overflow: hidden;
+    }
+
+    .game-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .game-info {
+      padding: 15px;
+    }
+
+    .game-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .game-desc {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      margin-bottom: 10px;
+    }
+
+    .game-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .game-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    .tag-action { background-color: #1e40af; color: white; }
+    .tag-rpg { background-color: #059669; color: white; }
+    .tag-adventure { background-color: #9333ea; color: white; }
+    .tag-trading { background-color: #dc2626; color: white; }
+
+    .game-rating {
+      font-size: 0.9rem;
+      color: #fbbf24;
+    }
+
+    /* News Section */
+    .news-section {
+      padding: 60px;
+      background-color: #0f172a;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .news-card {
+      background-color: #1e293b;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .news-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .news-image {
+      width: 100%;
+      height: 150px;
+      background: linear-gradient(135deg, #334155, #475569);
+      overflow: hidden;
+    }
+
+    .news-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .news-info {
+      padding: 15px;
+    }
+
+    .news-date {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+
+    .news-title {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .news-desc {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      margin-bottom: 10px;
+    }
+
+    .read-more {
+      color: #3b82f6;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    /* Category Section */
+    .category-section {
+      padding: 60px;
+      background-color: #0a0e27;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .category-card {
+      background-color: #1e293b;
+      padding: 30px 20px;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .category-card:hover {
+      background-color: #2d3748;
+      transform: translateY(-5px);
+    }
+
+    .category-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .category-name {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    /* Newsletter Section */
+    .newsletter-section {
+      background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+      padding: 60px;
+      text-align: center;
+    }
+
+    .newsletter-section h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .newsletter-section p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      min-width: 250px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      background-color: rgba(0, 0, 0, 0.3);
+      color: white;
+    }
+
+    .newsletter-form input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .newsletter-form button {
+      padding: 12px 40px;
+      background-color: #2563eb;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .newsletter-form button:hover {
+      background-color: #1d4ed8;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #050814;
+      color: #ffffff;
+      padding: 32px 60px 20px;
+      font-size: 12px;
+    }
+
+    .footer-columns {
+      display: flex;
+      justify-content: space-between;
+      max-width: 100%;
+      margin-bottom: 26px;
+      gap: 40px;
+    }
+
+    .footer-column h4 {
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .footer-column ul {
+      list-style: none;
+    }
+
+    .footer-column li {
+      margin-bottom: 6px;
+    }
+
+    .footer-column a {
+      text-decoration: none;
+      color: #cccccc;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      color: #777777;
+      font-size: 11px;
+    }
+
+    @media (max-width: 768px) {
+      .games-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .news-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .category-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+    }
+    /* Background video for category areas */
+    .category-section, .category-header { position: relative; }
+    .category-bg-video { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+    .category-bg-video video { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; object-fit: cover; filter: brightness(0.45) contrast(1.05); }
+    /* Make category cards look clickable */
+    .category-grid a .category-card {
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .category-grid a:hover .category-card {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 8px 30px rgba(38, 182, 255, 0.35);
+      border-color: #26b6ff;
+    }
+    .category-grid a:hover .category-icon {
+      color: #26b6ff;
+      text-shadow: 0 0 14px rgba(38, 182, 255, 0.7);
+    }
+  </style>
+</head>
+<body>
+<?php 
+include 'config.php';
+$isLoggedIn = isset($_SESSION['user_id']);
+$userName = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : '';
+$userAvatar = isset($_SESSION['avatar']) ? $_SESSION['avatar'] : '';
+?>
+    <div class="topbar">
+    <a href="home - Copy.html" style="text-decoration: none;">
+      <div class="logo"><img src="M5e94cecb0911ddde2fa73739c93655361764410284581.png">
+        <span>The Gamer's HUB</span>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <a href="games.html">Games</a>
+      <a href="storehome.html">Store</a>
+      <a href="community.html">Community</a>
+      <a href="Help.html">Help</a>
+      <a href="#">Rewards</a>
+    </div>
+
+    <div class="nav-right">
+        <span><a href="wishlist.html" style="color:white;text-decoration:none;cursor:pointer">♥ Wishlist</a></span>
+        <span><a href="cart.html" style="color:white;text-decoration:none;cursor:pointer">🛒 Cart</a></span>
+        <?php if ($isLoggedIn): ?>
+          <div class="avatar-container">
+              <div class="avatar-btn" onclick="toggleDropdown(event)">
+                  <img src="<?php echo htmlspecialchars($userAvatar); ?>" alt="User Avatar" title="<?php echo htmlspecialchars($userName); ?>">
+              </div>
+              <div class="dropdown-menu" id="dropdownMenu">
+                  <div class="user-info">
+                      Logged in as: <strong><?php echo htmlspecialchars($userName); ?></strong>
+                  </div>
+                  <a href="account.html"><i class="fas fa-user"></i> My Account</a>
+                  <a href="cart.html"><i class="fas fa-shopping-cart"></i> My Cart</a>
+                  <a href="wishlist.html"><i class="fas fa-heart"></i> Wishlist</a>
+                  <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+              </div>
+          </div>
+        <?php else: ?>
+          <span><a href="8.Logintab.html" style="color:white;text-decoration:none;cursor:pointer">👤 Sign In</a></span>
+        <?php endif; ?>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Epic Gaming Adventures</h1>
+      <p>Discover the latest games, reviews, and gaming news from around the world</p>
+      <div class="hero-buttons">
+        <a href="2_Game_tab.html" class="btn btn-primary" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:inherit;">Browse Games</a>
+        <a href="game_hub_with_popup (1).html" class="btn btn-secondary" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:inherit;">Watch Trailers</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Games Section -->
+  <section class="featured-section">
+    <div style="margin-bottom: 30px;">
+      <span class="section-title">Featured Games</span>
+      <a href="2_Game_tab.html" class="view-all">View All</a>
+      <div style="clear: both;"></div>
+    </div>
+
+    <div class="games-grid">
+      <div class="game-card">
+        <div class="game-image"><img src="co1rft.jpg" alt=""></div>
+        <div class="game-info">
+          <div class="game-title">Cyberpunk 2077</div>
+          <div class="game-desc">Action RPG in futuristic City</div>
+          <div class="game-footer">
+            <span class="game-tag tag-action">New</span>
+            <span class="game-rating">⭐ 4.7</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="game-image"><img src="elder.jpg" alt=""></div>
+        <div class="game-info">
+          <div class="game-title">Elden Ring</div>
+          <div class="game-desc">Open-world action RPG</div>
+          <div class="game-footer">
+            <span class="game-tag tag-rpg">Popular</span>
+            <span class="game-rating">⭐ 4.1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="game-image"><img src="Halo_Infinite.png" alt=""></div>
+        <div class="game-info">
+          <div class="game-title">Halo Infinite</div>
+          <div class="game-desc">First-person shooter</div>
+          <div class="game-footer">
+            <span class="game-tag tag-action">Find Us</span>
+            <span class="game-rating">⭐ 4.1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-card">
+        <div class="game-image"><img src="GOD-of-WAR-POSTER.jpg" alt=""></div>
+        <div class="game-info">
+          <div class="game-title">God of War</div>
+          <div class="game-desc">Action Adventure</div>
+          <div class="game-footer">
+            <span class="game-tag tag-adventure">Trending</span>
+            <span class="game-rating">⭐ 4.8</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest Gaming News Section -->
+  <section class="news-section">
+    <div style="margin-bottom: 30px;">
+      <span class="section-title">Latest Gaming News</span>
+      <a href="news.html" class="view-all">View All</a>
+      <div style="clear: both;"></div>
+    </div>
+
+    <div class="news-grid">
+      <div class="news-card">
+        <div class="news-image"><img src="images (3).jpg" alt=""></div>
+        <div class="news-info">
+          <div class="news-date">📅 May 18, 2025</div>
+          <div class="news-title">New Console Announced at E3</div>
+          <div class="news-desc">The gaming industry around the announcement of the new console specs</div>
+          <a href="#" class="read-more">Read More</a>
+        </div>
+      </div>
+
+      <div class="news-card">
+        <div class="news-image"><img src="rpg.webp" alt=""></div>
+        <div class="news-info">
+          <div class="news-date">📅 May 12, 2025</div>
+          <div class="news-title">Top 10 Upcoming RPGs</div>
+          <div class="news-desc">Get ready for an incredible year of RPG releases with our top picks...</div>
+          <a href="#" class="read-more">Read More</a>
+        </div>
+      </div>
+
+      <div class="news-card">
+        <div class="news-image"><img src="all-winners-600x338.png" alt=""></div>
+        <div class="news-info">
+          <div class="news-date">📅 May 11, 2025</div>
+          <div class="news-title">Esports Tournament Results</div>
+          <div class="news-desc">The biggest esports event of the year concluded with surprising results...</div>
+          <a href="#" class="read-more">Read More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Browse by Category Section -->
+  <section class="category-section">
+    <div>
+      <span class="section-title">Browse by Category</span>
+    </div>
+
+    <div class="category-grid">
+      <a href="2_Game_tab.html?category=action" style="text-decoration:none;color:inherit;">
+        <div class="category-card">
+          <i class="fas fa-crosshairs category-icon"></i>
+          <div class="category-name">Action</div>
+        </div>
+      </a>
+
+      <a href="2_Game_tab.html?category=rpg" style="text-decoration:none;color:inherit;">
+        <div class="category-card">
+          <i class="fas fa-dungeon category-icon"></i>
+          <div class="category-name">RPG</div>
+        </div>
+      </a>
+
+      <a href="2_Game_tab.html?category=shooting" style="text-decoration:none;color:inherit;">
+        <div class="category-card">
+          <i class="fas fa-users category-icon"></i>
+          <div class="category-name">Multiplayer</div>
+        </div>
+      </a>
+
+      <a href="2_Game_tab.html?category=sports" style="text-decoration:none;color:inherit;">
+        <div class="category-card">
+          <i class="fas fa-football category-icon"></i>
+          <div class="category-name">Sports</div>
+        </div>
+      </a>
+
+      <a href="2_Game_tab.html?category=racing" style="text-decoration:none;color:inherit;">
+        <div class="category-card">
+          <i class="fas fa-car category-icon"></i>
+          <div class="category-name">Racing</div>
+        </div>
+      </a>
+
+      <a href="2_Game_tab.html?category=strategy" style="text-decoration:none;color:inherit;">
+        <div class="category-card">
+          <i class="fas fa-chess category-icon"></i>
+          <div class="category-name">Strategy</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section class="newsletter-section">
+    <h2>Stay Updated</h2>
+    <p>Subscribe to our newsletter for the latest gaming news and exclusive offers</p>
+    <form class="newsletter-form">
+      <input type="email" placeholder="Enter your email" required>
+      <button type="submit">Subscribe</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h4>The Gamer's HUB</h4>
+        <p style="margin-bottom: 15px; color: #94a3b8; font-size: 13px;">Your ultimate destination for gaming news, reviews, and community.</p>
+        <div>
+          <a href="#" style="margin-right: 12px;"><i class="fab fa-facebook"></i></a>
+          <a href="#" style="margin-right: 12px;"><i class="fab fa-twitter"></i></a>
+          <a href="#" style="margin-right: 12px;"><i class="fab fa-twitch"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Games</a></li>
+          <li><a href="#">Reviews</a></li>
+          <li><a href="#">News</a></li>
+          <li><a href="#">Forums</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Categories</h4>
+        <ul>
+          <li><a href="#">Action</a></li>
+          <li><a href="#">RPG</a></li>
+          <li><a href="#">Strategy</a></li>
+          <li><a href="#">Sports</a></li>
+          <li><a href="#">Racing</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Community Guidelines</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 The Gamer's HUB. All rights reserved.
+    </div>
+  </footer>
+</footer>
+
+<script>
+  (function(){
+    const selectors = ['.category-section','.category-header'];
+    const videoSrc = '../33.mp4';
+    selectors.forEach(sel=>{
+      document.querySelectorAll(sel).forEach(el=>{
+        if (el.querySelector('.category-bg-video')) return;
+        el.style.position = el.style.position || 'relative';
+        const wrapper = document.createElement('div');
+        wrapper.className = 'category-bg-video';
+        const vid = document.createElement('video');
+        vid.autoplay = true; vid.muted = true; vid.loop = true; vid.playsInline = true; vid.src = videoSrc;
+        wrapper.appendChild(vid);
+        el.insertBefore(wrapper, el.firstChild);
+        Array.from(el.children).forEach(ch=>{
+          if (!ch.classList || !ch.classList.contains('category-bg-video')){
+            ch.style.position = 'relative'; ch.style.zIndex = 1;
+          }
+        });
+        vid.play().catch(()=>{});
+      });
+    });
+  })();
+
+  // Avatar dropdown toggle
+  function toggleDropdown(event) {
+    event.stopPropagation();
+    const menu = document.getElementById('dropdownMenu');
+    if (menu) menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function() {
+    const menu = document.getElementById('dropdownMenu');
+    if (menu) menu.style.display = 'none';
+  });
+
+  // Logout function
+  function logout() {
+    window.location.href = 'logout.php';
+  }
+</script>
+</body>
+</html>

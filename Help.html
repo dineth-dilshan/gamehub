@@ -1,0 +1,917 @@
+<?php
+include 'config.php';
+$isLoggedIn = isset($_SESSION['user_id']);
+$userName = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : '';
+$userAvatar = isset($_SESSION['avatar']) ? $_SESSION['avatar'] : '';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center | Gamer's HUB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
+        :root {
+            --dark-bg: #0b141a;
+            --nav-bg: #121c24;
+            --accent-blue: #3b82f6;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border: #334155;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            background-image: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+        }
+
+        .help-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .help-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-5px);
+            background: rgba(59, 130, 246, 0.05);
+            box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.2);
+        }
+
+        #mobile-menu { display: none; animation: slideDown 0.3s ease-out forwards; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .quick-link-item {
+            transition: all 0.2s ease;
+        }
+        .quick-link-item:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        /* FAQ Cards */
+        .faq-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .faq-card:hover {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.07);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px -8px rgba(59, 130, 246, 0.25);
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(7, 13, 17, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: #0f1e2b;
+            border: 1px solid #2563eb55;
+            border-radius: 24px;
+            max-width: 560px;
+            width: 100%;
+            padding: 2.5rem;
+            position: relative;
+            animation: modalIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            box-shadow: 0 0 60px rgba(59, 130, 246, 0.15);
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.88) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-close {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.2rem;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #94a3b8;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal-close:hover {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: white;
+        }
+        .modal-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+        }
+        .modal-tag {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 999px;
+            margin-bottom: 0.75rem;
+        }
+        .step-item {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        .step-num {
+            background: #1e40af;
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Email Form Section */
+        .email-section {
+            background: rgba(15, 30, 43, 0.8);
+            border: 1px solid #1e3a5f;
+            border-radius: 28px;
+        }
+        .form-input {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            color: white;
+            border-radius: 12px;
+            padding: 0.875rem 1.25rem;
+            width: 100%;
+            font-size: 14px;
+            transition: all 0.2s;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .form-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .form-input::placeholder { color: #475569; }
+        .form-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Toast */
+        #toast {
+            display: none;
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #16a34a;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 9999;
+            box-shadow: 0 4px 20px rgba(22, 163, 74, 0.4);
+            animation: slideUp 0.4s ease;
+        }
+        @keyframes slideUp {
+            from { opacity:0; transform: translateY(20px); }
+            to { opacity:1; transform: translateY(0); }
+        }
+
+        /* Glow animation for logo */
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-logo span {
+            animation: glow 2s ease-in-out infinite;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                color: #ffffff;
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            }
+            50% {
+                color: #26b6ff;
+                text-shadow: 0 0 20px rgba(38, 182, 255, 0.8), 0 0 30px rgba(38, 182, 255, 0.5);
+            }
+        }
+
+        .nav-logo img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        /* Avatar Dropdown */
+        .avatar-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .avatar-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #26b6ff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1e293b;
+            overflow: hidden;
+        }
+
+        .avatar-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background-color: #1e293b;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .dropdown-menu a,
+        .dropdown-menu button {
+            color: #ffffff;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-menu a:first-child,
+        .dropdown-menu button:first-child {
+            border-bottom: 1px solid #2d3748;
+        }
+
+        .dropdown-menu a:hover,
+        .dropdown-menu button:hover {
+            background-color: #2d3748;
+        }
+
+        .user-info {
+            padding: 12px 16px;
+            border-bottom: 1px solid #2d3748;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- NAVBAR -->
+    <nav class="bg-[#121c24] border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <a class="nav-logo" href="home - Copy.html">
+                    <img src="M5e94cecb0911ddde2fa73739c93655361764410284581.png" alt="Logo">
+                    <span>The Gamer's HUB</span>
+                </a>
+                <div class="hidden md:flex space-x-8 text-[11px] font-bold uppercase tracking-widest">
+                    <a href="home - Copy.html" class="text-slate-400 hover:text-white transition">Home</a>
+                    <a href="storehome.html" class="text-slate-400 hover:text-white transition">Store</a>
+                    <a href="games.html" class="text-slate-400 hover:text-white transition">Games</a>
+                    <a href="community.html" class="text-slate-400 hover:text-white transition">Community</a>
+                    <a href="Help.html" class="text-white border-b-2 border-blue-500 pb-1">Help</a>
+                </div>
+                <div class="hidden md:flex items-center gap-6">
+                    <a href="wishlist.html" class="text-slate-400 hover:text-white transition text-[11px] font-bold uppercase">♥ Wishlist</a>
+                    <a href="cart.html" class="text-slate-400 hover:text-white transition text-[11px] font-bold uppercase">🛒 Cart</a>
+                    <?php if ($isLoggedIn): ?>
+                        <div class="avatar-container">
+                            <div class="avatar-btn" onclick="toggleDropdown(event)">
+                                <img src="<?php echo htmlspecialchars($userAvatar); ?>" alt="User Avatar" title="<?php echo htmlspecialchars($userName); ?>">
+                            </div>
+                            <div class="dropdown-menu" id="dropdownMenu">
+                                <div class="user-info">
+                                    Logged in as: <strong><?php echo htmlspecialchars($userName); ?></strong>
+                                </div>
+                                <a href="account.html"><i class="fas fa-user"></i> My Account</a>
+                                <a href="cart.html"><i class="fas fa-shopping-cart"></i> My Cart</a>
+                                <a href="wishlist.html"><i class="fas fa-heart"></i> Wishlist</a>
+                                <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <a href="8.Logintab.html" class="bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-bold px-5 py-2 rounded-md transition uppercase tracking-widest">Sign In</a>
+                    <?php endif; ?>
+                </div>
+                <button id="menu-toggle" class="md:hidden text-slate-400 hover:text-white">
+                    <i class="fas fa-bars text-xl" id="menu-icon"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden bg-[#1e293b] border-b border-slate-700">
+            <div class="px-4 pt-2 pb-6 space-y-1">
+                <a href="home - Copy.html" class="block px-3 py-3 rounded-md text-base font-medium text-slate-300">Home</a>
+                <a href="storehome.html" class="block px-3 py-3 rounded-md text-base font-medium text-slate-300">Store</a>
+                <a href="games.html" class="block px-3 py-3 rounded-md text-base font-medium text-slate-300">Games</a>
+                <a href="community.html" class="block px-3 py-3 rounded-md text-base font-medium text-slate-300">Community</a>
+                <a href="wishlist.html" class="block px-3 py-3 rounded-md text-base font-medium text-slate-300">Wishlist</a>
+                <a href="cart.html" class="block px-3 py-3 rounded-md text-base font-medium text-slate-300">Cart</a>
+                <a href="Help.html" class="block px-3 py-3 rounded-md text-base font-medium text-blue-400">Help</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="relative pt-24 pb-32 px-4 text-center">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <h4 class="text-blue-500 font-black text-[10px] tracking-[0.5em] uppercase mb-4">Support Matrix</h4>
+            <h1 class="text-5xl md:text-7xl font-black text-white mb-8 tracking-tighter uppercase italic">
+                How can we <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">help?</span>
+            </h1>
+            <div class="relative max-w-2xl mx-auto">
+                <i class="fa-solid fa-magnifying-glass absolute left-6 top-1/2 -translate-y-1/2 text-slate-500"></i>
+                <input type="text" class="w-full bg-slate-900/80 border border-slate-700 text-white rounded-full py-5 pl-14 pr-6 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-sm" placeholder="Search for answers (e.g. 'installing games', 'order status')...">
+            </div>
+        </div>
+    </header>
+
+    <!-- TOP CATEGORY CARDS -->
+    <section class="max-w-7xl mx-auto px-4 -mt-12 relative z-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <a href="#" class="help-card p-8 group">
+                <div class="w-14 h-14 bg-blue-600/10 border border-blue-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                    <i class="fa-solid fa-rocket text-xl text-blue-500 group-hover:text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white uppercase tracking-tight mb-2 italic">Getting Started</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Set up your neural profile, join community sectors, and begin voting.</p>
+            </a>
+            <a href="#" class="help-card p-8 group">
+                <div class="w-14 h-14 bg-blue-600/10 border border-blue-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-all">
+                    <i class="fa-solid fa-cart-shopping text-xl text-blue-500 group-hover:text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white uppercase tracking-tight mb-2 italic">Orders & Store</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Tracking for custom toys, digital keys, and global credit refunds.</p>
+            </a>
+            <a href="#" class="help-card p-8 group">
+                <div class="w-14 h-14 bg-blue-600/10 border border-blue-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-all">
+                    <i class="fa-solid fa-download text-xl text-blue-500 group-hover:text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white uppercase tracking-tight mb-2 italic">Game Portal</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Fix installation errors and manage original vs. verified community builds.</p>
+            </a>
+            <a href="#" class="help-card p-8 group">
+                <div class="w-14 h-14 bg-blue-600/10 border border-blue-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-all">
+                    <i class="fa-solid fa-user-group text-xl text-blue-500 group-hover:text-white"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white uppercase tracking-tight mb-2 italic">Creator Tools</h3>
+                <p class="text-xs text-slate-400 leading-relaxed">Resources for streamers and content creators to scale their HUB presence.</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== FAQ SECTION ===== -->
+    <section class="max-w-7xl mx-auto px-4 pt-28 pb-12">
+        <div class="text-center mb-14">
+            <h4 class="text-blue-500 font-black text-[10px] tracking-[0.5em] uppercase mb-3">Knowledge Base</h4>
+            <h2 class="text-3xl md:text-4xl font-black text-white uppercase italic tracking-tighter">
+                Frequently Asked <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">Questions</span>
+            </h2>
+            <p class="text-slate-400 text-sm mt-3 max-w-lg mx-auto">Click any question to reveal the full answer in a detailed popup.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+            <!-- FAQ 1 -->
+            <div class="faq-card p-6" onclick="openModal('faq1')">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 bg-blue-600/15 border border-blue-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-user-plus text-blue-400 text-sm"></i>
+                    </div>
+                    <div>
+                        <span class="text-[9px] font-black tracking-widest uppercase text-blue-500/70">Account</span>
+                        <h3 class="text-sm font-bold text-white mt-1 leading-snug">How do I create a Gamer's HUB account?</h3>
+                        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Step-by-step guide for new players joining the HUB.</p>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center gap-2 text-blue-400 text-xs font-bold tracking-wider">
+                    <span>VIEW ANSWER</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="faq-card p-6" onclick="openModal('faq2')">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 bg-blue-600/15 border border-blue-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-gamepad text-blue-400 text-sm"></i>
+                    </div>
+                    <div>
+                        <span class="text-[9px] font-black tracking-widest uppercase text-blue-500/70">Games</span>
+                        <h3 class="text-sm font-bold text-white mt-1 leading-snug">How do I download and install a game?</h3>
+                        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Learn how to access your purchased games and install them.</p>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center gap-2 text-blue-400 text-xs font-bold tracking-wider">
+                    <span>VIEW ANSWER</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="faq-card p-6" onclick="openModal('faq3')">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 bg-blue-600/15 border border-blue-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-rotate-left text-blue-400 text-sm"></i>
+                    </div>
+                    <div>
+                        <span class="text-[9px] font-black tracking-widest uppercase text-blue-500/70">Payments</span>
+                        <h3 class="text-sm font-bold text-white mt-1 leading-snug">How do I request a refund for a purchase?</h3>
+                        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Our refund policy and how to submit a refund request.</p>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center gap-2 text-blue-400 text-xs font-bold tracking-wider">
+                    <span>VIEW ANSWER</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="faq-card p-6" onclick="openModal('faq4')">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 bg-blue-600/15 border border-blue-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-lock text-blue-400 text-sm"></i>
+                    </div>
+                    <div>
+                        <span class="text-[9px] font-black tracking-widest uppercase text-blue-500/70">Security</span>
+                        <h3 class="text-sm font-bold text-white mt-1 leading-snug">How do I recover a hacked or lost account?</h3>
+                        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Steps to secure and recover your compromised account.</p>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center gap-2 text-blue-400 text-xs font-bold tracking-wider">
+                    <span>VIEW ANSWER</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </div>
+            </div>
+
+            <!-- FAQ 5 -->
+            <div class="faq-card p-6" onclick="openModal('faq5')">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 bg-blue-600/15 border border-blue-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-users text-blue-400 text-sm"></i>
+                    </div>
+                    <div>
+                        <span class="text-[9px] font-black tracking-widest uppercase text-blue-500/70">Community</span>
+                        <h3 class="text-sm font-bold text-white mt-1 leading-snug">How do I report another player or bad conduct?</h3>
+                        <p class="text-xs text-slate-500 mt-2 leading-relaxed">Reporting tools and what happens after you submit a report.</p>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center gap-2 text-blue-400 text-xs font-bold tracking-wider">
+                    <span>VIEW ANSWER</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </div>
+            </div>
+
+            <!-- FAQ 6 -->
+            <div class="faq-card p-6" onclick="openModal('faq6')">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 bg-blue-600/15 border border-blue-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-star text-blue-400 text-sm"></i>
+                    </div>
+                    <div>
+                        <span class="text-[9px] font-black tracking-widest uppercase text-blue-500/70">Membership</span>
+                        <h3 class="text-sm font-bold text-white mt-1 leading-snug">What are the benefits of HUB Pro membership?</h3>
+                        <p class="text-xs text-slate-500 mt-2 leading-relaxed">All perks, discounts, and exclusive access of the Pro tier.</p>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center gap-2 text-blue-400 text-xs font-bold tracking-wider">
+                    <span>VIEW ANSWER</span>
+                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- COMMON INQUIRIES -->
+    <section class="max-w-7xl mx-auto px-4 py-20">
+        <div class="bg-slate-900/40 border border-slate-800 rounded-[2rem] p-8 md:p-16">
+            <h2 class="text-2xl font-black text-white uppercase tracking-widest text-center mb-16 italic">Common <span class="text-blue-500">Inquiries</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div>
+                    <h4 class="text-blue-500 font-black text-[10px] tracking-[0.3em] uppercase mb-6 flex items-center gap-2">
+                        <span class="w-4 h-[1px] bg-blue-500"></span> Account & Security
+                    </h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="quick-link-item flex text-sm text-slate-400 hover:text-white">Reset your neural link</a></li>
+                        <li><a href="#" class="quick-link-item flex text-sm text-slate-400 hover:text-white">Two-factor auth protocols</a></li>
+                        <li><a href="#" class="quick-link-item flex text-sm text-slate-400 hover:text-white">Privacy encryption details</a></li>
+                        <li><a href="#" class="quick-link-item flex text-sm text-slate-400 hover:text-white">Report unauthorized access</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-blue-500 font-black text-[10px] tracking-[0.3em] uppercase mb-6 flex items-center gap-2">
+                        <span class="w-4 h-[1px] bg-blue-500"></span> Logistics & Gear
+                    </h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="quick-link-item flex text-sm text-slate-400 hover:text-white">Custom Toy Creator manual</a></li>
+                        <li><a href="#" class="quick-link-item flex text-sm text-slate-400 hover:text-white">Banner forging timelines</a></li>
+                        <li><a href="#" class="quick-link-item flex text-sm text-slate-400 hover:text-white">International portal shipping</a></li>
+                        <li><a href="#" class="quick-link-item flex text-sm text-slate-400 hover:text-white">Hardware return policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-blue-500 font-black text-[10px] tracking-[0.3em] uppercase mb-6 flex items-center gap-2">
+                        <span class="w-4 h-[1px] bg-blue-500"></span> Community Conduct
+                    </h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="quick-link-item flex text-sm text-slate-400 hover:text-white">HUB Engagement Guidelines</a></li>
+                        <li><a href="#" class="quick-link-item flex text-sm text-slate-400 hover:text-white">Report conduct violations</a></li>
+                        <li><a href="#" class="quick-link-item flex text-sm text-slate-400 hover:text-white">Moderation appeal system</a></li>
+                        <li><a href="#" class="quick-link-item flex text-sm text-slate-400 hover:text-white">Private sector management</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EMAIL / CONTACT SECTION ===== -->
+    <section class="max-w-4xl mx-auto px-4 pb-28" id="contact">
+        <div class="email-section p-8 md:p-14">
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-600/15 border border-blue-500/25 rounded-2xl mb-5">
+                    <i class="fa-solid fa-paper-plane text-blue-400 text-xl"></i>
+                </div>
+                <h4 class="text-blue-500 font-black text-[10px] tracking-[0.5em] uppercase mb-3">Direct Channel</h4>
+                <h2 class="text-3xl font-black text-white uppercase italic tracking-tighter mb-3">
+                    Send Us a <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">Message</span>
+                </h2>
+                <p class="text-slate-400 text-sm max-w-md mx-auto leading-relaxed">
+                    Can't find your answer above? Our tactical support squad is ready. Fill in the form below and we'll respond within 24 hours.
+                </p>
+            </div>
+
+            <form id="contact-form" onsubmit="handleSubmit(event)" novalidate>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+                    <div>
+                        <label class="form-label">Your Name</label>
+                        <input type="text" id="f-name" class="form-input" placeholder="e.g. ShadowGamer99" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Email Address</label>
+                        <input type="email" id="f-email" class="form-input" placeholder="you@example.com" required>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <label class="form-label">Topic</label>
+                    <select id="f-topic" class="form-input" style="color:#fff; background: rgba(15,23,42,0.8);" required>
+                        <option value="" disabled selected style="color:#475569">— Choose a topic —</option>
+                        <option value="account">Account & Security</option>
+                        <option value="billing">Billing & Payments</option>
+                        <option value="games">Games & Downloads</option>
+                        <option value="store">Orders & Store</option>
+                        <option value="community">Community Conduct</option>
+                        <option value="pro">Pro Membership</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="mb-5">
+                    <label class="form-label">Your Question</label>
+                    <textarea id="f-message" class="form-input" rows="5" placeholder="Describe your issue or question in detail. The more info you provide, the faster we can help." required style="resize:vertical;"></textarea>
+                </div>
+
+                <div class="mb-8 p-4 bg-blue-600/8 border border-blue-500/15 rounded-xl flex gap-3 items-start">
+                    <i class="fa-solid fa-circle-info text-blue-400 text-sm mt-0.5 flex-shrink-0"></i>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        We typically respond within <strong class="text-white">24 hours</strong>. For urgent issues related to account security or payment disputes, add <strong class="text-white">[URGENT]</strong> to your message. Our support operates 24/7 globally.
+                    </p>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-xl uppercase tracking-widest text-[11px] transition-all transform hover:scale-[1.02] shadow-xl shadow-blue-900/30 flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Send Message to Support
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- STILL NEED HELP CTA -->
+    <div class="max-w-4xl mx-auto px-4 pb-32 text-center">
+        <h2 class="text-3xl font-black text-white uppercase italic mb-4 tracking-tighter">Still Need <span class="text-blue-500">Assistance?</span></h2>
+        <p class="text-slate-400 text-sm mb-10">Our tactical support squad is available 24/7 for the global gaming community.</p>
+        <a href="#contact" class="inline-block bg-blue-600 hover:bg-blue-500 text-white font-black px-12 py-4 rounded-xl uppercase tracking-widest text-[11px] transition-all transform hover:scale-105 shadow-xl shadow-blue-900/20">
+            Open Support Ticket
+        </a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#070d11] text-slate-600 py-12 border-t border-slate-900">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-[10px] uppercase tracking-[0.4em] mb-4">© 2026 The Gamer's HUB. Your Home In The Gaming Universe.</p>
+            <div class="flex justify-center gap-6 opacity-30">
+                <i class="fab fa-discord hover:text-white transition cursor-pointer"></i>
+                <i class="fab fa-twitter hover:text-white transition cursor-pointer"></i>
+                <i class="fab fa-twitch hover:text-white transition cursor-pointer"></i>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== FAQ MODALS ===== -->
+
+    <!-- Modal 1: Create Account -->
+    <div class="modal-overlay" id="modal-faq1" onclick="closeModalOutside(event, 'faq1')">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('faq1')"><i class="fa-solid fa-xmark text-sm"></i></button>
+            <div class="modal-icon"><i class="fa-solid fa-user-plus text-blue-400 text-xl"></i></div>
+            <span class="modal-tag">Account</span>
+            <h2 class="text-xl font-black text-white mb-4 tracking-tight leading-snug">How do I create a Gamer's HUB account?</h2>
+            <p class="text-slate-400 text-sm mb-5 leading-relaxed">Creating your Gamer's HUB account takes less than 2 minutes. Follow these steps to get online:</p>
+            <div>
+                <div class="step-item"><div class="step-num">1</div><p class="text-sm text-slate-300">Visit <strong class="text-white">gamershub.gg/signup</strong> or click the <em>Sign In</em> button in the top-right corner of any page.</p></div>
+                <div class="step-item"><div class="step-num">2</div><p class="text-sm text-slate-300">Enter your email address, choose a unique gamer tag, and set a strong password (min. 8 characters).</p></div>
+                <div class="step-item"><div class="step-num">3</div><p class="text-sm text-slate-300">Check your inbox for a verification email and click the confirmation link within 24 hours.</p></div>
+                <div class="step-item"><div class="step-num">4</div><p class="text-sm text-slate-300">Complete your Neural Profile — add your gaming preferences, region, and avatar to unlock full community access.</p></div>
+                <div class="step-item"><div class="step-num">5</div><p class="text-sm text-slate-300">Enable Two-Factor Authentication (2FA) immediately from <strong class="text-white">Settings → Security</strong> to protect your account.</p></div>
+            </div>
+            <div class="mt-5 p-3 bg-blue-600/10 border border-blue-500/20 rounded-xl text-xs text-slate-400">
+                <i class="fa-solid fa-lightbulb text-yellow-400 mr-2"></i>
+                <strong class="text-white">Tip:</strong> Use a unique email and never share your password. Gamer's HUB staff will never ask for your password.
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Download & Install -->
+    <div class="modal-overlay" id="modal-faq2" onclick="closeModalOutside(event, 'faq2')">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('faq2')"><i class="fa-solid fa-xmark text-sm"></i></button>
+            <div class="modal-icon"><i class="fa-solid fa-gamepad text-blue-400 text-xl"></i></div>
+            <span class="modal-tag">Games</span>
+            <h2 class="text-xl font-black text-white mb-4 tracking-tight leading-snug">How do I download and install a game?</h2>
+            <p class="text-slate-400 text-sm mb-5 leading-relaxed">After purchasing a game, it's added to your HUB Library automatically. Here's how to install it:</p>
+            <div>
+                <div class="step-item"><div class="step-num">1</div><p class="text-sm text-slate-300">Go to <strong class="text-white">My Library</strong> from your profile dashboard. All purchased and free games appear here.</p></div>
+                <div class="step-item"><div class="step-num">2</div><p class="text-sm text-slate-300">Click the game title, then press the <strong class="text-white">Install</strong> button. Choose your preferred installation directory.</p></div>
+                <div class="step-item"><div class="step-num">3</div><p class="text-sm text-slate-300">The HUB Launcher will handle the download. You can track progress in the <strong class="text-white">Downloads</strong> tab at the bottom of the launcher.</p></div>
+                <div class="step-item"><div class="step-num">4</div><p class="text-sm text-slate-300">Once complete, click <strong class="text-white">Play</strong>. The launcher verifies game integrity before launch to ensure you have a clean build.</p></div>
+                <div class="step-item"><div class="step-num">5</div><p class="text-sm text-slate-300">If you encounter errors, use <strong class="text-white">Verify Game Files</strong> (right-click game → Properties) to auto-repair corrupted files.</p></div>
+            </div>
+            <div class="mt-5 p-3 bg-blue-600/10 border border-blue-500/20 rounded-xl text-xs text-slate-400">
+                <i class="fa-solid fa-lightbulb text-yellow-400 mr-2"></i>
+                <strong class="text-white">Tip:</strong> Ensure you have at least 10% free space on your drive beyond the game's listed size for smooth installation.
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Refund -->
+    <div class="modal-overlay" id="modal-faq3" onclick="closeModalOutside(event, 'faq3')">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('faq3')"><i class="fa-solid fa-xmark text-sm"></i></button>
+            <div class="modal-icon"><i class="fa-solid fa-rotate-left text-blue-400 text-xl"></i></div>
+            <span class="modal-tag">Payments</span>
+            <h2 class="text-xl font-black text-white mb-4 tracking-tight leading-snug">How do I request a refund for a purchase?</h2>
+            <p class="text-slate-400 text-sm mb-5 leading-relaxed">Gamer's HUB offers refunds under the following conditions:</p>
+            <div class="mb-4 space-y-2">
+                <div class="flex gap-2 items-center text-sm text-slate-300"><i class="fa-solid fa-check text-green-400 w-4"></i>Request made within <strong class="text-white ml-1">14 days</strong> of purchase.</div>
+                <div class="flex gap-2 items-center text-sm text-slate-300"><i class="fa-solid fa-check text-green-400 w-4"></i>Game has been played for <strong class="text-white ml-1">less than 2 hours</strong>.</div>
+                <div class="flex gap-2 items-center text-sm text-slate-300"><i class="fa-solid fa-check text-green-400 w-4"></i>Physical goods are unopened and undamaged.</div>
+                <div class="flex gap-2 items-center text-sm text-slate-300"><i class="fa-solid fa-xmark text-red-400 w-4"></i>DLC and in-game currency are <strong class="text-white ml-1">non-refundable</strong> once redeemed.</div>
+            </div>
+            <div>
+                <div class="step-item"><div class="step-num">1</div><p class="text-sm text-slate-300">Go to <strong class="text-white">My Orders</strong> in your account dashboard and find the relevant purchase.</p></div>
+                <div class="step-item"><div class="step-num">2</div><p class="text-sm text-slate-300">Click <strong class="text-white">Request Refund</strong>, select the reason from the dropdown, and add any additional details.</p></div>
+                <div class="step-item"><div class="step-num">3</div><p class="text-sm text-slate-300">Submit the form. Refund decisions are processed within <strong class="text-white">3–5 business days</strong> and credited back to your original payment method.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: Recover Account -->
+    <div class="modal-overlay" id="modal-faq4" onclick="closeModalOutside(event, 'faq4')">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('faq4')"><i class="fa-solid fa-xmark text-sm"></i></button>
+            <div class="modal-icon"><i class="fa-solid fa-lock text-blue-400 text-xl"></i></div>
+            <span class="modal-tag">Security</span>
+            <h2 class="text-xl font-black text-white mb-4 tracking-tight leading-snug">How do I recover a hacked or lost account?</h2>
+            <p class="text-slate-400 text-sm mb-5 leading-relaxed">If you suspect unauthorized access, act immediately:</p>
+            <div>
+                <div class="step-item"><div class="step-num">1</div><p class="text-sm text-slate-300"><strong class="text-white">Don't panic.</strong> Visit the <a href="#" class="text-blue-400 underline">Account Recovery Portal</a> — you don't need to be logged in.</p></div>
+                <div class="step-item"><div class="step-num">2</div><p class="text-sm text-slate-300">Enter your registered email. A secure recovery link is sent to your inbox. Check your spam folder if it doesn't appear.</p></div>
+                <div class="step-item"><div class="step-num">3</div><p class="text-sm text-slate-300">Verify your identity using one of: backup email, phone number, or your last 4 digits of the payment method used.</p></div>
+                <div class="step-item"><div class="step-num">4</div><p class="text-sm text-slate-300">Set a new strong password and immediately enable or reset your 2FA. Review <strong class="text-white">Active Sessions</strong> and log out of all unknown devices.</p></div>
+                <div class="step-item"><div class="step-num">5</div><p class="text-sm text-slate-300">Report the breach via <strong class="text-white">Security → Report Compromise</strong> so our team can investigate suspicious activity on your account.</p></div>
+            </div>
+            <div class="mt-5 p-3 bg-red-500/10 border border-red-500/25 rounded-xl text-xs text-slate-400">
+                <i class="fa-solid fa-triangle-exclamation text-red-400 mr-2"></i>
+                <strong class="text-white">Warning:</strong> If recovery fails, contact support immediately with your account email and a photo ID. We will never ask for your password.
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 5: Report Player -->
+    <div class="modal-overlay" id="modal-faq5" onclick="closeModalOutside(event, 'faq5')">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('faq5')"><i class="fa-solid fa-xmark text-sm"></i></button>
+            <div class="modal-icon"><i class="fa-solid fa-users text-blue-400 text-xl"></i></div>
+            <span class="modal-tag">Community</span>
+            <h2 class="text-xl font-black text-white mb-4 tracking-tight leading-snug">How do I report another player or bad conduct?</h2>
+            <p class="text-slate-400 text-sm mb-5 leading-relaxed">We take community conduct seriously. Reports are reviewed by our moderation team within 48 hours.</p>
+            <div>
+                <div class="step-item"><div class="step-num">1</div><p class="text-sm text-slate-300">Navigate to the offending player's profile page or hover over their username in any chat or forum post.</p></div>
+                <div class="step-item"><div class="step-num">2</div><p class="text-sm text-slate-300">Click the <strong class="text-white">⋮ Options</strong> menu → select <strong class="text-white">Report Player</strong>.</p></div>
+                <div class="step-item"><div class="step-num">3</div><p class="text-sm text-slate-300">Choose the violation type: Harassment, Cheating, Hate Speech, Spam, Impersonation, or Other. Add a description and attach screenshots if available.</p></div>
+                <div class="step-item"><div class="step-num">4</div><p class="text-sm text-slate-300">Submit. You'll receive a confirmation and can track status under <strong class="text-white">My Reports</strong> in your dashboard.</p></div>
+                <div class="step-item"><div class="step-num">5</div><p class="text-sm text-slate-300">You can also use <strong class="text-white">Block Player</strong> to immediately stop any interaction from that user while the review is ongoing.</p></div>
+            </div>
+            <div class="mt-5 p-3 bg-blue-600/10 border border-blue-500/20 rounded-xl text-xs text-slate-400">
+                <i class="fa-solid fa-lightbulb text-yellow-400 mr-2"></i>
+                <strong class="text-white">Note:</strong> False reports are themselves a conduct violation. Please only report genuine issues.
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 6: Pro Membership -->
+    <div class="modal-overlay" id="modal-faq6" onclick="closeModalOutside(event, 'faq6')">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('faq6')"><i class="fa-solid fa-xmark text-sm"></i></button>
+            <div class="modal-icon"><i class="fa-solid fa-star text-blue-400 text-xl"></i></div>
+            <span class="modal-tag">Membership</span>
+            <h2 class="text-xl font-black text-white mb-4 tracking-tight leading-snug">What are the benefits of HUB Pro membership?</h2>
+            <p class="text-slate-400 text-sm mb-5 leading-relaxed">HUB Pro unlocks the full power of the Gamer's HUB ecosystem for <strong class="text-white">$9.99/month</strong> or <strong class="text-white">$79.99/year</strong>:</p>
+            <div class="space-y-3 mb-5">
+                <div class="flex gap-3 items-start"><i class="fa-solid fa-check-circle text-cyan-400 mt-0.5 flex-shrink-0"></i><div><p class="text-sm font-bold text-white">Monthly Free Games</p><p class="text-xs text-slate-400">2 free full games added to your library every month — yours to keep forever.</p></div></div>
+                <div class="flex gap-3 items-start"><i class="fa-solid fa-check-circle text-cyan-400 mt-0.5 flex-shrink-0"></i><div><p class="text-sm font-bold text-white">10% Store Discount</p><p class="text-xs text-slate-400">Automatic 10% discount on all purchases in the HUB Store, including hardware.</p></div></div>
+                <div class="flex gap-3 items-start"><i class="fa-solid fa-check-circle text-cyan-400 mt-0.5 flex-shrink-0"></i><div><p class="text-sm font-bold text-white">Priority Support Queue</p><p class="text-xs text-slate-400">Skip the queue. Pro members receive support responses within 4 hours, not 24.</p></div></div>
+                <div class="flex gap-3 items-start"><i class="fa-solid fa-check-circle text-cyan-400 mt-0.5 flex-shrink-0"></i><div><p class="text-sm font-bold text-white">Exclusive HUB Pro Badge & Flair</p><p class="text-xs text-slate-400">A unique golden badge on your profile and access to Pro-only community sectors.</p></div></div>
+                <div class="flex gap-3 items-start"><i class="fa-solid fa-check-circle text-cyan-400 mt-0.5 flex-shrink-0"></i><div><p class="text-sm font-bold text-white">Early Access & Beta Programs</p><p class="text-xs text-slate-400">Be first to test new features, games in beta, and upcoming platform updates.</p></div></div>
+            </div>
+            <a href="#" class="block text-center bg-blue-600 hover:bg-blue-500 text-white font-black py-3 rounded-xl uppercase tracking-widest text-[10px] transition-all">
+                Upgrade to HUB Pro →
+            </a>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div id="toast">
+        <i class="fa-solid fa-circle-check mr-2"></i>
+        Message sent! We'll reply within 24 hours.
+    </div>
+
+    <script>
+        // Mobile menu
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        menuToggle.addEventListener('click', () => {
+            const isVisible = mobileMenu.style.display === 'block';
+            mobileMenu.style.display = isVisible ? 'none' : 'block';
+            menuIcon.classList.toggle('fa-bars');
+            menuIcon.classList.toggle('fa-xmark');
+        });
+
+        // Modal functions
+        function openModal(id) {
+            document.getElementById('modal-' + id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(id) {
+            document.getElementById('modal-' + id).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        function closeModalOutside(event, id) {
+            if (event.target === document.getElementById('modal-' + id)) {
+                closeModal(id);
+            }
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(m => {
+                    m.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            }
+        });
+
+        // Contact form submit
+        function handleSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('f-name').value.trim();
+            const email = document.getElementById('f-email').value.trim();
+            const topic = document.getElementById('f-topic').value;
+            const message = document.getElementById('f-message').value.trim();
+
+            if (!name || !email || !topic || !message) {
+                alert('Please fill in all fields before sending.');
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            // Build mailto link
+            const subject = encodeURIComponent('[Gamer\'s HUB Support] ' + topic.charAt(0).toUpperCase() + topic.slice(1) + ' Inquiry from ' + name);
+            const body = encodeURIComponent(
+                'Name: ' + name + '\n' +
+                'Email: ' + email + '\n' +
+                'Topic: ' + topic + '\n\n' +
+                'Message:\n' + message
+            );
+            window.location.href = 'mailto:support@gamershub.gg?subject=' + subject + '&body=' + body;
+
+            // Show toast
+            const toast = document.getElementById('toast');
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 4000);
+
+            // Reset form
+            document.getElementById('contact-form').reset();
+        }
+
+        // Toggle dropdown menu
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (dropdownMenu) {
+                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (dropdownMenu && dropdownMenu.style.display === 'block') {
+                dropdownMenu.style.display = 'none';
+            }
+        });
+
+        // Logout function
+        function logout() {
+            window.location.href = 'logout.php';
+        }
+    </script>
+</body>
+</html>

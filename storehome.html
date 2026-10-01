@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Store - The Gamer's HUB</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #0a0e27;
+      color: #ffffff;
+    }
+
+    /* Top navigation */
+    .topbar {
+      background-color: #050814;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 60px;
+      font-size: 14px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo span {
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+
+      0%,
+      100% {
+        color: #ffffff;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+      }
+
+      50% {
+        color: #26b6ff;
+        text-shadow: 0 0 20px rgba(38, 182, 255, 0.8), 0 0 30px rgba(38, 182, 255, 0.5);
+      }
+    }
+
+    .logo-box {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #ffffff;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 1px;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #26b6ff;
+      text-shadow: 0 0 10px rgba(38, 182, 255, 0.6);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nav-right a {
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+      color: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-right a:hover {
+      color: #ff4e8a;
+      text-shadow: 0 0 10px rgba(255, 78, 138, 0.6);
+    }
+
+    /* Avatar Dropdown */
+    .avatar-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .avatar-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #26b6ff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #1e293b;
+      overflow: hidden;
+    }
+
+    .avatar-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 50px;
+      background-color: #1e293b;
+      border: 1px solid #2d3748;
+      border-radius: 8px;
+      min-width: 200px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      z-index: 100;
+    }
+
+    .dropdown-menu a,
+    .dropdown-menu button {
+      color: #ffffff;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s;
+    }
+
+    .dropdown-menu a:first-child,
+    .dropdown-menu button:first-child {
+      border-bottom: 1px solid #2d3748;
+    }
+
+    .dropdown-menu a:hover,
+    .dropdown-menu button:hover {
+      background-color: #2d3748;
+    }
+
+    .user-info {
+      padding: 12px 16px;
+      border-bottom: 1px solid #2d3748;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    /* Page Header */
+    .page-header {
+      background-color: #050814;
+      padding: 40px 60px;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      color: #ffffff;
+      margin-bottom: 5px;
+    }
+
+    .page-header p {
+      color: #94a3b8;
+      font-size: 1rem;
+    }
+
+    /* Featured Collections Section */
+    .featured-collections {
+      background-color: #0a0e27;
+      padding: 60px;
+      text-align: center;
+    }
+
+    .featured-collections h2 {
+      font-size: 2rem;
+      color: #ffffff;
+      margin-bottom: 40px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+
+    .collections-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      padding-bottom: 0;
+      scroll-behavior: smooth;
+    }
+
+    .collections-grid::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .collections-grid::-webkit-scrollbar-track {
+      background: #f0f0f0;
+    }
+
+    .collections-grid::-webkit-scrollbar-thumb {
+      background: #2563eb;
+      border-radius: 3px;
+    }
+
+    .collections-grid::-webkit-scrollbar-thumb:hover {
+      background: #1d4ed8;
+    }
+
+    .collection-card {
+      background-color: #1e293b;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .collection-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .collection-image {
+      width: 100%;
+      height: 250px;
+      overflow: hidden;
+      display: block;
+    }
+
+    .collection-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .collection-info {
+      padding: 30px;
+      text-align: center;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .collection-icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .collection-card h3 {
+      font-size: 1.4rem;
+      color: #ffffff;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+
+    .collection-card p {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+
+    .shop-btn {
+      display: inline-block;
+      background-color: #2563eb;
+      color: white;
+      padding: 10px 30px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .shop-btn:hover {
+      background-color: #1d4ed8;
+      box-shadow: 0 0 15px rgba(37, 99, 235, 0.6);
+    }
+
+    /* All Products Section */
+    .all-products {
+      background-color: #0a0e27;
+      padding: 60px;
+    }
+
+    .all-products h2 {
+      font-size: 1.8rem;
+      color: #ffffff;
+      margin-bottom: 40px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .product-card {
+      background-color: #1e293b;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 280px;
+      background: linear-gradient(135deg, #ffffff, #ffffff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      overflow: hidden;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+    }
+
+    .product-info {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .product-title {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .product-price {
+      font-size: 1.1rem;
+      color: #2563eb;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .add-to-cart-btn {
+      width: 100%;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    .add-to-cart-btn:hover {
+      background-color: #1d4ed8;
+    }
+
+    .pagination {
+      text-align: center;
+      padding: 40px 0;
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #050814;
+      color: #ffffff;
+      padding: 32px 60px 20px;
+      font-size: 12px;
+    }
+
+    .footer-columns {
+      display: flex;
+      justify-content: space-between;
+      max-width: 100%;
+      margin-bottom: 26px;
+      gap: 40px;
+    }
+
+    .footer-column h4 {
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .footer-column ul {
+      list-style: none;
+    }
+
+    .footer-column li {
+      margin-bottom: 6px;
+    }
+
+    .footer-column a {
+      text-decoration: none;
+      color: #cccccc;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      color: #777777;
+      font-size: 11px;
+    }
+
+    @media (max-width: 1200px) {
+      .collections-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .collections-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .page-header {
+        padding: 30px 20px;
+      }
+
+      .featured-collections,
+      .all-products {
+        padding: 40px 20px;
+      }
+
+      .topbar {
+        padding: 12px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<?php
+include 'config.php';
+$isLoggedIn = isset($_SESSION['user_id']);
+$userName = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : '';
+$userAvatar = isset($_SESSION['avatar']) ? $_SESSION['avatar'] : '';
+?>
+  <!-- Navigation Bar -->
+  <div class="topbar">
+    <a href="home - Copy.html" style="text-decoration: none;">
+      <div class="logo"><img src="M5e94cecb0911ddde2fa73739c93655361764410284581.png">
+        <span>The Gamer's HUB</span>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <a href="games.html">Games</a>
+      <a href="storehome.html">Store</a>
+      <a href="community.html">Community</a>
+      <a href="Help.html">Help</a>
+      <a href="#">Rewards</a>
+    </div>
+
+    <div class="nav-right">
+      <span style="position: relative;"><a href="wishlist.html" style="color:white;text-decoration:none">♥ Wishlist</a><span id="wishlistCount" style="display:none; position: absolute; top: -8px; right: -8px; background: #ff4e8a; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">0</span></span>
+      <span style="position: relative;"><a href="cart.html" style="color:white;text-decoration:none">🛒 Cart</a><span id="cartCount" style="display:none; position: absolute; top: -8px; right: -8px; background: #26b6ff; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">0</span></span>
+      <?php if ($isLoggedIn): ?>
+        <div class="avatar-container">
+          <div class="avatar-btn" onclick="toggleDropdown(event)">
+            <img src="<?php echo htmlspecialchars($userAvatar); ?>" alt="User Avatar" title="<?php echo htmlspecialchars($userName); ?>">
+          </div>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <div class="user-info">
+              Logged in as: <strong><?php echo htmlspecialchars($userName); ?></strong>
+            </div>
+            <a href="account.html"><i class="fas fa-user"></i> My Account</a>
+            <a href="cart.html"><i class="fas fa-shopping-cart"></i> My Cart</a>
+            <a href="wishlist.html"><i class="fas fa-heart"></i> Wishlist</a>
+            <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+          </div>
+        </div>
+      <?php else: ?>
+        <span><a href="8.Logintab.html" style="color:white;text-decoration:none">👤 Sign In</a></span>
+      <?php endif; ?>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>Gaming Store</h1>
+    <p>Exclusive collectibles, figures, and gaming merchandise</p>
+  </div>
+
+  <!-- Featured Collections Section -->
+  <section class="featured-collections">
+    <h2>Featured Collections</h2>
+
+    <div class="collections-grid">
+      <div class="collection-card">
+        <div class="collection-image">
+          <img src="Action_figures_in_Pakistan_973x549.webp" alt="Action Figures">
+        </div>
+        <div class="collection-info">
+          <h3>Action Figures</h3>
+          <p>Premium collectibles</p>
+          <button class="shop-btn" onclick="window.location.href='action_figures.html'">Shop Now</button>
+        </div>
+      </div>
+
+      <div class="collection-card">
+        <div class="collection-image">
+          <img src="wewewe.webp" alt="Statues">
+        </div>
+        <div class="collection-info">
+          <h3>Banners</h3>
+          <p>Limited-editions</p>
+          <button class="shop-btn" onclick="window.location.href='banners.html'">Shop Now</button>
+        </div>
+      </div>
+
+      <div class="collection-card">
+        <div class="collection-image">
+          <img src="230228-gaming-accessories-vl-2x1.webp" alt="Accessories">
+        </div>
+        <div class="collection-info">
+          <h3>Accessories</h3>
+          <p>Exclusive items</p>
+          <button class="shop-btn" onclick="window.location.href='accessories.html'">Shop Now</button>
+        </div>
+      </div>
+
+      <div class="collection-card">
+        <div class="collection-image">
+          <img src="c8a62c3f14fdf027de13e1755ddd0ec6.gif" alt="Customize Merchants">
+        </div>
+        <div class="collection-info">
+          <h3>Customize Merchants</h3>
+          <p>Custom creations</p>
+          <button class="shop-btn" onclick="window.location.href='16.Coustom order page - Copy.html'">Shop Now</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- All Products Section -->
+  <section class="all-products">
+    <h2>All Products</h2>
+
+    <div class="products-grid">
+      <!-- Product 1 -->
+      <div class="product-card">
+        <div class="product-image"><img src="figure pictures/hp1.jpg"></div>
+        <div class="product-info">
+          <div class="product-title">Harry Potter Figure 1</div>
+          <div class="product-price">Rs. 7,497</div>
+          <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 2 -->
+      <div class="product-card">
+        <div class="product-image"><img src="figure pictures/hp11.jpg" alt="Sonic Classic"></div>
+        <div class="product-info">
+          <div class="product-title">Sonic Classic Figure</div>
+          <div class="product-price">Rs. 8,997</div>
+          <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 3 -->
+      <div class="product-card">
+        <div class="product-image"><img src="figure pictures/P1733928716139_1.png" alt="Knuckles Statue"></div>
+        <div class="product-info">
+          <div class="product-title">Knuckles Statue</div>
+          <div class="product-price">Rs. 10,497</div>
+          <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 4 -->
+      <div class="product-card">
+        <div class="product-image"><img src="figure pictures/hp10.jpg" alt="Collector Set"></div>
+        <div class="product-info">
+          <div class="product-title">Collector Set</div>
+          <div class="product-price">Rs. 26,997</div>
+          <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 5 -->
+      <div class="product-card">
+        <div class="product-image"><img src="figure pictures/hp9.jpg" alt="Unified"></div>
+        <div class="product-info">
+          <div class="product-title">Unified Figure</div>
+          <div class="product-price">Rs. 6,897</div>
+          <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 6 -->
+      <div class="product-card">
+        <div class="product-image"><img src="figure pictures/hp7.jpg" alt="This Figure"></div>
+        <div class="product-info">
+          <div class="product-title">This Figure</div>
+          <div class="product-price">Rs. 6,897</div>
+          <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 7 -->
+      <div class="product-card">
+        <div class="product-image"><img src="figure pictures/hp5.png" alt="Any Rose"></div>
+        <div class="product-info">
+          <div class="product-title">Any Rose Figure</div>
+          <div class="product-price">Rs. 7,497</div>
+          <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 8 -->
+      <div class="product-card">
+        <div class="product-image"><img src="figure pictures/hp4.webp" alt="Premium Pack"></div>
+        <div class="product-info">
+          <div class="product-title">Premium Pack</div>
+          <div class="product-price">Rs. 14,997</div>
+          <button class="add-to-cart-btn" onclick="addToCart(this)">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination">
+      
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h4>The Gamer's HUB Store</h4>
+        <p style="margin-bottom: 15px; color: #94a3b8; font-size: 13px;">Premium gaming collectibles and merchandise for
+          collectors worldwide.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="#">New Arrivals</a></li>
+          <li><a href="#">Bestsellers</a></li>
+          <li><a href="#">Limited Edition</a></li>
+          <li><a href="#">Sale Items</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Categories</h4>
+        <ul>
+          <li><a href="action_figures.html">Action Figures</a></li>
+          <li><a href="banners.html">Banners</a></li>
+          <li><a href="accessories.html">Accessories</a></li>
+          <li><a href="16.Coustom order page - Copy.html">Collectibles</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Track Order</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 The Gamer's HUB Store. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // Toggle dropdown menu
+    function toggleDropdown(event) {
+      event.stopPropagation();
+      const dropdownMenu = document.getElementById('dropdownMenu');
+      dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+      const dropdownMenu = document.getElementById('dropdownMenu');
+      if (dropdownMenu && dropdownMenu.style.display === 'block') {
+        dropdownMenu.style.display = 'none';
+      }
+    });
+
+    // Logout function
+    function logout() {
+      window.location.href = 'logout.php';
+    }
+
+    // Load cart and wishlist counts
+    function loadCounts() {
+      fetch('get_cart_count.php')
+        .then(response => response.json())
+        .then(data => {
+          const cartCount = document.getElementById('cartCount');
+          if (data.count > 0) {
+            cartCount.textContent = data.count;
+            cartCount.style.display = 'flex';
+          } else {
+            cartCount.style.display = 'none';
+          }
+        });
+
+      fetch('get_wishlist_count.php')
+        .then(response => response.json())
+        .then(data => {
+          const wishlistCount = document.getElementById('wishlistCount');
+          if (data.count > 0) {
+            wishlistCount.textContent = data.count;
+            wishlistCount.style.display = 'flex';
+          } else {
+            wishlistCount.style.display = 'none';
+          }
+        });
+    }
+
+    // Load counts on page load
+    loadCounts();
+    // Refresh counts every 5 seconds
+    setInterval(loadCounts, 5000);
+
+    // Add to cart function - WORKING VERSION
+    function addToCart(btn) {
+      const card = btn.closest('.product-card');
+      const title = card.querySelector('.product-title').textContent;
+      const rawPrice = card.querySelector('.product-price').textContent;
+      const price = rawPrice.replace('Rs. ', '').replace(/,/g, '').trim();
+      const productId = 'prod_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+      
+      const formData = new FormData();
+      formData.append('product_id', productId);
+      formData.append('product_name', title);
+      formData.append('product_price', price);
+      formData.append('quantity', 1);
+
+      fetch('add_to_cart.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('✓ Added to cart!');
+          loadCounts();
+        } else {
+          alert('Error: ' + data.message);
+        }
+      })
+      .catch(err => alert('Error: ' + err));
+    }
+  </script>
+</body>
+
+</html>
